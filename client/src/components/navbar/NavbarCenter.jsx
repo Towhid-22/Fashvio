@@ -1,9 +1,71 @@
-import React from 'react'
+import React from "react";
+import { BiGitCompare } from "react-icons/bi";
+import { RiHeart3Line } from "react-icons/ri";
+import { BsCart3 } from "react-icons/bs";
+import { LuUser } from "react-icons/lu";
+import { LiaLongArrowAltRightSolid } from "react-icons/lia";
+
 
 const NavbarCenter = () => {
   return (
-    <div>NavbarCenter</div>
-  )
-}
+    <div className="border-b border-borderColor py-6">
+      <div className="container ">
+        <div className="flex items-center justify-between">
+          <div className="flex itecms-center gap-[30px]">
+            <img src="./logo.png" alt="logo" className="cursor-pointer" />
+            <div className="w-[596px] border-3 border-primary/40 rounded-[4px] relative">
+              <input
+                className="placeholder:text-sm placeholder:italic p-3 w-full outline-none text-textPrimary"
+                type="text"
+                placeholder="Search for products..."
+              />
+              <button className="text-sm leading-3.5 font-quicksand font-semibold bg-primary text-white px-[22px] py-[13px] rounded-[3px] absolute right-1 top-1/2 -translate-y-1/2 cursor-pointer">
+                Search
+              </button>
+            </div>
+          </div>
+          <div className="flex items-center">
+            <button className="text-primary font-quicksand font-medium leading-6.5 text-sm flex items-center gap-2 shadow py-2 px-4 rounded-[5px] border-2 border-secondary/20 cursor-pointer mr-[30px]">
+              Became Vendor <LiaLongArrowAltRightSolid />
+            </button>
+            <ul className="flex items-center gap-3">
+              <li className="font-lato leading-4 text-secondary flex items-center gap-1 cursor-pointer">
+                <div className="relative">
+                  <BiGitCompare className="text-2xl text-black" />
+                  <sup className="w-5 h-5 bg-primary rounded-full flex items-center justify-center text-white text-[12px] absolute top-[-10px] right-[-10px]">
+                    0
+                  </sup>
+                </div>
+                Compare
+              </li>
+              <li className="font-lato leading-4 text-secondary flex items-center gap-1 cursor-pointer">
+                <div className="relative">
+                  <RiHeart3Line className="text-2xl text-black" />
+                  <sup className="w-5 h-5 bg-primary rounded-full flex items-center justify-center text-white text-[12px] absolute top-[-10px] right-[-10px]">
+                    0
+                  </sup>
+                </div>
+                Wishlist
+              </li>
+              <li className="font-lato leading-4 text-secondary flex items-center gap-1 cursor-pointer">
+                <div className="relative">
+                  <BsCart3 className="text-2xl text-black" />
+                  <sup className="w-5 h-5 bg-primary rounded-full flex items-center justify-center text-white text-[12px] absolute top-[-10px] right-[-10px]">
+                    0
+                  </sup>
+                </div>
+                Cart
+              </li>
+              <li className="font-lato leading-4 text-secondary flex items-center gap-1 cursor-pointer">
+                <LuUser className="text-2xl text-black" />
+                Account
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-export default NavbarCenter
+export default NavbarCenter;

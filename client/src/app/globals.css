@@ -2,7 +2,7 @@
 
 @layer utilities {
   .container {
-    @apply w-[1360px] mx-auto px-4;
+    @apply w-[1580px] mx-auto px-4;
   }
 }
 
