@@ -12,7 +12,7 @@ const NavbarTop = () => {
             {navbar_top.map((item) => (
               <li
                 key={item.id}
-                className={`text-secondary text-[13px] font-lato leading-3.5 pr-3 ${
+                className={`text-secondaryColor text-[13px] font-lato leading-3.5 pr-3 ${
                   item.id === 4 ? "border-0" : "border-r border-borderColor"
                 }`}
               >
@@ -21,15 +21,15 @@ const NavbarTop = () => {
             ))}
           </ul>
 
-          <p className="text-primary font-bold text-sm font-lato">
+          <p className="text-primaryColor font-bold text-sm font-lato">
             100% Secure delivery without contacting the courier
           </p>
 
           {/* Right Section */}
           <ul className="flex items-center justify-between gap-3">
-            <li className="text-secondary text-[13px] font-lato">
+            <li className="text-secondaryColor text-[13px] font-lato">
               Need help? Call Us:{" "}
-              <span className="text-primary text-[13px] font-lato">
+              <span className="text-primaryColor text-[13px] font-lato">
                 +1800900122
               </span>
             </li>
@@ -37,7 +37,7 @@ const NavbarTop = () => {
             <li>
               <select
                 id="language"
-                className="text-secondary text-[13px] font-lato bg-transparent outline-none"
+                className="text-secondaryColorColor text-[13px] font-lato bg-transparent outline-none"
               >
                 <option value="English" defaultValue>
                   English
@@ -51,7 +51,7 @@ const NavbarTop = () => {
             <li>
               <select
                 id="currency"
-                className="text-secondary text-[13px] font-lato bg-transparent outline-none"
+                className="text-secondaryColor text-[13px] font-lato bg-transparent outline-none"
               >
                 <option value="USD" defaultValue>
                   Dollar
