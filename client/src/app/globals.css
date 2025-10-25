@@ -22,16 +22,17 @@
   /* fonts */
   --font-quicksand: "var(--font-quicksand)";
   --font-lato: "var(--font-lato)";
+  --font-oswald: "var(--font-oswald)";
+  --font-playfair: "var(--font-playfair)";
 
   /* breakpoints  */
   --breakpoint-xs: 320px;
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
-  --breakpoint-xl: 1280px;
-  --breakpoint-xxl: 1360px;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 640px;
+  --breakpoint-lg: 768px;
+  --breakpoint-xl: 1024px;
+  --breakpoint-xxl: 1280px;
 }
-
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);

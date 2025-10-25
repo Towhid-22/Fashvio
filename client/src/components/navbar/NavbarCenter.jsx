@@ -4,6 +4,7 @@ import { RiHeart3Line } from "react-icons/ri";
 import { BsCart3 } from "react-icons/bs";
 import { LuUser } from "react-icons/lu";
 import { LiaLongArrowAltRightSolid } from "react-icons/lia";
+import Link from "next/link";
 
 const NavbarCenter = () => {
   return (
@@ -12,7 +13,9 @@ const NavbarCenter = () => {
         <div className="flex items-center justify-between">
           <div className="flex itecms-center gap-[30px]">
             {/* Logo */}
-            <img src="./logo.png" alt="logo" className="cursor-pointer" />
+            <Link href="/">
+              <img src="./logo.png" alt="logo" className="cursor-pointer" />
+            </Link>
             {/* Search Bar */}
             <div className="w-[596px] border-2 border-primaryColor/40 rounded-[4px] relative">
               <input
@@ -59,9 +62,11 @@ const NavbarCenter = () => {
                 </div>
                 Cart
               </li>
-              <li className="font-lato leading-4 text-secondaryColor flex items-center gap-1 cursor-pointer">
-                <LuUser className="text-2xl text-black" />
-                Account
+              <li className="font-lato leading-4 text-secondaryColor  cursor-pointer">
+                <Link href="/account/login" className="flex items-center gap-1">
+                  <LuUser className="te xt-2xl text-black" />
+                  Account
+                </Link>
               </li>
             </ul>
           </div>

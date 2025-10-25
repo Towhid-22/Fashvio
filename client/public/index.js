@@ -210,4 +210,136 @@ const banners = [
   },
 ];
 
-export { navbar_top, nav_items, categories, banners };
+const company = [
+  {
+    id: 1,
+    name: "About Us",
+  },
+  {
+    id: 2,
+    name: "Delivery Information",
+  },
+  {
+    id: 3,
+    name: "Privacy Policy",
+  },
+  {
+    id: 4,
+    name: "Terms & Conditions",
+  },
+  {
+    id: 5,
+    name: "Contact Us",
+  },
+  {
+    id: 6,
+    name: "Support Center",
+  },
+  {
+    id: 7,
+    name: "Returns",
+  },
+];
+
+const account = [
+  {
+    id: 1,
+    name: "Sign In",
+  },
+  {
+    id: 2,
+    name: "View Cart",
+  },
+  {
+    id: 3,
+    name: "My Wishlist",
+  },
+  {
+    id: 4,
+    name: "Track My Orders",
+  },
+  {
+    id: 5,
+    name: "Help Ticket",
+  },
+  {
+    id: 6,
+    name: "Shipping Details",
+  },
+  {
+    id: 7,
+    name: "Compare Products",
+  },
+];
+
+const corporate = [
+  {
+    id: 1,
+    name: "Become a Vendor",
+  },
+  {
+    id: 2,
+    name: "Affiliate Program",
+  },
+  {
+    id: 3,
+    name: "Farm Business",
+  },
+  {
+    id: 4,
+    name: "Farm Careers",
+  },
+  {
+    id: 5,
+    name: "Our Suppliers",
+  },
+  {
+    id: 6,
+    name: "Accessibility",
+  },
+  {
+    id: 7,
+    name: "Promotions",
+  },
+];
+
+const popular = [
+  {
+    id: 1,
+    name: "Computer",
+  },
+  {
+    id: 2,
+    name: "Laptops",
+  },
+  {
+    id: 3,
+    name: "Mobiles",
+  },
+  {
+    id: 4,
+    name: "Accessories",
+  },
+  {
+    id: 5,
+    name: "Components",
+  },
+  {
+    id: 6,
+    name: "Televisions",
+  },
+  {
+    id: 7,
+    name: "Monitor",
+  },
+];
+export {
+  navbar_top,
+  nav_items,
+  categories,
+  banners,
+  company,
+  account,
+  corporate,
+  popular,
+};
