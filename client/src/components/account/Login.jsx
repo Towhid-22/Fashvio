@@ -14,9 +14,9 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center mt-20">
-      <div className="border p-5 rounded-[5px] shadow">
+      <div className="border p-3 sm:p-5 rounded-[5px] shadow">
         <h1 className="font-lato text-2xl font-semibold">Login Your Account</h1>
-        <div className="mt-6 flex flex-col gap-1 w-[350px]">
+        <div className="mt-6 flex flex-col gap-1 w-[280px] sm:w-[350px] lg:w-[500px]">
           <label htmlFor="email" className="font-quicksand font-bold">
             Email
           </label>
@@ -25,10 +25,10 @@ const Login = () => {
             type="email"
             id="email"
             placeholder="Email"
-            className="outline-none border border-gray-200 rounded-[5px] p-2"
+            className="outline-none border border-gray-200 rounded-[5px] p-2 w-full"
           />
         </div>
-        <div className="mt-4 flex flex-col gap-1 w-[350px]">
+        <div className="mt-4 flex flex-col gap-1 w-[280px] sm:w-[350px] lg:w-[500px]">
           <label htmlFor="password" className="font-quicksand font-bold">
             Password
           </label>
@@ -37,7 +37,7 @@ const Login = () => {
             type="password"
             id="password"
             placeholder="Password"
-            className="outline-none border border-gray-200 rounded-[5px] p-2"
+            className="outline-none border border-gray-200 rounded-[5px] p-2 w-full"
           />
         </div>
         <button
@@ -49,7 +49,7 @@ const Login = () => {
         <p className="mt-4 text-sm text-gray-500 font-lato">
           Don't have an account?
           <span className="text-primaryColor font-semibold cursor-pointer ml-1">
-            <Link href="/signup">SignUp</Link>
+            <Link href="/account/signup">SignUp</Link>
           </span>
         </p>
         <p className="text-center font-bold my-3 text-xl text-gray-500">OR</p>

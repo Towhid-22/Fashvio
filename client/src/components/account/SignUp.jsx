@@ -1,12 +1,16 @@
 "use client";
 import Link from "next/link";
 import React, { useState } from "react";
+import { usePathname } from "next/navigation";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const pathname = usePathname();
+  const path = pathname.split("/");
+  const routePath = path[path.length - 1];
 
   const handleLoginBtn = () => {
     console.log(username);
@@ -63,7 +67,7 @@ const SignUp = () => {
         <p className="mt-4 text-sm text-gray-500 font-lato">
           Already have an account?
           <span className="text-primaryColor font-semibold cursor-pointer ml-1">
-            <Link href="/login">Login</Link>
+            <Link href="/account/login">Login</Link>
           </span>
         </p>
       </div>

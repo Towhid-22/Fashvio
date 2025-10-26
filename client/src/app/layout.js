@@ -1,4 +1,4 @@
-import {Quicksand, Lato, Oswald, Playfair_Display } from "next/font/google";
+import { Quicksand, Lato, Oswald, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";

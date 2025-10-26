@@ -18,7 +18,7 @@ const Banner = () => {
       plugins={[plugin.current]}
       onMouseEnter={plugin.current.stop}
       onMouseLeave={plugin.current.reset}
-      className="container flex items-center justify-center"
+      className="container flex items-center justify-center shrink"
     >
       <CarouselContent>
         {banners.map((item, index) => (

@@ -14,10 +14,10 @@ const NavbarCenter = () => {
           <div className="flex itecms-center gap-[30px]">
             {/* Logo */}
             <Link href="/">
-              <img src="./logo.png" alt="logo" className="cursor-pointer" />
+              <img src="/logo.png" alt="logo" className="cursor-pointer" />
             </Link>
             {/* Search Bar */}
-            <div className="w-[596px] border-2 border-primaryColor/40 rounded-[4px] relative">
+            <div className="w-[596px] border-2 border-primaryColor/40 rounded-[5px] relative">
               <input
                 className="placeholder:text-sm placeholder:italic p-3 w-full outline-none text-textprimaryColor"
                 type="text"
