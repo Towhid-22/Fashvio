@@ -3,7 +3,7 @@ import React from "react";
 
 const NewsLetter = () => {
   return (
-    <div className="container">
+    <div className="mx-auto max-w-[1580px] px-4">
       <div className="flex items-center justify-center gap-2 bg-primaryColor/20 rounded py-10 mt-20">
         <input
           type="email"

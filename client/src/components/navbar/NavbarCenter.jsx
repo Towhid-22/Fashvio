@@ -9,7 +9,7 @@ import Link from "next/link";
 const NavbarCenter = () => {
   return (
     <div className="border-b border-borderColor py-6">
-      <div className="container ">
+      <div className="mx-auto max-w-[1580px] px-4 ">
         <div className="flex items-center justify-between">
           <div className="flex itecms-center gap-[30px]">
             {/* Logo */}
@@ -36,13 +36,15 @@ const NavbarCenter = () => {
             {/* Icons */}
             <ul className="flex items-center gap-3">
               <li className="font-lato leading-4 text-secondaryColor flex items-center gap-1 cursor-pointer">
-                <div className="relative">
-                  <BiGitCompare className="text-2xl text-black" />
-                  <sup className="w-5 h-5 bg-primaryColor rounded-full flex items-center justify-center text-white text-[12px] absolute top-[-10px] right-[-10px]">
-                    0
-                  </sup>
-                </div>
-                Compare
+                <Link href="/compare" className="flex items-center justify-center">
+                  <div className="relative">
+                    <BiGitCompare className="text-2xl text-black" />
+                    <sup className="w-5 h-5 bg-primaryColor rounded-full flex items-center justify-center text-white text-[12px] absolute top-[-10px] right-[-10px]">
+                      0
+                    </sup>
+                  </div>
+                  Compare
+                </Link>
               </li>
               <li className="font-lato leading-4 text-secondaryColor flex items-center gap-1 cursor-pointer">
                 <div className="relative">

@@ -40,7 +40,7 @@ const NavbarBottom = () => {
     //   </div>
     // </div>
     <div className="shadow py-4">
-      <div className="container">
+      <div className="mx-auto max-w-[1580px] px-4">
         <ul className="flex items-center gap-5">
           {categories.map((item) => (
             <li

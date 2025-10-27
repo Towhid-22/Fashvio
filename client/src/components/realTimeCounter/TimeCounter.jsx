@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 const TimeCounter = () => {
-  const targetDate = new Date("2025-12-31T23:59:59"); // 🗓️ Set your target date here
+  const targetDate = new Date("2025-12-31T23:59:59");
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -22,9 +22,7 @@ const TimeCounter = () => {
       }
 
       const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
+      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
@@ -34,10 +32,8 @@ const TimeCounter = () => {
     return () => clearInterval(interval);
   }, []);
 
-    const now = new Date();
-    // console.log(now)
   return (
-    <div className="container">
+    <div className="mx-auto max-w-[1580px] px-4">
       <div className="flex flex-col  py-8 font-lato">
         <h1 className="text-3xl font-semibold mb-4">
           Countdown to New Year 🎉

@@ -3,12 +3,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@layer utilities {
-  .container {
-    @apply w-[1580px] mx-auto px-4;
-  }
-}
-
 @theme {
   /* colors */
   --color-primaryColor: #3bb77e;
@@ -26,12 +20,12 @@
   --font-playfair: "var(--font-playfair)";
 
   /* breakpoints  */
-  --breakpoint-xs: 320px;
+  /* --breakpoint-xs: 320px;
   --breakpoint-sm: 576px;
   --breakpoint-md: 640px;
   --breakpoint-lg: 768px;
   --breakpoint-xl: 1024px;
-  --breakpoint-xxl: 1280px;
+  --breakpoint-xxl: 1280px; */
 }
 
 @theme inline {

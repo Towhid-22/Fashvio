@@ -5,9 +5,8 @@ import { navbar_top } from "../../../public";
 const NavbarTop = () => {
   return (
     <>
-      {/* 👇 Hidden on mobile (<640px), visible on sm and above */}
       <div className="hidden lg:flex border-b border-borderColor py-3.5">
-        <div className="container flex items-center justify-between">
+        <div className="mx-auto max-w-[1580px] px-4 flex items-center justify-between">
           <ul className="flex gap-3">
             {navbar_top.map((item) => (
               <li
