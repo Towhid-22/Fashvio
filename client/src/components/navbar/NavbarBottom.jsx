@@ -50,7 +50,7 @@ const NavbarBottom = () => {
               <p className="hover:text-primaryColor transition">{item.name}</p>
 
               {item.subcategory && (
-                <ul className="absolute left-0 top-8 mt-2 w-[160px] bg-white border border-gray-200 rounded-[4px] shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
+                <ul className="absolute left-0 top-8 mt-2 w-40 bg-white border border-gray-200 rounded-[5px] shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
                   {item.subcategory.map((sub) => (
                     <li
                       key={sub.id}

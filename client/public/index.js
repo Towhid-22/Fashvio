@@ -461,7 +461,7 @@ const products = [
   },
   {
     id: 10,
-    title: "APOLLO 650VA 300W UPS",
+    title: "APOLLO 650VA 300W UPS APOLLO 650VA 300W UPS",
     img: "./products/ups.png",
     price: 3450,
     rating: 4.5,
