@@ -99,7 +99,7 @@ const Footer = () => {
             <li className="text-textPrimary font-bold text-2xl leading-7 font-quicksand mb-5">
               Install App
             </li>
-            <li className="flex gap-1 my-20">
+            <li className="flex gap-1 my-10">
               <Link href="#">
                 <img src="/footer/appstore.png" alt="appstore" />
               </Link>
@@ -107,13 +107,16 @@ const Footer = () => {
                 <img src="/footer/playstore.png" alt="playstore" />
               </Link>
             </li>
-            <li className="mb-3.5 text-textPrimary font-lato text-[15px] leading-6">
+            <li className="mb-3.5 flex flex-col gap-10 text-textPrimary font-lato text-[15px] leading-6">
               <Link href="#">Secured Payment Gateways</Link>
+              <Link href="#">
+                <img src="/footer/payment.png" alt="payment" />
+              </Link>
             </li>
           </ul>
         </div>
       </div>
-      <div className="border-t border-primaryColor/20">
+      <div className="border-t border-primaryColor/20 mt-10">
         <div className="sm:flex sm:flex-wrap items-center justify-between mx-auto max-w-[1580px] px-4 py-6">
           <p className="font-lato leading-7 text-base text-secondaryColor">
             © 2022, Nest – WordPress Ecommerce Template <br /> All rights

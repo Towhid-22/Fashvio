@@ -21,8 +21,8 @@ const SignUp = () => {
   return (
     <div className="flex items-center justify-center mt-20">
       <div className="border p-5 rounded-[5px] shadow">
-        <h1 className="font-lato text-2xl font-semibold">Login Your Account</h1>
-        <div className="mt-6 flex flex-col gap-1 w-[350px]">
+        <h1 className="font-lato text-2xl font-semibold">Create an Account</h1>
+        <div className="mt-6 flex flex-col gap-1 w-[280px] sm:w-[350px] lg:w-[500px]">
           <label htmlFor="username" className="font-quicksand font-bold">
             Username
           </label>
@@ -31,10 +31,10 @@ const SignUp = () => {
             type="username"
             id="username"
             placeholder="Username"
-            className="outline-none border border-gray-200 rounded-[5px] p-2"
+            className="outline-none border w-full border-gray-200 rounded-[5px] p-2"
           />
         </div>
-        <div className="mt-4 flex flex-col gap-1 w-[350px]">
+        <div className="mt-4 flex flex-col gap-1">
           <label htmlFor="email" className="font-quicksand font-bold">
             Email
           </label>
@@ -46,7 +46,7 @@ const SignUp = () => {
             className="outline-none border border-gray-200 rounded-[5px] p-2"
           />
         </div>
-        <div className="mt-4 flex flex-col gap-1 w-[350px]">
+        <div className="mt-4 flex flex-col gap-1">
           <label htmlFor="password" className="font-quicksand font-bold">
             Password
           </label>

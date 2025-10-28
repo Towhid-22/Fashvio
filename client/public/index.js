@@ -185,6 +185,36 @@ const categories = [
     name: "Storage",
     image: "./category/storage.png",
   },
+  {
+    id: 11,
+    isFeatured: true,
+    name: "Equipments",
+    image: "./category/officeEquipment.png",
+  },
+  {
+    id: 12,
+    isFeatured: true,
+    name: "Power",
+    image: "./category/power.png",
+  },
+  {
+    id: 13,
+    isFeatured: true,
+    name: "Network",
+    image: "./category/network.png",
+  },
+  {
+    id: 14,
+    isFeatured: true,
+    name: "Appliance",
+    image: "./category/homeAppliance.png",
+  },
+  {
+    id: 15,
+    isFeatured: true,
+    name: "Gaming",
+    image: "./category/gaming.png",
+  },
 ];
 
 const banners = [
@@ -333,6 +363,110 @@ const popular = [
     name: "Monitor",
   },
 ];
+
+const cart_items = [
+  {
+    id: 1,
+    img: "./category/desktop.png",
+    title: "AMD Ryzen 5 3400G Processor Desktop PC",
+    quantity: 1,
+    price: 15000,
+  },
+  {
+    id: 2,
+    img: "./category/tv.png",
+    title: "4K UHD LED Smart TV with Chromecast Built-in",
+    quantity: 1,
+    price: 10000,
+  },
+  {
+    id: 3,
+    img: "./category/camera.png",
+    title: "A18 1080P Wi-Fi Body Camera with Night Vision",
+    quantity: 1,
+    price: 2400,
+  },
+  {
+    id: 4,
+    img: "./category/laptop.png",
+    title: "HP 14s-dq3139TU Intel Celeron N4500 14 inch FHD Laptop",
+    quantity: 1,
+    price: 50000,
+  },
+];
+
+const products = [
+  {
+    id: 1,
+    title: "AMD Ryzen 5 3400G Processor Desktop PC",
+    img: "./products/desktop.png",
+    price: 24900,
+    rating: 4.5,
+  },
+  {
+    id: 2,
+    title: "MSI MAG 342CQR E2 34 inch UWQHD 180Hz VA Curved Gaming Monitor",
+    img: "./products/monitor.png",
+    price: 61000,
+    rating: 5.0,
+  },
+  {
+    id: 3,
+    title: "Intel 10th Gen Core i3 10100F Processor",
+    img: "./products/processor.png",
+    price: 6500,
+    rating: 4.0,
+  },
+  {
+    id: 4,
+    title: "HP 14s-dq3139TU Intel Celeron N4500 14 inch FHD Laptop",
+    img: "./products/laptop.png",
+    price: 50000,
+    rating: 4.5,
+  },
+  {
+    id: 5,
+    title: "A18 1080P Wi-Fi Body Camera with Night Vision",
+    img: "./products/camera.png",
+    price: 2400,
+    rating: 4.5,
+  },
+  {
+    id: 6,
+    title: "Haier H32K85FX 32 inch DLED HD Google TV",
+    img: "./products/tv.png",
+    price: 10000,
+    rating: 4.5,
+  },
+  {
+    id: 7,
+    title: "MacBook Air M4 Chip 13-inch (10‑core CPU, 8 core GPU)",
+    img: "./products/mackbook.png",
+    price: 125000,
+    rating: 4.5,
+  },
+  {
+    id: 8,
+    title: "MCHOSE Ace 60 Wired RGB Gaming Keyboard",
+    img: "./products/keyboard.png",
+    price: 125000,
+    rating: 4.5,
+  },
+  {
+    id: 9,
+    title: "TECLAST T50 Plus 6GB 256GB Storage 11 inch Android Tablet",
+    img: "./products/tablet.png",
+    price: 19800,
+    rating: 4.5,
+  },
+  {
+    id: 10,
+    title: "APOLLO 650VA 300W UPS",
+    img: "./products/ups.png",
+    price: 3450,
+    rating: 4.5,
+  },
+];
 export {
   navbar_top,
   nav_items,
@@ -342,4 +476,6 @@ export {
   account,
   corporate,
   popular,
+  cart_items,
+  products,
 };

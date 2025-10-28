@@ -17,6 +17,7 @@ const NavbarCenter = () => {
               <img src="/logo.png" alt="logo" className="cursor-pointer" />
             </Link>
             {/* Search Bar */}
+          </div>
             <div className="w-[596px] border-2 border-primaryColor/40 rounded-[5px] relative">
               <input
                 className="placeholder:text-sm placeholder:italic p-3 w-full outline-none text-textprimaryColor"
@@ -27,16 +28,18 @@ const NavbarCenter = () => {
                 Search
               </button>
             </div>
-          </div>
           {/* Right Section */}
           <div className="flex items-center">
-            <button className="text-primaryColor font-quicksand font-medium leading-6.5 text-sm flex items-center gap-2 shadow py-2 px-4 rounded-[5px] border-2 border-secondaryColorColor/20 cursor-pointer mr-[30px]">
+            {/* <button className="text-primaryColor font-quicksand font-medium leading-6.5 text-sm flex items-center gap-2 shadow py-2 px-4 rounded-[5px] border-2 border-secondaryColorColor/20 cursor-pointer mr-[30px]">
               Became Vendor <LiaLongArrowAltRightSolid />
-            </button>
+            </button> */}
             {/* Icons */}
             <ul className="flex items-center gap-3">
               <li className="font-lato leading-4 text-secondaryColor flex items-center gap-1 cursor-pointer">
-                <Link href="/compare" className="flex items-center justify-center">
+                <Link
+                  href="/compare"
+                  className="flex items-center justify-center"
+                >
                   <div className="relative">
                     <BiGitCompare className="text-2xl text-black" />
                     <sup className="w-5 h-5 bg-primaryColor rounded-full flex items-center justify-center text-white text-[12px] absolute top-[-10px] right-[-10px]">
@@ -56,13 +59,15 @@ const NavbarCenter = () => {
                 Wishlist
               </li>
               <li className="font-lato leading-4 text-secondaryColor flex items-center gap-1 cursor-pointer">
-                <div className="relative">
-                  <BsCart3 className="text-2xl text-black" />
-                  <sup className="w-5 h-5 bg-primaryColor rounded-full flex items-center justify-center text-white text-[12px] absolute top-[-10px] right-[-10px]">
-                    0
-                  </sup>
-                </div>
-                Cart
+                <Link href="/cart" className="flex items-center gap-1">
+                  <div className="relative">
+                    <BsCart3 className="text-2xl text-black" />
+                    <sup className="w-5 h-5 bg-primaryColor rounded-full flex items-center justify-center text-white text-[12px] absolute top-[-10px] right-[-10px]">
+                      0
+                    </sup>
+                  </div>
+                  Cart
+                </Link>
               </li>
               <li className="font-lato leading-4 text-secondaryColor  cursor-pointer">
                 <Link href="/account/login" className="flex items-center gap-1">
