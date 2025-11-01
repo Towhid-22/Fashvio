@@ -402,6 +402,9 @@ const products = [
     img: "./products/desktop.png",
     price: 24900,
     rating: 4.5,
+    category: "Desktop",
+    isFeatured: true,
+    newArrival: false,
   },
   {
     id: 2,
@@ -409,6 +412,9 @@ const products = [
     img: "./products/monitor.png",
     price: 61000,
     rating: 5.0,
+    category: "Monitor",
+    isFeatured: true,
+    newArrival: true,
   },
   {
     id: 3,
@@ -416,6 +422,9 @@ const products = [
     img: "./products/processor.png",
     price: 6500,
     rating: 4.0,
+    category: "Desktop",
+    isFeatured: true,
+    newArrival: false,
   },
   {
     id: 4,
@@ -423,6 +432,9 @@ const products = [
     img: "./products/laptop.png",
     price: 50000,
     rating: 4.5,
+    category: "Laptop",
+    isFeatured: true,
+    newArrival: true,
   },
   {
     id: 5,
@@ -430,6 +442,9 @@ const products = [
     img: "./products/camera.png",
     price: 2400,
     rating: 4.5,
+    category: "Camera",
+    isFeatured: true,
+    newArrival: false,
   },
   {
     id: 6,
@@ -437,6 +452,9 @@ const products = [
     img: "./products/tv.png",
     price: 10000,
     rating: 4.5,
+    category: "TV",
+    isFeatured: true,
+    newArrival: false,
   },
   {
     id: 7,
@@ -444,6 +462,9 @@ const products = [
     img: "./products/mackbook.png",
     price: 125000,
     rating: 4.5,
+    category: "Macbook",
+    isFeatured: true,
+    newArrival: true,
   },
   {
     id: 8,
@@ -451,6 +472,9 @@ const products = [
     img: "./products/keyboard.png",
     price: 125000,
     rating: 4.5,
+    category: "Accessories",
+    isFeatured: false,
+    newArrival: false,
   },
   {
     id: 9,
@@ -458,6 +482,9 @@ const products = [
     img: "./products/tablet.png",
     price: 19800,
     rating: 4.5,
+    category: "Tablet",
+    isFeatured: false,
+    newArrival: false,
   },
   {
     id: 10,
@@ -465,6 +492,9 @@ const products = [
     img: "./products/ups.png",
     price: 3450,
     rating: 4.5,
+    category: "Power",
+    isFeatured: false,
+    newArrival: false,
   },
 ];
 export {

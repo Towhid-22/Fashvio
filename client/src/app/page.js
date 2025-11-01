@@ -1,5 +1,8 @@
 import Banner from "@/components/banner/Banner";
 import Category from "@/components/category/Category";
+import FeatureProduct from "@/components/featuresProducts/FeatureProduct";
+import FlashSale from "@/components/featuresProducts/FlashSale";
+import NewArrival from "@/components/newArrival/NewArrival";
 import NewsLetter from "@/components/newsletter/NewsLetter";
 import TimeCounter from "@/components/realTimeCounter/TimeCounter";
 import Service from "@/components/services/Service";
@@ -12,6 +15,9 @@ const page = () => {
       <Service />
       <TimeCounter />
       <Category />
+      <FeatureProduct />
+      <NewArrival />
+      <FlashSale />
       <NewsLetter />
     </div>
   );
