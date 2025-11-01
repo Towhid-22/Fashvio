@@ -31,9 +31,12 @@ const NavbarCenter = () => {
           </div>
           {/* Right Section */}
           <div className="flex items-center">
-            {/* <button className="text-primaryColor font-quicksand font-medium leading-6.5 text-sm flex items-center gap-2 shadow py-2 px-4 rounded-[5px] border-2 border-secondaryColorColor/20 cursor-pointer mr-[30px]">
-              Became Vendor <LiaLongArrowAltRightSolid />
-            </button> */}
+            <Link href="/dashboard">
+              <button className="text-primaryColor font-quicksand font-medium leading-6.5 text-sm flex items-center gap-2 shadow py-2 px-4 rounded-[5px] border-2 border-secondaryColorColor/20 cursor-pointer mr-[30px]">
+                {/* Became Vendor <LiaLongArrowAltRightSolid /> */}
+                Dashboard
+              </button>
+            </Link>
             {/* Icons */}
             <ul className="flex items-center gap-3">
               <li className="font-lato leading-4 text-secondaryColor flex items-center gap-1 cursor-pointer">
