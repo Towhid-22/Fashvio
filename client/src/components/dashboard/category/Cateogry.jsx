@@ -14,7 +14,8 @@ const Category = () => {
   return (
     <>
       <div className="max-w-[1580px] mx-auto px-4">
-        <div className="flex py-3 items-center gap-5 justify-between">
+        {/*  ====================== Search and add category button for desktop ======================= */}
+        <div className="hidden sm:flex py-3 items-center gap-5 justify-between">
           <div>
             <label
               htmlFor="sort"
@@ -31,16 +32,14 @@ const Category = () => {
               <option>50</option>
             </select>
           </div>
-
           <div className="relative">
             <input
               type="text"
               placeholder="Search here"
-              className="w-[200px] lg:w-[500px] border p-2 rounded"
+              className="w-[200px] lg:w-[500px] outline-none border p-2 rounded"
             />
             <IoIosSearch className="text-2xl absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer" />
           </div>
-
           <button
             onClick={() => setCreateCategoryModal(true)}
             className="flex items-center gap-2 border py-2 px-3 rounded cursor-pointer text-primaryColor border-primaryColor font-semibold font-quicksand"
@@ -48,8 +47,44 @@ const Category = () => {
             <FaPlus /> Add New
           </button>
         </div>
+        {/*  ====================== Search and add category button for mobile ======================= */}
+        <div>
+          <div className="flex py-1 sm:hidden items-center gap-2 justify-between mt-2">
+            <div>
+              <label
+                htmlFor="sort"
+                className="text-textPrimary/60 font-lato pr-2 text-sm"
+              >
+                Showing:
+              </label>
+              <select
+                id="sort"
+                className="appearance-none border-2 border-gray-200 rounded w-15 py-1 px-4 text-gray-700 leading-tight"
+              >
+                <option>10</option>
+                <option>30</option>
+                <option>50</option>
+              </select>
+            </div>
+            <button
+              onClick={() => setCreateCategoryModal(true)}
+              className="flex items-center gap-2 border py-1 px-2 rounded cursor-pointer text-primaryColor border-primaryColor font-semibold font-quicksand"
+            >
+              <FaPlus /> Add New
+            </button>
+          </div>
+          <div className="relative sm:hidden w-full">
+            <input
+              type="text"
+              placeholder="Search here"
+              className="w-full my-3 outline-none border p-2 rounded"
+            />
+            <IoIosSearch className="text-2xl absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer" />
+          </div>
+        </div>
 
-        <table className="w-full">
+        {/*  ====================== Category table for tablet and desktop ======================= */}
+        <table className="w-full hidden md:block">
           <thead className="border">
             <tr>
               <th className="w-[400px] text-left p-3">Category</th>
@@ -83,6 +118,7 @@ const Category = () => {
         </table>
       </div>
 
+      {/*  ====================== Edit Category Modal ======================= */}
       {categoryEditModal && (
         <div className="fixed p-5 inset-0 sm:p-0 md:inset-0 sm:flex sm:items-center sm:justify-center bg-black/50 z-50">
           <div className="bg-white border rounded w-[280px] sm:w-[350px] md:w-[450px] lg:w-[500px] shadow p-5 relative">
@@ -128,8 +164,10 @@ const Category = () => {
           </div>
         </div>
       )}
+
+      {/*  ====================== Create Category Modal ======================= */}
       {createCategoryModal && (
-        <div className="fixed p-5 inset-0 sm:p-0 md:inset-0 md:flex md:items-center md:justify-center bg-black/50 z-50">
+        <div className="fixed p-5 inset-0 sm:p-0 md:inset-0 sm:flex sm:items-center sm:justify-center bg-black/50 z-50">
           <div className="bg-white border rounded w-[280px] sm:w-[350px] md:w-[450px] lg:w-[500px] shadow p-5 relative">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-2xl font-semibold">Create Category</h3>
@@ -168,12 +206,12 @@ const Category = () => {
             </div>
 
             <button className="bg-primaryColor font-quicksand font-semibold text-white p-3 rounded mt-4 cursor-pointer w-full">
-              Update Category
+              Create Category
             </button>
           </div>
         </div>
       )}
-
+      {/*  ====================== Category items for mobile ======================= */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:hidden gap-4 place-content-center px-4 sm:px-7 py-2 justify-center">
         <div className="flex flex-col gap-2 w-[280px] border rounded p-5 shadow">
           <div className="flex items-center gap-2">
