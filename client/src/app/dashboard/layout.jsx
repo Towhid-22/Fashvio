@@ -8,7 +8,7 @@ export const metadata = {
 
 const layout = ({ children }) => {
   return (
-    <div className="flex">
+    <div className="">
       <Sidebar />
       {children}
     </div>

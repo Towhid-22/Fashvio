@@ -3,11 +3,11 @@ import React from "react";
 
 const Sidebar = () => {
   return (
-    <div className="flex">
-      <div className="w-[250px] h-screen bg-primaryColor/30 py-5">
-        <ul className="font-lato flex flex-col gap-3 text-xl font-semibold text-gray-600">
+    <div className="border-b shadow px-4">
+      <div className="max-w-[1580px] mx-auto px-4 py-3">
+        <ul className="font-lato flex gap-3 text-xl font-semibold text-gray-600">
           <Link href="/dashboard">
-            <li className="hover:bg-white px-4 py-2 transition-all duration-400 cursor-pointer">
+            <li className="hover:bg-white py-2 transition-all duration-400 cursor-pointer">
               Dashboard
             </li>
           </Link>
