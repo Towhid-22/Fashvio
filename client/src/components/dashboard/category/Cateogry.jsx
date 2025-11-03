@@ -36,7 +36,7 @@ const Category = () => {
             <input
               type="text"
               placeholder="Search here"
-              className="w-[200px] lg:w-[500px] outline-none border p-2 rounded"
+              className="w-[200px] md:w-[350px] lg:w-[500px] outline-none border p-2 rounded"
             />
             <IoIosSearch className="text-2xl absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer" />
           </div>
@@ -120,8 +120,14 @@ const Category = () => {
 
       {/*  ====================== Edit Category Modal ======================= */}
       {categoryEditModal && (
-        <div className="fixed p-5 inset-0 sm:p-0 md:inset-0 sm:flex sm:items-center sm:justify-center bg-black/50 z-50">
-          <div className="bg-white border rounded w-[280px] sm:w-[350px] md:w-[450px] lg:w-[500px] shadow p-5 relative">
+        <div
+          onClick={() => setCategoryEditModal(false)}
+          className="fixed p-5 inset-0 sm:p-0 md:inset-0 flex items-center justify-center bg-black/50 z-50"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white border rounded w-[280px] sm:w-[350px] md:w-[450px] lg:w-[500px] shadow p-5 relative"
+          >
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-2xl font-semibold">Edit Category</h3>
               <button
@@ -167,8 +173,14 @@ const Category = () => {
 
       {/*  ====================== Create Category Modal ======================= */}
       {createCategoryModal && (
-        <div className="fixed p-5 inset-0 sm:p-0 md:inset-0 sm:flex sm:items-center sm:justify-center bg-black/50 z-50">
-          <div className="bg-white border rounded w-[280px] sm:w-[350px] md:w-[450px] lg:w-[500px] shadow p-5 relative">
+        <div
+          onClick={() => setCreateCategoryModal(false)}
+          className="fixed p-5 inset-0 sm:p-0 md:inset-0 flex items-center justify-center bg-black/50 z-50"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white border rounded w-[280px] sm:w-[350px] md:w-[450px] lg:w-[500px] shadow p-5 relative"
+          >
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-2xl font-semibold">Create Category</h3>
               <button
