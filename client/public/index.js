@@ -399,7 +399,7 @@ const products = [
   {
     id: 1,
     title: "AMD Ryzen 5 3400G Processor Desktop PC",
-    img: "./products/desktop.png",
+    img: "/products/desktop.png",
     price: 24900,
     rating: 4.5,
     category: "Desktop",
@@ -409,7 +409,7 @@ const products = [
   {
     id: 2,
     title: "MSI MAG 342CQR E2 34 inch UWQHD 180Hz VA Curved Gaming Monitor",
-    img: "./products/monitor.png",
+    img: "/products/monitor.png",
     price: 61000,
     rating: 5.0,
     category: "Monitor",
@@ -419,7 +419,7 @@ const products = [
   {
     id: 3,
     title: "Intel 10th Gen Core i3 10100F Processor",
-    img: "./products/processor.png",
+    img: "/products/processor.png",
     price: 6500,
     rating: 4.0,
     category: "Desktop",
@@ -429,7 +429,7 @@ const products = [
   {
     id: 4,
     title: "HP 14s-dq3139TU Intel Celeron N4500 14 inch FHD Laptop",
-    img: "./products/laptop.png",
+    img: "/products/laptop.png",
     price: 50000,
     rating: 4.5,
     category: "Laptop",
@@ -439,7 +439,7 @@ const products = [
   {
     id: 5,
     title: "A18 1080P Wi-Fi Body Camera with Night Vision",
-    img: "./products/camera.png",
+    img: "/products/camera.png",
     price: 2400,
     rating: 4.5,
     category: "Camera",
@@ -449,7 +449,7 @@ const products = [
   {
     id: 6,
     title: "Haier H32K85FX 32 inch DLED HD Google TV",
-    img: "./products/tv.png",
+    img: "/products/tv.png",
     price: 10000,
     rating: 4.5,
     category: "TV",
@@ -459,7 +459,7 @@ const products = [
   {
     id: 7,
     title: "MacBook Air M4 Chip 13-inch (10‑core CPU, 8 core GPU)",
-    img: "./products/mackbook.png",
+    img: "/products/mackbook.png",
     price: 125000,
     rating: 4.5,
     category: "Macbook",
@@ -469,7 +469,7 @@ const products = [
   {
     id: 8,
     title: "MCHOSE Ace 60 Wired RGB Gaming Keyboard",
-    img: "./products/keyboard.png",
+    img: "/products/keyboard.png",
     price: 125000,
     rating: 4.5,
     category: "Accessories",
@@ -479,7 +479,7 @@ const products = [
   {
     id: 9,
     title: "TECLAST T50 Plus 6GB 256GB Storage 11 inch Android Tablet",
-    img: "./products/tablet.png",
+    img: "/products/tablet.png",
     price: 19800,
     rating: 4.5,
     category: "Tablet",
@@ -489,7 +489,7 @@ const products = [
   {
     id: 10,
     title: "APOLLO 650VA 300W UPS APOLLO 650VA 300W UPS",
-    img: "./products/ups.png",
+    img: "/products/ups.png",
     price: 3450,
     rating: 4.5,
     category: "Power",

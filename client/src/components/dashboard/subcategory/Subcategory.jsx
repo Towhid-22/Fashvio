@@ -183,7 +183,7 @@ const Subcategory = () => {
             className="bg-white border rounded w-[280px] sm:w-[350px] md:w-[450px] lg:w-[500px] shadow p-5 relative"
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-2xl font-semibold">Create Sub-Category</h3>
+              <h3 className="text-2xl font-semibold">Add Sub-Category</h3>
               <button
                 className="cursor-pointer border p-1 rounded"
                 onClick={() => setCreateSubCategoryModal(false)}
