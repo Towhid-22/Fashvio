@@ -6,6 +6,7 @@ import { FaRegHeart } from "react-icons/fa6";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { MdRemoveRedEye } from "react-icons/md";
 import { products } from "../../../public";
+import Link from "next/link";
 
 const FeatureProduct = () => {
   const [menu, setMenu] = useState("All");
@@ -27,23 +28,30 @@ const FeatureProduct = () => {
         });
   return (
     <div className="max-w-[1580px] mx-auto px-4 mt-20">
-      <div className="flex items-baseline gap-10 mb-5">
-        <h1 className="font-lato text-3xl font-semibold text-textPrimary">
-          Features Products
-        </h1>
-        <ul className="flex items-center gap-3">
-          {featureCategory.map((category) => (
-            <li
-              onClick={() => setMenu(category)}
-              key={category}
-              className={`font-quicksand text-xl font-semibold cursor-pointer hover:text-primaryColor ${
-                menu === category ? "text-primaryColor" : "text-textPrimary"
-              }`}
-            >
-              {category}
-            </li>
-          ))}
-        </ul>
+      <div className="flex justify-between gap-10 mb-5">
+        <div className="flex items-baseline gap-10 mb-5">
+          <h1 className="font-lato  sm:text-3xl font-semibold text-textPrimary">
+            Features Products
+          </h1>
+          <ul className="hidden xl:flex items-center gap-3">
+            {featureCategory.map((category) => (
+              <li
+                onClick={() => setMenu(category)}
+                key={category}
+                className={`font-quicksand text-xl font-semibold cursor-pointer hover:text-primaryColor ${
+                  menu === category ? "text-primaryColor" : "text-textPrimary"
+                }`}
+              >
+                {category}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <Link href="/shop">
+          <button className="text-xl bg-primaryColor px-4 py-1 rounded text-white font-lato">
+            All Products
+          </button>
+        </Link>
       </div>
       <div>
         <div className="flex flex-wrap gap-4 justify-center xl:justify-start cursor-pointer">

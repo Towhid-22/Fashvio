@@ -13,7 +13,7 @@ const page = () => {
     <div>
       <Banner />
       <Service />
-      <TimeCounter />
+      {/* <TimeCounter /> */}
       <Category />
       <FeatureProduct />
       <NewArrival />

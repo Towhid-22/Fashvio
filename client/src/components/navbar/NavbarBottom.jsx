@@ -4,6 +4,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { nav_items } from "../../../public";
 import { ImHeadphones } from "react-icons/im";
 import { categories } from "../../../public";
+import Link from "next/link";
 
 const NavbarBottom = () => {
   return (
@@ -39,7 +40,7 @@ const NavbarBottom = () => {
     //     </div>
     //   </div>
     // </div>
-    <div className="shadow py-4">
+    <div className="shadow py-4 hidden xl:block">
       <div className="mx-auto max-w-[1580px] px-4">
         <ul className="flex items-center gap-5">
           {categories.map((item) => (
@@ -47,7 +48,12 @@ const NavbarBottom = () => {
               key={item.id}
               className={`relative group font-quicksand font-semibold text-gray-700 cursor-pointer`}
             >
-              <p className="hover:text-primaryColor transition">{item.name}</p>
+              <Link href="/shop">
+                {" "}
+                <p className="hover:text-primaryColor transition">
+                  {item.name}
+                </p>
+              </Link>
 
               {item.subcategory && (
                 <ul className="absolute left-0 top-8 mt-2 w-40 bg-white border border-gray-200 rounded-[5px] shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
