@@ -4,7 +4,6 @@ import FeatureProduct from "@/components/featuresProducts/FeatureProduct";
 import FlashSale from "@/components/featuresProducts/FlashSale";
 import NewArrival from "@/components/newArrival/NewArrival";
 import NewsLetter from "@/components/newsletter/NewsLetter";
-import TimeCounter from "@/components/realTimeCounter/TimeCounter";
 import Service from "@/components/services/Service";
 import React from "react";
 
@@ -13,7 +12,6 @@ const page = () => {
     <div>
       <Banner />
       <Service />
-      {/* <TimeCounter /> */}
       <Category />
       <FeatureProduct />
       <NewArrival />

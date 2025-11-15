@@ -6,7 +6,7 @@ import NavbarBottom from "./NavbarBottom";
 const Navbar = () => {
   return (
     <div className="bg-white">
-      <NavbarTop />
+      {/* <NavbarTop /> */}
       <NavbarCenter />
       <NavbarBottom />
     </div>
