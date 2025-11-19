@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/select";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import Pagination from "@/components/common/Pagination";
+import Color from "@/components/shop/Color";
+import Size from "@/components/shop/Size";
 const page = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   return (
@@ -52,6 +54,8 @@ const page = () => {
           <div className="hidden lg:block w-full lg:w-[20%]">
             <PriceRange />
             <ShopCategory />
+            <Color />
+            <Size />
           </div>
           <div className="w-full lg:w-[85%]">
             <Shop />
@@ -72,6 +76,8 @@ const page = () => {
             >
               <PriceRange />
               <ShopCategory />
+              <Color />
+              <Size />
             </div>
           </div>
         )}

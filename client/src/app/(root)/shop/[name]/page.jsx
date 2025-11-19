@@ -6,7 +6,16 @@ import { GrCart } from "react-icons/gr";
 import { LuHeart } from "react-icons/lu";
 
 const ProductPage = () => {
-  const colors = ["black", "blue", "red", "green", "gray", "purple", "#253d4e"];
+  const colors = [
+    "black",
+    "blue",
+    "red",
+    "green",
+    "gray",
+    "purple",
+    "white",
+    "#253d4e",
+  ];
   const sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
   const [color, setColor] = useState("black");
   const [size, setSize] = useState("XS");

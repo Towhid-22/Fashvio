@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BiGitCompare } from "react-icons/bi";
 import { RiHeart3Line } from "react-icons/ri";
 import { BsCart3 } from "react-icons/bs";
@@ -14,6 +14,24 @@ import { IoSearch } from "react-icons/io5";
 const NavbarCenter = () => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [search, setSearch] = useState(false);
+  const sidebarRef = useRef(null);
+  const searchRef = useRef(null);
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      const targetedEvent = e.target;
+      const sidebar = sidebarRef.current?.contains(targetedEvent);
+      const search = searchRef.current?.contains(targetedEvent);
+      if (!sidebar && !search) {
+        setSideBarOpen(false);
+        setSearch(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [sideBarOpen, search]);
+
   return (
     <>
       {/* ======================= for xl device ======================= */}
@@ -134,59 +152,67 @@ const NavbarCenter = () => {
         </div>
       </div>
 
-      {search && (
-        <div className="w-full xl:hidden border-2 border-primaryColor/40 rounded-[1px] relative">
+      <div className="px-4">
+        <div
+          ref={searchRef}
+          className={`w-full xl:hidden border-2 border-primaryColor/40 rounded  relative px-2 transition-all duration-300 ease-in-out ${
+            search ? "max-h-[50px] opacity-100 mt-2" : "max-h-0 opacity-0 mt-0"
+          }`}
+        >
           <input
-            className="placeholder:text-sm placeholder:italic p-3 w-full outline-none text-textprimaryColor"
+            className="placeholder:text-sm placeholder:italic p-1 w-full outline-none text-textprimaryColor"
             type="text"
             placeholder="Search for products..."
           />
-          <button className="absolute right-1 top-1/2 -translate-y-1/2 cursor-pointer">
+          <button className="absolute right-2  top-1/2 -translate-y-1/2 cursor-pointer">
             <IoSearch className="text-xl" />
           </button>
         </div>
-      )}
+      </div>
 
       {/* ======================= sidebar modal ======================= */}
-      {sideBarOpen && (
+      <div
+        ref={sidebarRef}
+        onClick={() => setSideBarOpen(false)}
+        className={`fixed top-16 left-0 h-screen w-full bg-black/20 z-50 transition-opacity duration-300 ease-in-out 
+    ${sideBarOpen ? "opacity-100 visible" : "opacity-0 invisible"}
+  `}
+      >
         <div
-          onClick={() => setSideBarOpen(false)}
-          className="bg-black/20 fixed top-16 left-0 h-screen w-full z-50 "
+          className={`
+      bg-white max-w-[280px] h-screen -mt-5 px-4 transition-transform duration-300 ease-in-out
+      ${sideBarOpen ? "translate-x-0" : "-translate-x-full"}
+    `}
         >
-          <div className="bg-white max-w-[280px] h-screen  px-4">
-            <ul
-              onClick={(e) => e.stopPropagation()}
-              className="flex flex-col w-full gap-5 "
-            >
-              {categories.map((item) => (
-                <li
-                  key={item.id}
-                  className={`relative group font-quicksand font-semibold text-gray-700 cursor-pointer`}
-                >
-                  <Link href="/shop">
-                    <p className="hover:text-primaryColor transition">
-                      {item.name}
-                    </p>
-                  </Link>
+          <ul className="flex flex-col w-full gap-5 mt-4">
+            {categories.map((item) => (
+              <li
+                key={item.id}
+                className="relative group font-quicksand font-semibold text-gray-700 cursor-pointer"
+              >
+                <Link href="/shop">
+                  <p className="hover:text-primaryColor transition">
+                    {item.name}
+                  </p>
+                </Link>
 
-                  {item.subcategory && (
-                    <ul className="absolute left-0 top-8 mt-2 w-40 bg-white border border-gray-200 rounded-[5px] shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
-                      {item.subcategory.map((sub) => (
-                        <li
-                          key={sub.id}
-                          className="px-3 py-2 text-sm text-gray-600 hover:bg-primaryColor/10 hover:text-primaryColor transition"
-                        >
-                          {sub.name}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
+                {item.subcategory && (
+                  <ul className="absolute left-0 top-8 mt-2 w-40 bg-white border border-gray-200 rounded-[5px] shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
+                    {item.subcategory.map((sub) => (
+                      <li
+                        key={sub.id}
+                        className="px-3 py-2 text-sm text-gray-600 hover:bg-primaryColor/10 hover:text-primaryColor transition"
+                      >
+                        {sub.name}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
-      )}
+      </div>
     </>
   );
 };
