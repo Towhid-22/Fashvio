@@ -26,7 +26,7 @@ export default function PriceRange() {
   };
 
   return (
-    <div className="w-full px-4 py-3 select-none border rounded">
+    <div className="w-[290px] px-4 py-3 select-none border rounded">
       <h3 className="border-b mb-3 text-xl font-quicksand font-bold py-2">
         Price Range
       </h3>

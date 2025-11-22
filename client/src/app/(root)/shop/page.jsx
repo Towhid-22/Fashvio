@@ -17,6 +17,8 @@ import Breadcrumb from "@/components/common/Breadcrumb";
 import Pagination from "@/components/common/Pagination";
 import Color from "@/components/shop/Color";
 import Size from "@/components/shop/Size";
+import Availability from "@/components/shop/Availability";
+import PopulrBrand from "@/components/shop/PopulrBrand";
 const page = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   return (
@@ -53,9 +55,11 @@ const page = () => {
         <div className="flex flex-col lg:flex-row gap-6">
           <div className="hidden lg:block w-full lg:w-[20%]">
             <PriceRange />
+            <Availability />
             <ShopCategory />
             <Color />
             <Size />
+            <PopulrBrand />
           </div>
           <div className="w-full lg:w-[85%]">
             <Shop />

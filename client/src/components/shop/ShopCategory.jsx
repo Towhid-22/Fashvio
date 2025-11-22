@@ -7,54 +7,42 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const ShopCategory = () => {
   const [activeRadio, setActiveRadio] = useState("");
+
   return (
-    <>
-      <div className="px-4 border mt-3 rounded py-2">
-        <Accordion
-          type="single"
-          collapsible
-          className="w-full"
-          defaultValue="item-1"
-        >
-          <AccordionItem value="item-1">
-            <AccordionTrigger
-              className={`font-quicksand font-bold text-xl mb-4`}
-            >
-              Categories
-            </AccordionTrigger>
-            <AccordionContent className="flex flex-col gap-1 text-balance">
+    <div className="px-4 border mt-3 rounded py-2">
+      <Accordion
+        type="single"
+        collapsible
+        className="w-full"
+        defaultValue="item-1"
+      >
+        <AccordionItem value="item-1">
+          <AccordionTrigger className="font-quicksand font-bold text-xl mb-4">
+            Categories
+          </AccordionTrigger>
+          <AccordionContent className="flex flex-col gap-2 text-balance">
+            <RadioGroup value={activeRadio} onValueChange={setActiveRadio}>
               {categories.map((category) => (
-                <label
-                  className="flex gap-2 pb-1"
-                  htmlFor={category.id}
-                  key={category.id}
-                >
-                  <input
-                    type="radio"
-                    value={category.id}
-                    id={category.id}
-                    key={category.id}
-                    checked={activeRadio === category.id}
-                    onChange={(e) => setActiveRadio(category.id)}
-                    className={`${
-                      activeRadio === category.id
-                        ? "bg-primaryColor w-4"
-                        : "w-4"
-                    } cursor-pointer`}
-                  />
-                  <span className="text-[18px] cursor-pointer">
+                <div key={category.id} className="flex items-center space-x-2 ">
+                  <RadioGroupItem value={category.id} id={category.id} />
+                  <Label
+                    htmlFor={category.id}
+                    className={`text-[18px] cursor-pointer`}
+                  >
                     {category.name}
-                  </span>
-                </label>
+                  </Label>
+                </div>
               ))}
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </div>
-    </>
+            </RadioGroup>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    </div>
   );
 };
 
