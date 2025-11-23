@@ -19,7 +19,9 @@ const Footer = () => {
           <ul>
             <li>
               <Link href="/">
-                <img src="/logo.png" alt="logo" />
+                <h3 className="text-[45px] font-bold text-primaryColor font-quicksand tracking-wider">
+                  Fashvio
+                </h3>
               </Link>
             </li>
             <li className="font-lato text-[17px] leading-6 text-textPrimary mt-[22px]">

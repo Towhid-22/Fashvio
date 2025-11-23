@@ -72,16 +72,18 @@ const page = () => {
             onClick={() => {
               setIsFilterOpen(false);
             }}
-            className=" bg-black/20 w-full h-screen fixed lg:hidden top-14 left-0 z-50"
+            className="bg-black/20 w-full fixed lg:hidden top-14 left-0 z-50 h-screen"
           >
             <div
               onClick={(e) => e.stopPropagation()}
-              className=" bg-white h-screen lg:hidden w-[250px]"
+              className=" bg-white h-screen lg:hidden w-[250px]  overflow-y-auto px-4"
             >
               <PriceRange />
+              <Availability />
               <ShopCategory />
               <Color />
               <Size />
+              <PopulrBrand />
             </div>
           </div>
         )}

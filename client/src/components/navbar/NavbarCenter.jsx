@@ -35,13 +35,15 @@ const NavbarCenter = () => {
   return (
     <>
       {/* ======================= for xl device ======================= */}
-      <div className="border-b hidden xl:block border-borderColor py-6">
+      <div className="border-b hidden xl:block border-borderColor py-3">
         <div className="mx-auto max-w-[1580px] px-4 md:px-0 ">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-[30px]">
               {/* Logo */}
               <Link href="/">
-                <img src="/logo.png" alt="logo" className="cursor-pointer" />
+                <h3 className="text-[45px] font-bold text-primaryColor font-quicksand tracking-wider">
+                  Fashvio
+                </h3>
               </Link>
               {/* Search Bar */}
             </div>
@@ -129,11 +131,9 @@ const NavbarCenter = () => {
             <FaBars className="text-xl" />
           </button>
           <Link href="/">
-            <img
-              src="/logo.png"
-              alt="logo"
-              className="cursor-pointer w-20 sm:w-30"
-            />
+            <h3 className="text-xl font-bold text-primaryColor font-quicksand tracking-wider">
+              Fashvio
+            </h3>
           </Link>
           <div className="flex items-center gap-2">
             <button

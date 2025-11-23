@@ -1,6 +1,7 @@
 import { Quicksand, Lato, Oswald, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
+
 const quicksand = Quicksand({
   variable: "--font-quicksand",
   subsets: ["latin"],
@@ -32,11 +33,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${quicksand.variable} ${lato.variable} ${oswald.variable} antialiased`}
+        className={`${quicksand.variable} ${lato.variable} ${lato.greatVibes} ${oswald.variable} ${playfair.variable} antialiased`}
       >
-
         {children}
-
       </body>
     </html>
   );

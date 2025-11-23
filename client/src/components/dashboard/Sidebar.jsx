@@ -23,7 +23,9 @@ const Sidebar = () => {
         <div className="max-w-[1580px] mx-auto py-3">
           <div className="flex items-center gap-12 justify-between lg:justify-start">
             <Link href="/">
-              <img src="/logo.png" alt="logo" className="w-30 md:w-auto" />
+              <h3 className="text-[45px] font-bold text-primaryColor font-quicksand tracking-wider">
+                Fashvio
+              </h3>
             </Link>
             <ul className="hidden font-lato md:flex gap-1 font-semibold text-gray-600">
               {pathItems.map((item) => (
