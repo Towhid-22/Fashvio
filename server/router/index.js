@@ -4,4 +4,8 @@ const apiRouter = require("./api");
 
 // localhost:3000/api
 router.use("/api", apiRouter);
+
+router.use((req, res) => {
+  return res.status(404).json({ success: false, message: "Route Not Found" });
+});
 module.exports = router;
