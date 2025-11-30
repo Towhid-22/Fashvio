@@ -13,7 +13,8 @@ app.use(
     secret: process.env.sessionsecret,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, maxAge: 60 * 1000 },
+    cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 },
+    name: "fashvio",
   })
 );
 connectDB();
