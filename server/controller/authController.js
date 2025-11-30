@@ -4,7 +4,9 @@ const userModel = require("../model/userModel");
 const emailValidation = require("../helpers/emailValidation");
 const sendEmail = require("../helpers/sendEmail");
 const random_otp = require("../helpers/random-otp");
+const jwt = require("jsonwebtoken");
 
+//  signup controller
 const signupController = async (req, res) => {
   try {
     const otp = random_otp();
@@ -17,10 +19,12 @@ const signupController = async (req, res) => {
         });
       } else {
         if (!emailValidation(email)) {
-          return res.status(400).json({
-            success: false,
-            message: "Email is not valid",
-          });
+          return res.status(400).json(
+            +{
+              success: false,
+              message: "Email is not valid",
+            }
+          );
         }
         const user = userModel({ username, email, password: hash, otp });
         sendEmail(email, otp);
@@ -34,6 +38,7 @@ const signupController = async (req, res) => {
             });
           user.save();
         }, 1000 * 60 * 2);
+        req.session.user = user;
         return res.status(201).json({
           success: true,
           message: "User created successfully",
@@ -47,7 +52,7 @@ const signupController = async (req, res) => {
       .json({ success: false, message: err.message || "Something went wrong" });
   }
 };
-
+//  otp controller
 const otpVerifyController = async (req, res) => {
   const { email, otp } = req.body;
   try {
@@ -80,5 +85,58 @@ const otpVerifyController = async (req, res) => {
       .json({ success: false, message: err.message || "Something went wrong" });
   }
 };
+//  login controller
+const loginController = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const existingUser = await userModel.findOne({ email });
+    if (!existingUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    } else {
+      bcrypt.compare(password, existingUser.password, function (err, result) {
+        if (!err) {
+          if (result) {
+            const userData = {
+              id: existingUser._id,
+              name: existingUser.username,
+              email: existingUser.email,
+              role: existingUser.role,
+              verify: existingUser.isVerify,
+            };
+            // const token = jwt.sign({ userData }, process.env.JWTsecret, {
+            //   expiresIn: 60 * 60 * 24 * 5, // 5 days
+            // });
+            // res.cookie("fashvio", token);
+            req.session.user = userData;
+            return res.status(200).json({
+              success: true,
+              message: "User login successfully",
+              data: userData,
+              // token,
+            });
+          } else {
+            return res.status(404).json({
+              success: false,
+              message: "Invalid Password",
+            });
+          }
+        } else {
+          return res.status(500).json({
+            success: false,
+            message: err,
+          });
+        }
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Something went wrong",
+    });
+  }
+};
 
-module.exports = { signupController, otpVerifyController };
+module.exports = { signupController, otpVerifyController, loginController };
