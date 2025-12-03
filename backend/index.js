@@ -20,6 +20,7 @@ app.use(
 connectDB();
 
 app.use(express.json());
+app.use(express.static("uploads"));
 app.use(router);
 
 // localhost:3000
