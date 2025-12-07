@@ -13,6 +13,7 @@ app.use(
     secret: process.env.sessionsecret,
     resave: false,
     saveUninitialized: false,
+    rolling: true,
     cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 },
     name: "fashvio",
   })

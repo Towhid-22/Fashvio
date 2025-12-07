@@ -17,6 +17,12 @@ const categorySchema = new mongoose.Schema(
       unique: [true, "Category slug already exists"],
       required: [true, "Category slug is required"],
     },
+    subcategory: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "SubCategory",
+      },
+    ],
   },
   { timestamps: true }
 );

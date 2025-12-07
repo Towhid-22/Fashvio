@@ -18,12 +18,10 @@ const signupController = async (req, res) => {
         });
       } else {
         if (!emailValidation(email)) {
-          return res.status(400).json(
-            +{
-              success: false,
-              message: "Email is not valid",
-            }
-          );
+          return res.status(400).json({
+            success: false,
+            message: "Email is not valid",
+          });
         }
         const user = userModel({ username, email, password: hash, otp });
         sendEmail(email, otp);
