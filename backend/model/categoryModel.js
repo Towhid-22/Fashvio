@@ -12,6 +12,12 @@ const categorySchema = new mongoose.Schema(
       type: String,
       required: [true, "Category image is required"],
     },
+    product: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
     slug: {
       type: String,
       unique: [true, "Category slug already exists"],

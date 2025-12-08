@@ -8,7 +8,6 @@ const storage = multer.diskStorage({
     const extensionName = file.mimetype.split("/");
     const imgOrgName = file.originalname.split(".")[0].replace(/\s+/g, "-");
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    console.log(imgOrgName)
     cb(
       null,
       file.fieldname +

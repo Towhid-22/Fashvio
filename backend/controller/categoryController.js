@@ -31,7 +31,10 @@ const addCategoryController = async (req, res) => {
 };
 const getCategoryController = async (req, res) => {
   try {
-    const getCategory = await categoryModel.find().sort({ createdAt: -1 }).populate("subcategory");
+    const getCategory = await categoryModel
+      .find()
+      .sort({ createdAt: -1 })
+      .populate("subcategory product");
     if (getCategory.length == 0) {
       return res.status(404).json({
         success: false,
