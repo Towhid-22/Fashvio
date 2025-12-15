@@ -33,7 +33,7 @@ const addSubcategoryController = async (req, res) => {
 };
 const getSubcategoryController = async (req, res) => {
   try {
-    const getSubCategory = await subcategoryModel.find();
+    const getSubCategory = await subcategoryModel.find().populate("product");
     if (getSubCategory.length == 0) {
       return res
         .status(404)
@@ -51,9 +51,11 @@ const getSubcategoryController = async (req, res) => {
 const getSubCategoryByCategoryController = async (req, res) => {
   try {
     const { id } = req.params;
-    const getSubCategoryByCategory = await subcategoryModel.find({
-      category: id,
-    });
+    const getSubCategoryByCategory = await subcategoryModel
+      .find({
+        category: id,
+      })
+      .populate("product");
     if (getSubCategoryByCategory.length == 0) {
       return res
         .status(404)
@@ -75,9 +77,11 @@ const getSingleSubcategoryController = async (req, res) => {
       lower: true,
       replacement: "-",
     });
-    const singlesubcategory = await subcategoryModel.findOne({
-      slug: slugname,
-    });
+    const singlesubcategory = await subcategoryModel
+      .findOne({
+        slug: slugname,
+      })
+      .populate("product");
     if (!singlesubcategory) {
       return res
         .status(404)

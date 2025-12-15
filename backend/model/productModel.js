@@ -45,6 +45,12 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    variant: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Variant",
+      },
+    ],
   },
   { timestamps: true }
 );

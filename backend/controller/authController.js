@@ -119,9 +119,9 @@ const loginController = async (req, res) => {
             // });
             // res.cookie("fashvio", token);
             if (existingUser.role == "admin") {
-              req.session.cookie.maxAge = 5 * 60 * 1000;
-            } else {
               req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
+            } else {
+              req.session.cookie.maxAge = 5 * 24 * 60 * 60 * 1000;
             }
             req.session.user = userData;
             return res.status(200).json({

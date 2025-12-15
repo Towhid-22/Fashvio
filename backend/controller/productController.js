@@ -1,6 +1,7 @@
 const { default: slugify } = require("slugify");
 const productModel = require("../model/productModel");
 const categoryModel = require("../model/categoryModel");
+const subcategoryModel = require("../model/subcategoryModel");
 const fs = require("fs");
 const path = require("path");
 
@@ -34,7 +35,19 @@ const addProductController = async (req, res) => {
         new: true,
       }
     );
+    const updateSubcategory = await subcategoryModel.findOneAndUpdate(
+      {
+        _id: subcategory,
+      },
+      {
+        $push: { product: addProduct._id },
+      },
+      {
+        new: true,
+      }
+    );
     await updateCategory.save();
+    await updateSubcategory.save();
     return res.status(200).json({
       success: true,
       message: "Product added successfully",
@@ -46,7 +59,7 @@ const addProductController = async (req, res) => {
 };
 const getProductController = async (req, res) => {
   try {
-    const getAllProduct = await productModel.find();
+    const getAllProduct = await productModel.find().populate("variant")
     if (getAllProduct.length == 0) {
       return res
         .status(404)
@@ -165,6 +178,24 @@ const deleteProductController = async (req, res) => {
         });
       }
     });
+    await categoryModel.findOneAndUpdate(
+      { product: id },
+      {
+        $pull: { product: id },
+      },
+      {
+        new: true,
+      }
+    );
+    await subcategoryModel.findOneAndUpdate(
+      { product: id },
+      {
+        $pull: { product: id },
+      },
+      {
+        new: true,
+      }
+    );
     return res
       .status(200)
       .json({ success: true, message: "Product delete successfully" });
