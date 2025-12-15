@@ -59,7 +59,9 @@ const addProductController = async (req, res) => {
 };
 const getProductController = async (req, res) => {
   try {
-    const getAllProduct = await productModel.find().populate("variant")
+    const getAllProduct = await productModel
+      .find()
+      .populate("variant category subcategory");
     if (getAllProduct.length == 0) {
       return res
         .status(404)
@@ -81,7 +83,9 @@ const getSingleProductController = async (req, res) => {
       lower: true,
       replacement: "-",
     });
-    const singleProduct = await productModel.findOne({ slug: slugname });
+    const singleProduct = await productModel
+      .findOne({ slug: slugname })
+      .populate("variant category subcategory");
     if (!singleProduct) {
       return res
         .status(404)

@@ -8,7 +8,10 @@ const random_otp = require("../helpers/random-otp");
 const addVariantController = async (req, res) => {
   try {
     const { product, color, size, stock, price } = req.body;
-    const sku = slugify(`${color}-${size}-${random_otp().slice(0, 4)}`, { lower: true, replacement: "-" });
+    const sku = slugify(`${color}-${size}-${random_otp().slice(0, 4)}`, {
+      lower: true,
+      replacement: "-",
+    });
     const addVariant = new variantModel({
       product,
       color,
@@ -43,6 +46,10 @@ const updateVariantController = async (req, res) => {
   try {
     const { id } = req.params;
     const { color, size, stock, price } = req.body;
+    const sku = slugify(`${color}-${size}-${random_otp().slice(0, 4)}`, {
+      lower: true,
+      replacement: "-",
+    });
     const oldVariant = await variantModel.findById(id);
     if (!oldVariant) {
       if (req.file) fs.unlinkSync(req.file.path);
@@ -51,7 +58,7 @@ const updateVariantController = async (req, res) => {
         message: "Variant not found",
       });
     }
-    const updateData = { color, size, stock, price };
+    const updateData = { color, size, stock, price, sku };
     if (req.file) {
       const folderPath = path.join(__dirname, "../uploads");
       const imagePath = oldVariant.image.split("/");
@@ -92,17 +99,19 @@ const deleteVariantController = async (req, res) => {
         message: "Variant not found",
       });
     }
-    const folderPath = path.join(__dirname, "../uploads");
-    const imagePath = deleteVariant.image.split("/");
-    const fullImagePath = imagePath[imagePath.length - 1];
-    fs.unlink(folderPath + "/" + fullImagePath, (error) => {
-      if (error) {
-        return res.status(500).json({
-          success: false,
-          message: error.message || "Something went wrong",
-        });
-      }
-    });
+    if (deleteVariant.image) {
+      const folderPath = path.join(__dirname, "../uploads");
+      const imagePath = deleteVariant.image.split("/");
+      const fullImagePath = imagePath[imagePath.length - 1];
+      fs.unlink(folderPath + "/" + fullImagePath, (error) => {
+        if (error) {
+          return res.status(500).json({
+            success: false,
+            message: error.message || "Something went wrong",
+          });
+        }
+      });
+    }
     await productModel.findOneAndUpdate(
       { variant: id },
       { $pull: { variant: id } },

@@ -7,17 +7,19 @@ const {
   deleteProductController,
 } = require("../../controller/productController");
 const upload = require("../../helpers/uploadimage");
+const adminMiddleware = require("../../middleware/adminMiddleware");
 const router = express.Router();
 
 // localhost:3000/api/product/add-product
-router.post("/add-product", upload.single("image"), addProductController);
+router.post("/add-product", adminMiddleware, upload.single("image"), addProductController);
+// localhost:3000/api/product/update-product/:id
+router.patch("/update-product/:id", adminMiddleware, upload.single("image"), updateProductController);
+// localhost:3000/api/product/delete-product/:id
+router.delete("/delete-product/:id", adminMiddleware, deleteProductController);
 // localhost:3000/api/product/get-product
 router.get("/get-product", getProductController);
 // localhost:3000/api/product/get-single-product/:slug
 router.get("/get-single-product/:slug", getSingleProductController);
-// localhost:3000/api/product/update-product/:id
-router.patch("/update-product/:id", upload.single("image"), updateProductController);
-// localhost:3000/api/product/delete-product/:id
-router.delete("/delete-product/:id", deleteProductController);
+
 
 module.exports = router;

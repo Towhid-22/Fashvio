@@ -33,7 +33,7 @@ const addSubcategoryController = async (req, res) => {
 };
 const getSubcategoryController = async (req, res) => {
   try {
-    const getSubCategory = await subcategoryModel.find().populate("product");
+    const getSubCategory = await subcategoryModel.find().populate("category product");
     if (getSubCategory.length == 0) {
       return res
         .status(404)
