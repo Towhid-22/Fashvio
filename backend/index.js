@@ -1,12 +1,13 @@
 const express = require("express");
 const router = require("./router");
 const connectDB = require("./config/database");
+const cors = require("cors");
 const app = express();
 require("dotenv").config();
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-const PORT = process.env.PORT || 4000;
-
+const PORT = process.env.PORT || 5000;
+app.use(cors());
 app.use(
   session({
     store: MongoStore.create({ mongoUrl: process.env.DATABASE_URL }),
@@ -19,7 +20,6 @@ app.use(
   })
 );
 connectDB();
-
 app.use(express.json());
 app.use(express.static("uploads"));
 app.use(router);
