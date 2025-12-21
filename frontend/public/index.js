@@ -593,7 +593,7 @@ const products = [
     price: 3450,
     rating: 4.5,
     category: "Power",
-    isFeatured: false,
+    isFeatured: true,
     newArrival: false,
   },
 ];

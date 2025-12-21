@@ -41,9 +41,7 @@ const NavbarCenter = () => {
             <div className="flex items-center gap-[30px]">
               {/* Logo */}
               <Link href="/">
-                <h3 className="text-[45px] font-bold text-primaryColor font-quicksand tracking-wider">
-                  Fashvio
-                </h3>
+                <img src="logo.png" alt="" />
               </Link>
               {/* Search Bar */}
             </div>

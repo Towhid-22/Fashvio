@@ -14,7 +14,6 @@ const Breadcrumb = () => {
     name: name,
     href: `/${pathSegments.slice(0, index + 1).join("/")}`,
   }));
-  console.log(bredcrumbItems);
   return (
     <div className="bg-gray-100 px-4 md:px-0 py-3">
       <Container>
