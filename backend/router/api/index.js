@@ -6,6 +6,7 @@ const subcategoryRouter = require("./subcategory");
 const productRouter = require("./product");
 const variantRouter = require("./variant");
 const cartRouter = require("./cart");
+const bannerRouter = require("./banner");
 // localhost:4000/api/authentication
 router.use("/authentication", authRouter);
 // localhost:4000/api/category
@@ -18,4 +19,6 @@ router.use("/product", productRouter);
 router.use("/variant", variantRouter);
 // localhost:4000/api/cart
 router.use("/cart", cartRouter);
+// localhost:4000/api/banner
+router.use("/banner", bannerRouter);
 module.exports = router;
