@@ -1,12 +1,21 @@
-import React from "react";
-import { MdWindow } from "react-icons/md";
-import { IoIosArrowDown } from "react-icons/io";
-import { nav_items } from "../../../public";
-import { ImHeadphones } from "react-icons/im";
+"use client";
+import React, { useEffect, useState } from "react";
 import { categories } from "../../../public";
 import Link from "next/link";
+import axios from "axios";
 
 const NavbarBottom = () => {
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    function getAllCategory() {
+      axios
+        .get(`${process.env.NEXT_PUBLIC_URL}/api/category/get-category`)
+        .then((res) => {
+          setCategories(res.data.data);
+        });
+    }
+    getAllCategory();
+  }, []);
   return (
     <div className="shadow py-4 hidden xl:block">
       <div className="mx-auto max-w-[1580px] px-4 md:px-0">
