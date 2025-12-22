@@ -5,10 +5,21 @@ import ReactPaginate from "react-paginate";
 import Product from "./Product";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import { products } from "../../../public";
+import axios from "axios";
 
 const Pagination = ({ itemsPerPage }) => {
+  const [items, setItems] = useState([]);
 
-const items = products
+  useEffect(() => {
+    function getAllProducts() {
+      axios
+        .get(`${process.env.NEXT_PUBLIC_URL}/api/product/get-product`)
+        .then((res) => {
+          setItems(res.data.data);
+        });
+    }
+    getAllProducts();
+  }, []);
 
   function Items({ currentItems }) {
     return (

@@ -1,56 +1,63 @@
 "use client";
-import React, { useState } from "react";
-import { products } from "../../../public";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Product from "../common/Product";
+import axios from "axios";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const FeatureProduct = () => {
+  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+  function categoryList() {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_URL}/api/category/get-category`)
+      .then((res) => {
+        setCategories(res.data.data);
+      });
+  }
+  function featureProduct() {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_URL}/api/product/get-featured-product`)
+      .then((res) => {
+        setProducts(res.data.data);
+        setLoading(false);
+      });
+  }
+  useEffect(() => {
+    categoryList();
+    featureProduct();
+  }, []);
+
   const [menu, setMenu] = useState("All Products");
-
-  // const featureCategory = [
-  //   "All Products",
-  //   ...new Set(
-  //     products.map((product) => product.isFeatured && product.category)
-  //   ),
-  // ];
-  const featureCategory = [
-    {
-      id: 1,
-      name: "All Products",
-    },
-    {
-      id: 2,
-      name: "Desktop",
-    },
-    {
-      id: 3,
-      name: "Laptop",
-    },
-    {
-      id: 4,
-      name: "Tablet",
-    },
-    {
-      id: 5,
-      name: "Camera",
-    },
-    {
-      id: 6,
-      name: "Power",
-    },
-  ];
-
   const handleActiveTab = (name) => {
     setMenu(name);
   };
   const filterFeaturesProducts =
-    menu === "All Products"
-      ? products.filter((product) => {
-          return product.isFeatured;
-        })
-      : products.filter((product) => {
-          return product.isFeatured && product.category === menu;
-        });
+    menu == "All Products"
+      ? products
+      : products.filter((product) => product.category.name === menu);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center">
+        <div className="flex flex-col space-y-3">
+          <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+          <div className="grid grid-cols-4 gap-4">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div>
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-[250px]" />
+                  <Skeleton className="h-4 w-[200px]" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="max-w-[1580px] mx-auto px-4 mt-20">
       <div className="flex justify-between gap-10 mb-5">
@@ -59,24 +66,24 @@ const FeatureProduct = () => {
             Features Products
           </h1>
           <ul className="hidden xl:flex items-center gap-3">
-            {featureCategory.map((category, index) => (
+            {categories.map((items, index) => (
               <li
-                onClick={() => handleActiveTab(category.name)}
+                onClick={() => handleActiveTab(items.name)}
                 key={index}
                 className={`font-quicksand text-xl font-semibold cursor-pointer hover:text-primaryColor ${
-                  menu === category.name
+                  menu === items.name
                     ? "text-primaryColor border-b-4 border-primaryColor"
                     : "text-textPrimary"
                 }`}
               >
-                {category.name}
+                {items.name}
               </li>
             ))}
           </ul>
         </div>
         <Link href="/shop">
           <button className="text-xl bg-primaryColor px-4 py-1 rounded text-white font-lato">
-            All Products
+            Browse All Products
           </button>
         </Link>
       </div>
@@ -88,7 +95,7 @@ const FeatureProduct = () => {
             </h1>
           ) : (
             filterFeaturesProducts.map((product) => (
-              <Product key={product.id} product={product} />
+              <Product key={product._id} product={product} />
             ))
           )}
         </div>

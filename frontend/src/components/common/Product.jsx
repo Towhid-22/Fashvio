@@ -6,25 +6,29 @@ import { FaRegHeart } from "react-icons/fa6";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { MdRemoveRedEye } from "react-icons/md";
 
-const Product = ({ product, key }) => {
+const Product = ({ product }) => {
   const [qucikView, setQucikView] = useState(false);
   const [id, setId] = useState(null);
-  const qucikViewBtn = (id) => {
+  const qucikViewBtn = (_id) => {
     setQucikView(!qucikView);
-    setId(id);
+    setId(_id);
   };
   return (
     <div>
       <div
-        key={key}
+        key={product._id}
         className="border w-[280px] md:w-[241px] h-[370px] rounded p-3 flex flex-col justify-between gap-3 group relative"
       >
         <div className="">
           <div className="w-full flex items-center justify-center">
-            <img src={product.img} alt={product.title} className="w-40" />
+            <img
+              src={product?.image}
+              alt={product.name}
+              className="size-40 object-contain"
+            />
           </div>
           <p className="font-quicksand font-bold leading-5 text-textPrimary">
-            {product.title}
+            {product.name}
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -54,7 +58,7 @@ const Product = ({ product, key }) => {
             <FaRegHeart />
           </li>
           <li
-            onClick={() => qucikViewBtn(product.id)}
+            onClick={() => qucikViewBtn(product._id)}
             title="Quick View"
             className="border size-9 rounded-full flex items-center justify-center hover:bg-primaryColor text-textPrimary hover:text-white font-bold transition-all duration-300 cursor-pointer"
           >
@@ -63,7 +67,7 @@ const Product = ({ product, key }) => {
         </ul>
       </div>
 
-      {qucikView && product.id === id && (
+      {qucikView && product._id === id && (
         <div
           onClick={() => setQucikView(false)}
           className="fixed p-5 inset-0 sm:p-0 md:inset-0 flex items-center justify-center bg-black/50 z-50"
@@ -77,10 +81,14 @@ const Product = ({ product, key }) => {
               className="w-full h-full rounded p-3 flex flex-col justify-between gap-3 group relative"
             >
               <div className="flex flex-col md:flex-row justify-between items-center gap-3">
-                <img src={product.img} alt={product.title} className="w-40" />
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="size-40 object-contain"
+                />
                 <div className="flex flex-col gap-3">
                   <p className="font-quicksand font-bold leading-5 text-textPrimary">
-                    {product.title}
+                    {product.name}
                   </p>
                   <div className="flex items-center gap-3">
                     <RiStarFill className="text-yellow-400" />
