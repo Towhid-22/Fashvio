@@ -5,6 +5,7 @@ const {
   getProductController,
   getSingleProductController,
   deleteProductController,
+  getFeaturesProductController,
 } = require("../../controller/productController");
 const upload = require("../../helpers/uploadimage");
 const adminMiddleware = require("../../middleware/adminMiddleware");
@@ -20,6 +21,8 @@ router.delete("/delete-product/:id", adminMiddleware, deleteProductController);
 router.get("/get-product", getProductController);
 // localhost:4000/api/product/get-single-product/:slug
 router.get("/get-single-product/:slug", getSingleProductController);
+// localhost:4000/api/product/get-featured-product
+router.get("/get-featured-product", getFeaturesProductController);
 
 
 module.exports = router;

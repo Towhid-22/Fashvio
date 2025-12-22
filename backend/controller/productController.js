@@ -207,6 +207,25 @@ const deleteProductController = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+const getFeaturesProductController = async (req, res) => {
+  try {
+    const featureProduct = await productModel
+      .find({ isFeature: true })
+      .populate("category subcategory");
+    if (featureProduct.length == 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Feature Product not found" });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Feature Product fetched successfully",
+      data: featureProduct,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 module.exports = {
   addProductController,
@@ -214,4 +233,5 @@ module.exports = {
   getSingleProductController,
   updateProductController,
   deleteProductController,
+  getFeaturesProductController,
 };
