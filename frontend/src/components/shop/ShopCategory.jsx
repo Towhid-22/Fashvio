@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { categories } from "../../../public";
 import {
   Accordion,
@@ -9,10 +9,29 @@ import {
 } from "@/components/ui/accordion";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { category } from "@/store/features/product/productSlice";
 
 const ShopCategory = () => {
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.product.value);
   const [activeRadio, setActiveRadio] = useState("");
-
+  const [categories, setCategories] = useState([]);
+  function allCategories() {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_URL}/api/category/get-category`)
+      .then((res) => {
+        setCategories(res.data.data);
+      });
+  }
+  useEffect(() => {
+    allCategories();
+    dispatch(category(activeRadio));
+  }, [activeRadio]);
+  // useEffect(() => {
+  // }, [activeRadio]);
+  console.log(activeRadio);
   return (
     <div className="px-4 border mt-3 rounded py-2">
       <Accordion
@@ -28,10 +47,13 @@ const ShopCategory = () => {
           <AccordionContent className="flex flex-col gap-2 text-balance">
             <RadioGroup value={activeRadio} onValueChange={setActiveRadio}>
               {categories.map((category) => (
-                <div key={category.id} className="flex items-center space-x-2 ">
-                  <RadioGroupItem value={category.id} id={category.id} />
+                <div
+                  key={category._id}
+                  className="flex items-center space-x-2 "
+                >
+                  <RadioGroupItem value={category._id} id={category._id} />
                   <Label
-                    htmlFor={category.id}
+                    htmlFor={category._id}
                     className={`text-[18px] cursor-pointer`}
                   >
                     {category.name}
