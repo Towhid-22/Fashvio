@@ -4,20 +4,37 @@ import ReactPaginate from "react-paginate";
 import Product from "./Product";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Pagination = ({ itemsPerPage }) => {
+  const currentCategory = useSelector((state) => state.product.currentcategory);
+  const priceRange = useSelector((state) => state.product.priceRange);
+  const productSize = useSelector((state) => state.product.productSize);
+  const productColor = useSelector((state) => state.product.productColor);
+  console.log(productSize);
   const [items, setItems] = useState([]);
 
+  const filterParams = new URLSearchParams({
+    category: currentCategory,
+    minprice: priceRange[0],
+    maxprice: priceRange[1],
+    productsize: productSize,
+    productcolor: productColor,
+  });
   useEffect(() => {
     function getAllProducts() {
       axios
-        .get(`${process.env.NEXT_PUBLIC_URL}/api/product/get-product`)
+        .get(
+          `${
+            process.env.NEXT_PUBLIC_URL
+          }/api/product/get-product?${filterParams.toString()}`
+        )
         .then((res) => {
           setItems(res.data.data);
         });
     }
     getAllProducts();
-  }, []);
+  }, [currentCategory, priceRange, productSize, productColor]);
 
   function Items({ currentItems }) {
     return (

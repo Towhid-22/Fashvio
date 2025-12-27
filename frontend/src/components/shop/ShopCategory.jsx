@@ -29,9 +29,6 @@ const ShopCategory = () => {
     allCategories();
     dispatch(category(activeRadio));
   }, [activeRadio]);
-  // useEffect(() => {
-  // }, [activeRadio]);
-  console.log(activeRadio);
   return (
     <div className="px-4 border mt-3 rounded py-2">
       <Accordion

@@ -1,5 +1,5 @@
 "use client";
-import { price } from "@/store/features/product/productSlice";
+import { priceRange } from "@/store/features/product/productSlice";
 import { useState, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
@@ -11,12 +11,9 @@ export default function PriceRange() {
 
   const handleTrackClick = (e) => {
     const track = trackRef.current;
-    // console.log(track)
     const rect = track.getBoundingClientRect();
-    console.log(rect)
-    
+
     const clickPosition = ((e.clientX - rect.left) / rect.width) * 100;
-    console.log(e.clientX, rect.left, rect.width, clickPosition);
 
     const clickedValue = Math.round((clickPosition / 100) * 10000);
 
@@ -30,7 +27,7 @@ export default function PriceRange() {
     }
   };
   useEffect(() => {
-    dispatch(price({ min, max }));
+    dispatch(priceRange([min, max]));
   }, [min, max]);
 
   return (

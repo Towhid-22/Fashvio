@@ -1,23 +1,61 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useDispatch } from "react-redux";
+import { productColor } from "@/store/features/product/productSlice";
 
 const Color = () => {
+  const [color, setColor] = useState("");
+  const dispatch = useDispatch();
   const colors = [
-    "black",
-    "blue",
-    "red",
-    "green",
-    "gray",
-    "purple",
-    "white",
-    "#253d4e",
+    {
+      id: 1,
+      color: "Black",
+    },
+    {
+      id: 2,
+      color: "Blue",
+    },
+    {
+      id: 3,
+      color: "Red",
+    },
+    {
+      id: 4,
+      color: "Green",
+    },
+    {
+      id: 5,
+      color: "Gray",
+    },
+    {
+      id: 6,
+      color: "Purple",
+    },
+    {
+      id: 7,
+      color: "White",
+    },
+    {
+      id: 8,
+      color: "Yellow",
+    },
+    {
+      id: 9,
+      color: "Pink",
+    },
+    {
+      id: 10,
+      color: "Orange",
+    },
   ];
-  const [color, setColor] = useState("black");
+  useEffect(() => {
+    dispatch(productColor(color));
+  }, [color]);
   return (
     <>
       <div className="px-4 border mt-3 rounded py-2">
@@ -36,11 +74,11 @@ const Color = () => {
             <AccordionContent className="flex flex-wrap gap-2 text-balance">
               {colors.map((items) => (
                 <div
-                  onClick={() => setColor(items)}
+                  onClick={() => setColor(items.color)}
                   key={items}
-                  style={{ background: items }}
+                  style={{ background: items.color }}
                   className={`w-10 h-10 rounded-full bg-red-50 ${
-                    color === items ? "border-3 border-primaryColor" : ""
+                    color === items.color ? "border-3 border-primaryColor" : ""
                   }`}
                 ></div>
               ))}
