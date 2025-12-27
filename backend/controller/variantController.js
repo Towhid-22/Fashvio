@@ -101,13 +101,13 @@ const deleteVariantController = async (req, res) => {
     }
     if (deleteVariant.image) {
       const folderPath = path.join(__dirname, "../uploads");
-      const imagePath = deleteVariant.image.split("/");
-      const fullImagePath = imagePath[imagePath.length - 1];
-      fs.unlink(folderPath + "/" + fullImagePath, (error) => {
+      const imagepath = deleteVariant.image.split("/");
+      const fullImgPath = imagepath[imagepath.length - 1];
+      fs.unlink(folderPath + "/" + fullImgPath, (error) => {
         if (error) {
           return res.status(500).json({
             success: false,
-            message: error.message || "Something went wrong",
+            message: error.message || "Somethong went wrong",
           });
         }
       });

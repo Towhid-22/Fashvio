@@ -57,25 +57,85 @@ const addProductController = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+// const getProductController = async (req, res) => {
+//   const { category, minprice, maxprice, productsize } = req.query;
+//   try {
+//     const getAllProduct = await productModel
+//       .find({
+//         ...(category && { category: category }),
+//         ...(minprice && { price: { $gte: minprice } }),
+//         ...(maxprice && { price: { $lte: maxprice } }),
+//         ...(productsize && { size: productsize }),
+//       })
+//       .sort({ createdAt: -1 })
+//       .populate("variant category subcategory");
+//     if (getAllProduct.length == 0) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "Product not found" });
+//     }
+//     return res.status(200).json({
+//       success: true,
+//       message: "Product fetched successfully",
+//       data: getAllProduct,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({ success: false, message: error.message });
+//   }
+// };
 const getProductController = async (req, res) => {
+  const { category, minprice, maxprice, productsize, productcolor } = req.query;
+
   try {
-    const getAllProduct = await productModel
-      .find()
-      .populate("variant category subcategory");
-    if (getAllProduct.length == 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Product not found" });
+    const products = await productModel
+      .find({
+        ...(category && category !== "" && { category }),
+        ...(minprice &&
+          !isNaN(minprice) && {
+            price: { $gte: Number(minprice) },
+          }),
+        ...(maxprice &&
+          !isNaN(maxprice) && {
+            price: { $lte: Number(maxprice) },
+          }),
+      })
+      .populate({
+        path: "variant",
+        match: {
+          ...(productsize && { size: productsize }),
+          ...(productcolor && { color: productcolor }),
+        },
+      })
+      .populate("category subcategory")
+      .sort({ createdAt: -1 });
+
+    // 🔥 remove products without matching variants
+    const filteredProducts =
+      productsize || productcolor
+        ? products.filter((p) => p.variant.length > 0)
+        : products;
+
+    if (!filteredProducts.length) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
     }
+
     return res.status(200).json({
       success: true,
       message: "Product fetched successfully",
-      data: getAllProduct,
+      data: filteredProducts,
     });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
+
+
 const getSingleProductController = async (req, res) => {
   try {
     const { slug } = req.params;

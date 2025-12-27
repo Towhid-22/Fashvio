@@ -30,5 +30,5 @@ const variantSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
+variantSchema.index({ product: 1, size: 1 }, { unique: true });
 module.exports = mongoose.model("Variant", variantSchema);
