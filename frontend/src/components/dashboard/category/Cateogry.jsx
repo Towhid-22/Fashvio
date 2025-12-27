@@ -1,15 +1,43 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PiDesktopTowerLight } from "react-icons/pi";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBinLine, RiCloseLargeFill } from "react-icons/ri";
 import { IoIosSearch } from "react-icons/io";
 import { FaPlus } from "react-icons/fa6";
 import { FiUploadCloud } from "react-icons/fi";
+import { useRef } from "react";
 
 const Category = () => {
+  const categoryEditModalRef = useRef(null);
+  const createCategoryModalRef = useRef(null);
   const [categoryEditModal, setCategoryEditModal] = useState(false);
   const [createCategoryModal, setCreateCategoryModal] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        categoryEditModalRef.current &&
+        !categoryEditModalRef.current.contains(e.target)
+      ) {
+        setCategoryEditModal(false);
+      }
+
+      if (
+        createCategoryModalRef.current &&
+        !createCategoryModalRef.current.contains(e.target)
+      ) {
+        setCreateCategoryModal(false);
+      }
+    };
+
+    if (categoryEditModal || createCategoryModal) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [categoryEditModal, createCategoryModal]);
 
   return (
     <>
@@ -120,12 +148,9 @@ const Category = () => {
 
       {/*  ====================== Edit Category Modal ======================= */}
       {categoryEditModal && (
-        <div
-          onClick={() => setCategoryEditModal(false)}
-          className="fixed p-5 inset-0 sm:p-0 md:inset-0 flex items-center justify-center bg-black/50 z-50"
-        >
+        <div className="fixed p-5 inset-0 sm:p-0 md:inset-0 flex items-center justify-center bg-black/50 z-50">
           <div
-            onClick={(e) => e.stopPropagation()}
+            ref={categoryEditModalRef}
             className="bg-white border rounded w-[280px] sm:w-[350px] md:w-[450px] lg:w-[500px] shadow p-5 relative"
           >
             <div className="flex items-center justify-between mb-4">
@@ -137,7 +162,6 @@ const Category = () => {
                 <RiCloseLargeFill className="text-2xl" />
               </button>
             </div>
-
             <div>
               <label htmlFor="category" className="font-semibold text-xl">
                 Category
@@ -149,7 +173,6 @@ const Category = () => {
                 placeholder="Enter category name"
               />
             </div>
-
             <div className="mt-3">
               <label htmlFor="file" className="font-semibold text-xl">
                 Upload Image
@@ -163,7 +186,6 @@ const Category = () => {
                 <FiUploadCloud className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl text-gray-500" />
               </div>
             </div>
-
             <button className="bg-primaryColor font-quicksand font-semibold text-white p-3 rounded mt-4 cursor-pointer w-full">
               Update Category
             </button>
@@ -173,12 +195,9 @@ const Category = () => {
 
       {/*  ====================== Create Category Modal ======================= */}
       {createCategoryModal && (
-        <div
-          onClick={() => setCreateCategoryModal(false)}
-          className="fixed p-5 inset-0 sm:p-0 md:inset-0 flex items-center justify-center bg-black/50 z-50"
-        >
+        <div className="fixed p-5 inset-0 sm:p-0 md:inset-0 flex items-center justify-center bg-black/50 z-50">
           <div
-            onClick={(e) => e.stopPropagation()}
+            ref={createCategoryModalRef}
             className="bg-white border rounded w-[280px] sm:w-[350px] md:w-[450px] lg:w-[500px] shadow p-5 relative"
           >
             <div className="flex items-center justify-between mb-4">

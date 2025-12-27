@@ -1,19 +1,24 @@
 "use client";
-import { useState, useRef } from "react";
+import { price } from "@/store/features/product/productSlice";
+import { useState, useRef, useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 export default function PriceRange() {
+  const dispatch = useDispatch();
   const [min, setMin] = useState(0);
-  const [max, setMax] = useState(1000);
+  const [max, setMax] = useState(10000);
   const trackRef = useRef(null);
 
   const handleTrackClick = (e) => {
     const track = trackRef.current;
+    // console.log(track)
     const rect = track.getBoundingClientRect();
-
+    console.log(rect)
+    
     const clickPosition = ((e.clientX - rect.left) / rect.width) * 100;
+    console.log(e.clientX, rect.left, rect.width, clickPosition);
 
-    const clickedValue = Math.round((clickPosition / 100) * 1000);
-
+    const clickedValue = Math.round((clickPosition / 100) * 10000);
 
     const diffMin = Math.abs(clickedValue - min);
     const diffMax = Math.abs(clickedValue - max);
@@ -24,6 +29,9 @@ export default function PriceRange() {
       setMax(Math.max(clickedValue, min + 0));
     }
   };
+  useEffect(() => {
+    dispatch(price({ min, max }));
+  }, [min, max]);
 
   return (
     <div className="w-full px-4 py-3 select-none border rounded">
@@ -34,39 +42,31 @@ export default function PriceRange() {
         <span className="border px-5 py-1">{min}</span>
         <span className="border px-5 py-1">{max}</span>
       </div>
-
       <div
         ref={trackRef}
         onClick={handleTrackClick}
-        className="relative w-full h-6 cursor-pointer"
+        className="relative w-full h-6 cursor-pointer towhid"
       >
-        {/* Gray Track */}
         <div className="absolute top-1/2 -translate-y-1/2 w-full h-1 bg-gray-300 rounded"></div>
-
-        {/* Orange Active Track */}
         <div
           className="absolute top-1/2 -translate-y-1/2 h-1 bg-primaryColor rounded"
           style={{
-            left: `${(min / 1000) * 100}%`,
-            right: `${100 - (max / 1000) * 100}%`,
+            left: `${(min / 10000) * 100}%`,
+            right: `${100 - (max / 10000) * 100}%`,
           }}
         ></div>
-
-        {/* MIN Slider */}
         <input
           type="range"
           min="0"
-          max="1000"
+          max="10000"
           value={min}
           onChange={(e) => setMin(Math.min(Number(e.target.value), max - 20))}
           className="absolute w-full h-1 bg-transparent appearance-none pointer-events-none"
         />
-
-        {/* MAX Slider */}
         <input
           type="range"
           min="0"
-          max="1000"
+          max="10000"
           value={max}
           onChange={(e) => setMax(Math.max(Number(e.target.value), min + 20))}
           className="absolute w-full h-1 bg-transparent appearance-none pointer-events-none"
