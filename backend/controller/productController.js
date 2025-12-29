@@ -84,20 +84,23 @@ const addProductController = async (req, res) => {
 //   }
 // };
 const getProductController = async (req, res) => {
-  const { category, minprice, maxprice, productsize, productcolor } = req.query;
+  const { category, minprice, maxprice, productsize, productcolor, sort } =
+    req.query;
 
   try {
+    const sortOption = {
+      ...(sort === "newest" && { createdAt: -1 }),
+      ...(sort === "oldest" && { createdAt: 1 }),
+      ...(sort === "low_to_high" && { price: 1 }),
+      ...(sort === "high_to_low" && { price: -1 }),
+      ...(sort === "name_asc" && { name: 1 }),
+      ...(sort === "name_desc" && { name: -1 }),
+    };
     const products = await productModel
       .find({
-        ...(category && category !== "" && { category }),
-        ...(minprice &&
-          !isNaN(minprice) && {
-            price: { $gte: Number(minprice) },
-          }),
-        ...(maxprice &&
-          !isNaN(maxprice) && {
-            price: { $lte: Number(maxprice) },
-          }),
+        ...(category && { category: category }),
+        ...(minprice && { price: { $gte: minprice } }),
+        ...(maxprice && { price: { $lte: maxprice } }),
       })
       .populate({
         path: "variant",
@@ -107,9 +110,8 @@ const getProductController = async (req, res) => {
         },
       })
       .populate("category subcategory")
-      .sort({ createdAt: -1 });
+      .sort(Object.keys(sortOption).length ? sortOption : { createdAt: -1 });
 
-    // 🔥 remove products without matching variants
     const filteredProducts =
       productsize || productcolor
         ? products.filter((p) => p.variant.length > 0)
@@ -134,7 +136,6 @@ const getProductController = async (req, res) => {
     });
   }
 };
-
 
 const getSingleProductController = async (req, res) => {
   try {
