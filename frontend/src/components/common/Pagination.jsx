@@ -11,7 +11,7 @@ const Pagination = ({ itemsPerPage }) => {
   const priceRange = useSelector((state) => state.product.priceRange);
   const productSize = useSelector((state) => state.product.productSize);
   const productColor = useSelector((state) => state.product.productColor);
-  console.log(productSize);
+  const sort = useSelector((state) => state.product.sortProduct);
   const [items, setItems] = useState([]);
 
   const filterParams = new URLSearchParams({
@@ -20,6 +20,7 @@ const Pagination = ({ itemsPerPage }) => {
     maxprice: priceRange[1],
     productsize: productSize,
     productcolor: productColor,
+    sort: sort,
   });
   useEffect(() => {
     function getAllProducts() {
@@ -34,7 +35,7 @@ const Pagination = ({ itemsPerPage }) => {
         });
     }
     getAllProducts();
-  }, [currentCategory, priceRange, productSize, productColor]);
+  }, [currentCategory, priceRange, productSize, productColor, sort]);
 
   function Items({ currentItems }) {
     return (

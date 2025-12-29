@@ -2,7 +2,7 @@
 import PriceRange from "@/components/shop/PriceRange";
 import Shop from "@/components/shop/Shop";
 import ShopCategory from "@/components/shop/ShopCategory";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoFilterSharp } from "react-icons/io5";
 import {
   Select,
@@ -19,8 +19,69 @@ import Color from "@/components/shop/Color";
 import Size from "@/components/shop/Size";
 import Availability from "@/components/shop/Availability";
 import PopulrBrand from "@/components/shop/PopulrBrand";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  showingProduct,
+  sortProduct,
+} from "@/store/features/product/productSlice";
 const page = () => {
+  const dispatch = useDispatch();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const sortby = [
+    {
+      id: 1,
+      value: "newest",
+      label: "Newest",
+    },
+    {
+      id: 2,
+      value: "oldest",
+      label: "Oldest",
+    },
+    {
+      id: 3,
+      value: "low_to_high",
+      label: "Low to High",
+    },
+    {
+      id: 4,
+      value: "high_to_low",
+      label: "High to Low",
+    },
+    {
+      id: 5,
+      value: "name_asc",
+      label: "A-Z",
+    },
+    {
+      id: 6,
+      value: "name_desc",
+      label: "Z-A",
+    },
+  ];
+  const [sort, setSort] = useState(sortby[0].value);
+  const showing = [
+    {
+      id: 1,
+      value: 12,
+      label: 12,
+    },
+    {
+      id: 2,
+      value: 24,
+      label: 24,
+    },
+    {
+      id: 3,
+      value: 36,
+      label: 36,
+    },
+  ];
+  const [show, setShow] = useState(showing[0].value);
+  useEffect(() => {
+    dispatch(showingProduct(show));
+    dispatch(sortProduct(sort));
+  }, [show, sort]);
   return (
     <>
       <Breadcrumb />
@@ -35,18 +96,21 @@ const page = () => {
           </button>
           <div className="flex items-center gap-1">
             <p>Sort by:</p>
-            <Select>
+            <Select value={sort} onValueChange={setSort}>
               <SelectTrigger className="w-[100px] rounded outline-none">
                 <SelectValue placeholder="Default" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value="newest" className={`hover:rounded`}>
-                    Newest
-                  </SelectItem>
-                  <SelectItem value="Oldest">Oldest</SelectItem>
-                  <SelectItem value="low">Low to High</SelectItem>
-                  <SelectItem value="high">High to Low</SelectItem>
+                  {sortby.map((item) => (
+                    <SelectItem
+                      key={item.id}
+                      value={item.value}
+                      className={`hover:rounded`}
+                    >
+                      {item.label}
+                    </SelectItem>
+                  ))}
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -62,6 +126,50 @@ const page = () => {
             <PopulrBrand />
           </div>
           <div className="w-full lg:w-[85%]">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-3">
+                <p>Showing:</p>
+                <Select value={show} onValueChange={setShow}>
+                  <SelectTrigger className="w-[100px] rounded outline-none">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {showing.map((item) => (
+                        <SelectItem
+                          key={item.id}
+                          value={item.value}
+                          className={`hover:rounded`}
+                        >
+                          {item.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex items-center gap-3">
+                <p>Sort by:</p>
+                <Select value={sort} onValueChange={setSort}>
+                  <SelectTrigger className="w-[150px] rounded outline-none">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {sortby.map((item) => (
+                        <SelectItem
+                          key={item.id}
+                          value={item.value}
+                          className={`hover:rounded`}
+                        >
+                          {item.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
             <Shop />
           </div>
         </div>

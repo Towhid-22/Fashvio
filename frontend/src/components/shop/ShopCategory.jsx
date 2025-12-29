@@ -15,7 +15,6 @@ import { category } from "@/store/features/product/productSlice";
 
 const ShopCategory = () => {
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.product.value);
   const [activeRadio, setActiveRadio] = useState("");
   const [categories, setCategories] = useState([]);
   function allCategories() {
