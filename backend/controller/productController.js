@@ -57,32 +57,6 @@ const addProductController = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
-// const getProductController = async (req, res) => {
-//   const { category, minprice, maxprice, productsize } = req.query;
-//   try {
-//     const getAllProduct = await productModel
-//       .find({
-//         ...(category && { category: category }),
-//         ...(minprice && { price: { $gte: minprice } }),
-//         ...(maxprice && { price: { $lte: maxprice } }),
-//         ...(productsize && { size: productsize }),
-//       })
-//       .sort({ createdAt: -1 })
-//       .populate("variant category subcategory");
-//     if (getAllProduct.length == 0) {
-//       return res
-//         .status(404)
-//         .json({ success: false, message: "Product not found" });
-//     }
-//     return res.status(200).json({
-//       success: true,
-//       message: "Product fetched successfully",
-//       data: getAllProduct,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({ success: false, message: error.message });
-//   }
-// };
 const getProductController = async (req, res) => {
   const { category, minprice, maxprice, productsize, productcolor, sort } =
     req.query;
@@ -136,7 +110,6 @@ const getProductController = async (req, res) => {
     });
   }
 };
-
 const getSingleProductController = async (req, res) => {
   try {
     const { slug } = req.params;
