@@ -1,33 +1,42 @@
 "use client";
 import Breadcrumb from "@/components/common/Breadcrumb";
-import React, { useState } from "react";
+import axios from "axios";
+import { useParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { GrCart } from "react-icons/gr";
 import { LuHeart } from "react-icons/lu";
 
 const ProductPage = () => {
-  const colors = [
-    "black",
-    "blue",
-    "red",
-    "green",
-    "gray",
-    "purple",
-    "white",
-    "#253d4e",
-  ];
-  const sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
-  const [color, setColor] = useState("black");
-  const [size, setSize] = useState("XS");
+  const { name } = useParams();
+  const [selectVariant, setSelectVariant] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [mainImage, setMainImage] = useState("/products/monitor.png");
-
   const productImages = ["desktop", "camera", "laptop", "tv"];
+  const [product, setProduct] = useState({});
+
+  useEffect(() => {
+    function getSingleProduct() {
+      axios
+        .get(
+          `${process.env.NEXT_PUBLIC_URL}/api/product/get-single-product/${name}`
+        )
+        .then((res) => {
+          setProduct(res.data.data);
+        });
+    }
+    getSingleProduct();
+  }, []);
 
   const handleQuantity = (type) => {
     if (type === "dec") setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
     else setQuantity((prev) => prev + 1);
   };
+  useEffect(() => {
+    if (product?.variant?.length > 0) {
+      setSelectVariant(product?.variant[0]);
+    }
+  }, [product]);
+  console.log(selectVariant);
 
   return (
     <div className="bg-gray-50 pb-20">
@@ -37,7 +46,7 @@ const ProductPage = () => {
         <div className="flex flex-col lg:flex-row gap-10">
           <div className="w-full lg:w-[45%] flex flex-col gap-4">
             <img
-              src={mainImage}
+              src={product.image}
               alt="Main Product"
               className="w-full h-60 sm:h-80 lg:h-[526px] xl:h-[550px] border rounded-lg object-contain p-2 cursor-pointer"
             />
@@ -55,7 +64,7 @@ const ProductPage = () => {
           </div>
           <div className="w-full lg:w-[50%] flex flex-col justify-start">
             <h2 className="font-quicksand font-bold text-2xl sm:text-3xl lg:text-4xl xl:text-[36px] leading-8 lg:leading-10 text-textPrimary">
-              MSI PRO MP223 E2 21.45" 100Hz Full HD Business Monitor
+              {product.name}
             </h2>
 
             <p className="flex items-center gap-3 mt-2 text-sm sm:text-base">
@@ -64,12 +73,12 @@ const ProductPage = () => {
             </p>
             <div className="flex flex-wrap items-center gap-6 mt-4">
               <p className="font-quicksand font-bold text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-primaryColor">
-                $38
+                ৳{selectVariant?.price}
               </p>
               <p className="font-quicksand font-semibold text-sm sm:text-base lg:text-lg text-[#fdc040] flex flex-col items-start">
                 26% Off
                 <del className="text-base sm:text-lg lg:text-xl xl:text-2xl font-bold text-[#b6b6b6]">
-                  $52
+                  ৳52
                 </del>
               </p>
             </div>
@@ -78,23 +87,32 @@ const ProductPage = () => {
                 <p>
                   Category:
                   <span className="text-textPrimary font-bold ml-1">
-                    Monitor
+                    {product?.category?.name}
                   </span>
                 </p>
+                {/* =================== sku =================== */}
                 <p>
                   Sku:
                   <span className="text-textPrimary font-bold ml-1">
-                    monitor-msi-123
+                    {selectVariant?.sku}
                   </span>
                 </p>
               </div>
               <div>
+                {/* =================== stock =================== */}
                 <p>
                   Availability:
-                  <span className="text-green-500 font-bold ml-1">
-                    In Stock
-                  </span>
+                  {selectVariant?.stock > 0 ? (
+                    <span className="text-green-500 font-bold ml-1">
+                      In Stock
+                    </span>
+                  ) : (
+                    <span className="text-red-500 font-bold ml-1">
+                      Out Stock
+                    </span>
+                  )}
                 </p>
+                {/* =================== brand =================== */}
                 <p>
                   Brand:
                   <span className="text-textPrimary font-bold ml-1">MSI</span>
@@ -102,43 +120,55 @@ const ProductPage = () => {
               </div>
             </div>
             <p className="text-secondaryColor mt-4 text-[16px] sm:text-[17px] leading-6 sm:leading-7">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit
-              quasi iusto explicabo id odio nam! Officiis reprehenderit dolores
-              ipsum ratione tempora...
+              {product.description}
             </p>
-            <h3 className="text-lg sm:text-xl font-lato font-semibold my-3 text-textPrimary">
-              Size:
-            </h3>
-            <div className="flex gap-3 flex-wrap">
-              {sizes.map((item) => (
-                <li
-                  onClick={() => setSize(item)}
-                  key={item}
-                  className={`flex items-center justify-center border border-primaryColor 
-                    ${size === item ? "bg-primaryColor text-white" : ""} 
+            {/* ==================== size ==================== */}
+            {product?.variant?.length > 0 && (
+              <>
+                <h3 className="text-lg sm:text-xl font-lato font-semibold my-3 text-textPrimary">
+                  Size:
+                </h3>
+                <div className="flex gap-3 flex-wrap">
+                  {product?.variant?.map((item) => (
+                    <li
+                      onClick={() => setSelectVariant(item)}
+                      key={item._id}
+                      className={`flex items-center justify-center border border-primaryColor 
+                    ${
+                      selectVariant?._id === item._id
+                        ? "bg-primaryColor text-white"
+                        : ""
+                    } 
                     text-textPrimary transition-all rounded cursor-pointer px-3 py-1 sm:px-4 sm:py-2`}
-                >
-                  {item}
-                </li>
-              ))}
-            </div>
-            <h3 className="text-lg sm:text-xl font-lato font-semibold my-3 text-textPrimary">
-              Color:
-            </h3>
-            <div className="flex gap-3 flex-wrap">
-              {colors.map((item) => (
-                <div
-                  key={item}
-                  onClick={() => setColor(item)}
-                  className={`w-8 h-8 sm:w-10 sm:h-10 border-4 rounded-full cursor-pointer ${
-                    color === item
-                      ? "border-primaryColor"
-                      : "border-transparent"
-                  }`}
-                  style={{ backgroundColor: item }}
-                ></div>
-              ))}
-            </div>
+                    >
+                      {item.size}
+                    </li>
+                  ))}
+                </div>
+              </>
+            )}
+            {/* ==================== color ==================== */}
+            {product?.variant?.length > 0 && (
+              <>
+                <h3 className="text-lg sm:text-xl font-lato font-semibold my-3 text-textPrimary">
+                  Color:
+                </h3>
+                <div className="flex gap-3 flex-wrap">
+                  {product?.variant.map((item) => (
+                    <div
+                      key={item._id}
+                      onClick={() => setSelectVariant(item)}
+                      className={`w-8 h-8 sm:w-10 sm:h-10 border-4 rounded-full cursor-pointer ${
+                        selectVariant?._id === item._id
+                          ? "border-primaryColor"
+                          : "border-transparent"
+                      }`}
+                      style={{ backgroundColor: item.color }}
+                    ></div>
+                  ))}
+                </div>
+              </>
+            )}
             <div className="flex flex-wrap items-center gap-3 mt-6">
               <div className="border-2 rounded w-[120px] sm:w-[150px] h-10 sm:h-12 flex items-center justify-between px-2">
                 <button

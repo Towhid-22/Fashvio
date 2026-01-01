@@ -5,8 +5,9 @@ import Product from "./Product";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import axios from "axios";
 import { useSelector } from "react-redux";
-
+import { useRouter } from "next/navigation";
 const Pagination = ({ itemsPerPage }) => {
+  const router = useRouter();
   const currentCategory = useSelector((state) => state.product.currentcategory);
   const priceRange = useSelector((state) => state.product.priceRange);
   const productSize = useSelector((state) => state.product.productSize);
@@ -36,7 +37,9 @@ const Pagination = ({ itemsPerPage }) => {
     }
     getAllProducts();
   }, [currentCategory, priceRange, productSize, productColor, sort]);
-
+  const handleSingleProduct = (item) => {
+    router.push(`/shop/${item.slug}`);
+  };
   function Items({ currentItems }) {
     return (
       <>
@@ -44,7 +47,11 @@ const Pagination = ({ itemsPerPage }) => {
           {currentItems &&
             currentItems.map((item, index) => (
               <div>
-                <Product product={item} key={index} />
+                <Product
+                  product={item}
+                  key={index}
+                  onClick={() => handleSingleProduct(item)}
+                />
               </div>
             ))}
         </div>

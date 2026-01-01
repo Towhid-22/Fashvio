@@ -14,7 +14,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Breadcrumb from "@/components/common/Breadcrumb";
-import Pagination from "@/components/common/Pagination";
 import Color from "@/components/shop/Color";
 import Size from "@/components/shop/Size";
 import Availability from "@/components/shop/Availability";
@@ -63,18 +62,18 @@ const page = () => {
   const showing = [
     {
       id: 1,
-      value: 12,
-      label: 12,
+      value: 10,
+      label: 10,
     },
     {
       id: 2,
-      value: 24,
-      label: 24,
+      value: 20,
+      label: 20,
     },
     {
       id: 3,
-      value: 36,
-      label: 36,
+      value: 30,
+      label: 30,
     },
   ];
   const [show, setShow] = useState(showing[0].value);
@@ -89,7 +88,7 @@ const page = () => {
         <div className="lg:hidden flex items-center justify-between my-2 px-4 xl:px-0">
           <button
             onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="flex items-center gap-2 border px-2 py-1 rounded "
+            className="flex items-center gap-2 border px-2 py-1 rounded"
           >
             <IoFilterSharp />
             Filter

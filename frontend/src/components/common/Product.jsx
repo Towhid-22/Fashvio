@@ -6,7 +6,7 @@ import { FaRegHeart } from "react-icons/fa6";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { MdRemoveRedEye } from "react-icons/md";
 
-const Product = ({ product }) => {
+const Product = ({ product,onClick }) => {
   const [qucikView, setQucikView] = useState(false);
   const [id, setId] = useState(null);
   const qucikViewBtn = (_id) => {
@@ -17,6 +17,7 @@ const Product = ({ product }) => {
     <div>
       <div
         key={product._id}
+        onClick={onClick}
         className="border w-[280px] md:w-[241px] h-[370px] rounded p-3 flex flex-col justify-between gap-3 group relative"
       >
         <div className="">
