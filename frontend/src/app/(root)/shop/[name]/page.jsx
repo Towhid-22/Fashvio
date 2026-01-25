@@ -9,189 +9,178 @@ import { LuHeart } from "react-icons/lu";
 
 const ProductPage = () => {
   const { name } = useParams();
-  const [selectVariant, setSelectVariant] = useState(null);
-  const [quantity, setQuantity] = useState(1);
-  const productImages = ["desktop", "camera", "laptop", "tv"];
   const [product, setProduct] = useState({});
-
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [colorsBySize, setColorsBySize] = useState([]);
+  const [variant, setVariant] = useState([]);
+  // ================= fetch product =================
   useEffect(() => {
-    function getSingleProduct() {
-      axios
+    async function getSingleProduct() {
+      const res = await axios
         .get(
-          `${process.env.NEXT_PUBLIC_URL}/api/product/get-single-product/${name}`
+          `${process.env.NEXT_PUBLIC_URL}/api/product/get-single-product/${name}`,
         )
         .then((res) => {
           setProduct(res.data.data);
+          setVariant(res.data.data.variant);
         });
     }
     getSingleProduct();
-  }, []);
-
-  const handleQuantity = (type) => {
-    if (type === "dec") setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
-    else setQuantity((prev) => prev + 1);
-  };
+  }, [name]);
+  // ================= default select =================
   useEffect(() => {
-    if (product?.variant?.length > 0) {
-      setSelectVariant(product?.variant[0]);
+    if (variant?.length > 0) {
+      setSelectedSize(variant[0].size);
     }
   }, [product]);
-  console.log(selectVariant);
+  // ================= unique sizes  =================
+  const uniqueSizes = variant
+    ? Array.from(new Set(variant.map((item) => item.size)))
+    : [];
+  // ================= colors by size  =================
+  useEffect(() => {
+    if (!selectedSize || !variant) return;
+    const filtered = variant.filter((item) => item.size === selectedSize);
+    // remove duplicate colors
+    const uniqueColors = Array.from(
+      new Map(filtered.map((item) => [item.color, item])).values(),
+    );
+    setColorsBySize(uniqueColors);
+    setSelectedColor(uniqueColors[0]?.color || null);
+  }, [selectedSize, product]);
+  // ================= selected variant =================
+  const selectedVariant =
+    variant.find(
+      (item) => item.size === selectedSize && item.color === selectedColor,
+    ) || null;
+
+  const isInStock =
+    !variant || variant.length === 0 ? true : selectedVariant?.stock > 0;
 
   return (
     <div className="bg-gray-50 pb-20">
       <Breadcrumb />
 
-      <div className="max-w-[1580px] mx-auto mt-8 px-4 lg:px-4">
+      <div className="max-w-[1580px] mx-auto mt-8 px-4">
         <div className="flex flex-col lg:flex-row gap-10">
-          <div className="w-full lg:w-[45%] flex flex-col gap-4">
+          <div className="w-full lg:w-[45%]">
             <img
               src={product.image}
-              alt="Main Product"
-              className="w-full h-60 sm:h-80 lg:h-[526px] xl:h-[550px] border rounded-lg object-contain p-2 cursor-pointer"
+              alt={product.name}
+              className="w-full h-[520px] border rounded-lg object-contain p-4"
             />
-            <div className="flex flex-row gap-4  mt-3">
-              {productImages.map((img) => (
-                <img
-                  key={img}
-                  src={`/products/${img}.png`}
-                  alt=""
-                  className="w-14 sm:w-20 lg:w-24 xl:w-28  border border-primaryColor/30 rounded-lg object-contain p-2 cursor-pointer hover:scale-105 transition-transform"
-                  onClick={() => setMainImage(`/products/${img}.png`)}
-                />
-              ))}
-            </div>
           </div>
-          <div className="w-full lg:w-[50%] flex flex-col justify-start">
-            <h2 className="font-quicksand font-bold text-2xl sm:text-3xl lg:text-4xl xl:text-[36px] leading-8 lg:leading-10 text-textPrimary">
-              {product.name}
-            </h2>
+          <div className="w-full lg:w-[50%]">
+            <h2 className="text-4xl font-bold">{product.name}</h2>
 
-            <p className="flex items-center gap-3 mt-2 text-sm sm:text-base">
+            <p className="flex items-center gap-2 mt-2">
               <FaStar className="text-yellow-400" />
-              <span className="text-[#B6B6B6]">(32 Reviews)</span>
+              <span className="text-gray-400">(32 Reviews)</span>
             </p>
-            <div className="flex flex-wrap items-center gap-6 mt-4">
-              <p className="font-quicksand font-bold text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-primaryColor">
-                ৳{selectVariant?.price}
-              </p>
-              <p className="font-quicksand font-semibold text-sm sm:text-base lg:text-lg text-[#fdc040] flex flex-col items-start">
-                26% Off
-                <del className="text-base sm:text-lg lg:text-xl xl:text-2xl font-bold text-[#b6b6b6]">
-                  ৳52
-                </del>
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-6 mt-3 text-gray-400 font-semibold text-sm sm:text-base">
+
+            <p className="text-5xl font-bold text-primaryColor mt-4">
+              ৳{selectedVariant?.price || product.price}
+            </p>
+            <div className="flex gap-10 mt-4 text-gray-500">
               <div>
                 <p>
                   Category:
-                  <span className="text-textPrimary font-bold ml-1">
+                  <span className="font-bold text-black ml-1">
                     {product?.category?.name}
                   </span>
                 </p>
-                {/* =================== sku =================== */}
                 <p>
-                  Sku:
-                  <span className="text-textPrimary font-bold ml-1">
-                    {selectVariant?.sku}
+                  SKU:
+                  <span className="font-bold text-black ml-1">
+                    {selectedVariant?.sku || "N/A"}
                   </span>
                 </p>
               </div>
+
               <div>
-                {/* =================== stock =================== */}
                 <p>
                   Availability:
-                  {selectVariant?.stock > 0 ? (
-                    <span className="text-green-500 font-bold ml-1">
-                      In Stock
-                    </span>
-                  ) : (
-                    <span className="text-red-500 font-bold ml-1">
-                      Out Stock
-                    </span>
-                  )}
+                  <span
+                    className={`font-bold ml-1 ${
+                      isInStock ? "text-green-500" : "text-red-500"
+                    }`}
+                  >
+                    {isInStock ? "In Stock" : "Out of Stock"}
+                  </span>
                 </p>
                 {/* =================== brand =================== */}
                 <p>
-                  Brand:
-                  <span className="text-textPrimary font-bold ml-1">MSI</span>
+                  Sub-Category:
+                  <span className="text-textPrimary font-bold ml-1">
+                    {product?.subcategory?.name}
+                  </span>
                 </p>
               </div>
             </div>
-            <p className="text-secondaryColor mt-4 text-[16px] sm:text-[17px] leading-6 sm:leading-7">
-              {product.description}
-            </p>
-            {/* ==================== size ==================== */}
-            {product?.variant?.length > 0 && (
+
+            <p className="mt-4 text-gray-600">{product.description}</p>
+
+            {/* size */}
+            {uniqueSizes.length > 0 && (
               <>
-                <h3 className="text-lg sm:text-xl font-lato font-semibold my-3 text-textPrimary">
-                  Size:
-                </h3>
-                <div className="flex gap-3 flex-wrap">
-                  {product?.variant?.map((item) => (
-                    <li
-                      onClick={() => setSelectVariant(item)}
-                      key={item._id}
-                      className={`flex items-center justify-center border border-primaryColor 
-                    ${
-                      selectVariant?._id === item._id
-                        ? "bg-primaryColor text-white"
-                        : ""
-                    } 
-                    text-textPrimary transition-all rounded cursor-pointer px-3 py-1 sm:px-4 sm:py-2`}
+                <h3 className="text-xl font-semibold mt-6 mb-2">Size</h3>
+                <div className="flex gap-3">
+                  {uniqueSizes.map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      className={`px-4 py-2 border rounded cursor-pointer uppercase
+                        ${
+                          selectedSize === size
+                            ? "bg-primaryColor text-white"
+                            : ""
+                        }`}
                     >
-                      {item.size}
-                    </li>
+                      {size}
+                    </button>
                   ))}
                 </div>
               </>
             )}
-            {/* ==================== color ==================== */}
-            {product?.variant?.length > 0 && (
+
+            {/* color */}
+            {colorsBySize.length > 0 && (
               <>
-                <h3 className="text-lg sm:text-xl font-lato font-semibold my-3 text-textPrimary">
-                  Color:
-                </h3>
-                <div className="flex gap-3 flex-wrap">
-                  {product?.variant.map((item) => (
+                <h3 className="text-xl font-semibold mt-6 mb-2">Color</h3>
+                <div className="flex gap-3">
+                  {colorsBySize.map((item) => (
                     <div
                       key={item._id}
-                      onClick={() => setSelectVariant(item)}
-                      className={`w-8 h-8 sm:w-10 sm:h-10 border-4 rounded-full cursor-pointer ${
-                        selectVariant?._id === item._id
-                          ? "border-primaryColor"
-                          : "border-transparent"
-                      }`}
+                      onClick={() => setSelectedColor(item.color)}
+                      className={`w-10 h-10 rounded-full border-4 cursor-pointer
+                        ${
+                          selectedColor === item.color
+                            ? "border-primaryColor"
+                            : "border-transparent"
+                        }`}
                       style={{ backgroundColor: item.color }}
-                    ></div>
+                    />
                   ))}
                 </div>
               </>
             )}
-            <div className="flex flex-wrap items-center gap-3 mt-6">
-              <div className="border-2 rounded w-[120px] sm:w-[150px] h-10 sm:h-12 flex items-center justify-between px-2">
-                <button
-                  className="text-xl sm:text-2xl font-bold cursor-pointer text-primaryColor"
-                  onClick={() => handleQuantity("dec")}
-                >
-                  ⎯
+
+            {/* cart */}
+            {isInStock ? (
+              <div className="flex items-center gap-4 mt-8">
+                <button className="bg-primaryColor text-white text-xl cursor-pointer px-6 h-12 rounded flex items-center gap-2">
+                  Add to Cart <GrCart />
                 </button>
-                <span className="text-lg sm:text-xl">{quantity}</span>
-                <button
-                  className="text-xl sm:text-2xl font-bold cursor-pointer text-primaryColor"
-                  onClick={() => handleQuantity("inc")}
-                >
-                  ✛
+                <button className="border h-12 w-12 flex items-center justify-center rounded">
+                  <LuHeart />
                 </button>
               </div>
-              <button className="font-lato font-semibold h-10 sm:h-12 uppercase px-4 sm:px-5 text-lg sm:text-xl bg-primaryColor flex items-center gap-2 sm:gap-3 rounded text-white">
-                Add to Cart <GrCart className="text-xl sm:text-2xl" />
-              </button>
-              <button className="border-2 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded text-secondaryColor">
-                <LuHeart className="text-xl sm:text-2xl text-textPrimary" />
-              </button>
-            </div>
+            ) : (
+              <div className="text-red-500 font-extrabold text-2xl leading-5 font-poppins mt-6">
+                Out Of Stock
+              </div>
+            )}
           </div>
         </div>
       </div>

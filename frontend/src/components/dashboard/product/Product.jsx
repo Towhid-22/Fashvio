@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PiDesktopTowerLight } from "react-icons/pi";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBinLine, RiCloseLargeFill } from "react-icons/ri";
@@ -8,9 +8,52 @@ import { FaPlus } from "react-icons/fa6";
 import { FiUploadCloud } from "react-icons/fi";
 import { IoIosArrowDown } from "react-icons/io";
 import { products } from "../../../../public";
+import axios from "axios";
 const Product = () => {
   const [subCategoryEditModal, setSubCategoryEditModal] = useState(false);
-  const [createSubCategoryModal, setCreateSubCategoryModal] = useState(false);
+  const [createProductModal, setCreateProductModal] = useState(false);
+  // setCreateProductModal createProductModal
+  const [allProducts, setAllProducts] = useState([]);
+  const [allCategories, setAllCategories] = useState([]);
+  const [allSubCategories, setAllSubCategories] = useState([]);
+  const [categoyId, setCategoryId] = useState("");
+  const [subCategoryId, setSubCategoryId] = useState("");
+
+  useEffect(() => {
+    // fetch all products
+    axios
+      .get(`${process.env.NEXT_PUBLIC_URL}/api/product/get-product`)
+      .then((res) => {
+        setAllProducts(res.data.data);
+      });
+    // fetch all categories
+    axios
+      .get(`${process.env.NEXT_PUBLIC_URL}/api/category/get-category`)
+      .then((res) => {
+        const data = res.data.data;
+        setAllCategories(data);
+        if (data.length > 0) {
+          setCategoryId(data[0]._id);
+        }
+      });
+  }, []);
+  // sub category by category
+  useEffect(() => {
+    axios
+      .get(
+        `${process.env.NEXT_PUBLIC_URL}/api/subcategory/get-subcategorybycategory/${categoyId}`,
+      )
+      .then((res) => {
+        const data = res.data.data;
+        setAllSubCategories(data);
+        if (data.length > 0) {
+          setSubCategoryId(data[0]._id);
+        }
+      })
+      .catch(() => {
+        setAllSubCategories([]);
+      });
+  }, [categoyId]);
 
   return (
     <>
@@ -42,7 +85,7 @@ const Product = () => {
             <IoIosSearch className="text-2xl absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer" />
           </div>
           <button
-            onClick={() => setCreateSubCategoryModal(true)}
+            onClick={() => setCreateProductModal(true)}
             className="flex items-center gap-2 border py-2 px-3 rounded cursor-pointer text-primaryColor border-primaryColor font-semibold font-quicksand"
           >
             <FaPlus /> Add New
@@ -96,16 +139,18 @@ const Product = () => {
               <th className="w-[450px] text-left p-3">Actions</th>
             </tr>
           </thead>
-          {products.map((product) => (
-            <tbody>
+          {allProducts.map((item) => (
+            <tbody key={item._id}>
               <tr>
-                <td className="p-3 font-semibold">{product.title}</td>
+                <td className="p-3 font-semibold">{item?.name}</td>
                 <td className="p-3">
-                  <img src={product.img} alt={product.title} className="w-20" />
+                  <img src={item?.image} alt={item?.name} className="w-20" />
                 </td>
-                <td className="p-3">{product.category}</td>
-                <td className="p-3">${product.price}</td>
-                <td className="p-3">01 Nov 2025</td>
+                <td className="p-3">{item.category?.name}</td>
+                <td className="p-3">${item?.price}</td>
+                <td className="p-3">
+                  {new Date(item.createdAt).toLocaleDateString()}
+                </td>
                 <td className="p-3">
                   <div className="flex gap-2">
                     <button
@@ -182,9 +227,9 @@ const Product = () => {
       )}
 
       {/*  ====================== Create Sub-Category Modal ======================= */}
-      {createSubCategoryModal && (
+      {createProductModal && (
         <div
-          onClick={() => setCreateSubCategoryModal(false)}
+          onClick={() => setCreateProductModal(false)}
           className="fixed p-5 flex items-center justify-center inset-0 sm:p-0 md:inset-0  bg-black/50 z-50"
         >
           <div
@@ -192,10 +237,10 @@ const Product = () => {
             className="bg-white border rounded w-[280px] sm:w-[350px] md:w-[450px] lg:w-[800px] shadow p-5 relative"
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-2xl font-semibold">Add Sub-Category</h3>
+              <h3 className="text-2xl font-semibold">Add New Product</h3>
               <button
                 className="cursor-pointer border p-1 rounded"
-                onClick={() => setCreateSubCategoryModal(false)}
+                onClick={() => setCreateProductModal(false)}
               >
                 <RiCloseLargeFill className="text-2xl" />
               </button>
@@ -212,7 +257,7 @@ const Product = () => {
                   placeholder="Product name"
                 />
               </div>
-              <div className="">
+              <div>
                 <label htmlFor="price" className="font-semibold text-xl">
                   Price
                 </label>
@@ -224,6 +269,35 @@ const Product = () => {
                 />
               </div>
             </div>
+            <div className="md:grid grid-cols-2 gap-3 mt-3">
+              <div>
+                <label htmlFor="quantity" className="font-semibold text-xl">
+                  Quantity
+                </label>
+                <input
+                  type="text"
+                  id="quantity"
+                  className="border rounded px-4 py-2 outline-none w-full mt-2"
+                  placeholder="Quantity"
+                />
+              </div>
+              <div className="">
+                <label htmlFor="isFeature" className="font-semibold text-xl">
+                  isFeature
+                </label>
+                <div className="relative">
+                  <select
+                    id="isFeature"
+                    className="w-full rounded border p-2 outline-none appearance-none px-4 mt-2"
+                  >
+                    <option value="desktop">false</option>
+                    <option value="desktop">true</option>
+                  </select>
+                  <IoIosArrowDown className="absolute top-1/2 right-2 text-textPrimary/70 -translate-y-1/2 text-xl" />
+                </div>
+              </div>
+            </div>
+
             <div className="md:grid grid-cols-2 gap-3">
               <div className="flex flex-col mt-3 gap-3">
                 <label htmlFor="category" className="font-semibold text-xl">
@@ -231,12 +305,14 @@ const Product = () => {
                 </label>
                 <div className="relative">
                   <select
+                    onChange={(e) => setCategoryId(e.target.value)}
                     id="category"
                     className="w-full rounded border p-2 outline-none appearance-none px-4"
                   >
-                    {products.map((product) => (
-                      
-                    <option value="desktop">{product.category}</option>
+                    {allCategories.map((item) => (
+                      <option key={item._id} value={item._id}>
+                        {item.name}
+                      </option>
                     ))}
                   </select>
                   <IoIosArrowDown className="absolute top-1/2 right-2 text-textPrimary/70 -translate-y-1/2 text-xl" />
@@ -248,11 +324,16 @@ const Product = () => {
                 </label>
                 <div className="relative">
                   <select
+                    value={subCategoryId}
+                    onChange={(e) => setSubCategoryId(e.target.value)}
                     id="category"
                     className="w-full rounded border p-2 outline-none appearance-none px-4"
                   >
-                    <option value="desktop">Gaming PC</option>
-                    <option value="laptop">Office PC</option>
+                    {allSubCategories.map((item) => (
+                      <option key={item._id} value={item._id}>
+                        {item.name}
+                      </option>
+                    ))}
                   </select>
                   <IoIosArrowDown className="absolute top-1/2 right-2 text-textPrimary/70 -translate-y-1/2 text-xl" />
                 </div>
