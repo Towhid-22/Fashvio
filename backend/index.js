@@ -7,7 +7,12 @@ require("dotenv").config();
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const PORT = process.env.PORT || 5000;
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    credentials: true,
+  }),
+);
 app.use(
   session({
     store: MongoStore.create({ mongoUrl: process.env.DATABASE_URL }),
@@ -17,7 +22,7 @@ app.use(
     rolling: true,
     cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 },
     name: "fashvio",
-  })
+  }),
 );
 connectDB();
 app.use(express.json());

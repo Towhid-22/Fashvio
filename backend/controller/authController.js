@@ -10,6 +10,13 @@ const signupController = async (req, res) => {
   try {
     const otp = random_otp();
     const { username, email, password } = req.body;
+    const existingUser = await userModel.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already exists",
+      });
+    }
     bcrypt.hash(password, 10, async function (err, hash) {
       if (err) {
         return res.status(400).json({
@@ -27,24 +34,32 @@ const signupController = async (req, res) => {
         sendEmail(email, otp);
         await user.save();
 
-        setTimeout(async () => {
-          await userModel
-            .findOneAndUpdate({ email }, { otp: null })
-            .then(() => {
-              console.log("otp delete");
-            });
-          user.save();
-        }, 1000 * 60 * 2);
+        setTimeout(
+          async () => {
+            await userModel
+              .findOneAndUpdate({ email }, { otp: null })
+              .then(() => {
+                console.log("otp delete");
+              });
+          },
+          1000 * 60 * 2,
+        );
         if (user.role == "admin") {
           req.session.cookie.maxAge = 5 * 60 * 1000;
         } else {
           req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
         }
         req.session.user = user;
+        const userData = {
+          id: user._id,
+          name: user.username,
+          email: user.email,
+          role: user.role,
+        };
         return res.status(201).json({
           success: true,
           message: "User created successfully",
-          data: user,
+          data: userData,
         });
       }
     });
