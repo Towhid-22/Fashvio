@@ -6,7 +6,7 @@ import { FaRegHeart } from "react-icons/fa6";
 import { LuArrowRightLeft } from "react-icons/lu";
 import { MdRemoveRedEye } from "react-icons/md";
 
-const Product = ({ product,onClick }) => {
+const Product = ({ product, onClick }) => {
   const [qucikView, setQucikView] = useState(false);
   const [id, setId] = useState(null);
   const qucikViewBtn = (_id) => {
@@ -18,7 +18,7 @@ const Product = ({ product,onClick }) => {
       <div
         key={product._id}
         onClick={onClick}
-        className="border w-[280px] md:w-[241px] h-[370px] rounded p-3 flex flex-col justify-between gap-3 group relative"
+        className="border w-[280px] md:w-[241px] h-[400px] rounded p-3 flex flex-col justify-between gap-3 group relative"
       >
         <div className="">
           <div className="w-full flex items-center justify-center">
@@ -41,25 +41,33 @@ const Product = ({ product,onClick }) => {
           <del className="font-normal text-textPrimary/50">$16.00</del>
         </div>
         <div className="w-full">
-          <button className="text-primaryColor w-full bg-primaryColor/20 flex items-center justify-center text-xl py-1.5 px-2 font-bold cursor-pointer rounded gap-3">
+          <button
+            onClick={(e) => e.stopPropagation()}
+            className="text-primaryColor w-full bg-primaryColor/20 flex items-center justify-center text-xl py-1.5 px-2 font-bold cursor-pointer rounded gap-3"
+          >
             <ImCart /> Add
           </button>
         </div>
         <ul className="absolute top-1 right-1 hidden items-center gap-1 group-hover:flex group-hover:flex-col group-hover:gap-1">
           <li
+            onClick={(e) => e.stopPropagation()}
             title="Add to Compare"
             className="border size-9 rounded-full flex items-center justify-center hover:bg-primaryColor text-textPrimary hover:text-white font-bold transition-all duration-300 cursor-pointer"
           >
             <LuArrowRightLeft />
           </li>
           <li
+            onClick={(e) => e.stopPropagation()}
             title="Add to Favorite"
             className="border size-9 rounded-full flex items-center justify-center hover:bg-primaryColor text-textPrimary hover:text-white font-bold transition-all duration-300 cursor-pointer"
           >
             <FaRegHeart />
           </li>
           <li
-            onClick={() => qucikViewBtn(product._id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              qucikViewBtn(product._id);
+            }}
             title="Quick View"
             className="border size-9 rounded-full flex items-center justify-center hover:bg-primaryColor text-textPrimary hover:text-white font-bold transition-all duration-300 cursor-pointer"
           >

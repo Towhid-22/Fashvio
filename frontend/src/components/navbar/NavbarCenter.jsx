@@ -10,8 +10,11 @@ import { HiOutlineShoppingBag } from "react-icons/hi";
 import { FaBars } from "react-icons/fa6";
 import { categories } from "../../../public";
 import { IoSearch } from "react-icons/io5";
+import { useSelector } from "react-redux";
 
 const NavbarCenter = () => {
+  const userData = useSelector((state) => state.authentication.userInfo);
+  console.log(userData);
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [search, setSearch] = useState(false);
   const sidebarRef = useRef(null);
@@ -57,6 +60,8 @@ const NavbarCenter = () => {
             </div>
             {/* Right Section */}
             <div className="flex items-center">
+              {/* {userData?.role === "admin" && (
+              )} */}
               <Link href="/dashboard">
                 <button className="text-primaryColor font-quicksand font-medium leading-6.5 text-sm flex items-center gap-2 shadow py-2 px-4 rounded-[5px] border-2 border-secondaryColorColor/20 cursor-pointer mr-[30px]">
                   {/* Became Vendor <LiaLongArrowAltRightSolid /> */}
@@ -108,13 +113,19 @@ const NavbarCenter = () => {
                   </Link>
                 </li>
                 <li className="font-lato leading-4 text-secondaryColor  cursor-pointer">
-                  <Link
-                    href="/account/login"
-                    className="flex items-center gap-1"
-                  >
-                    <LuUser className="te xt-2xl text-black" />
-                    Account
-                  </Link>
+                  {userData ? (
+                    <button className="flex items-center gap-1 text-textPrimary font-semibold text-xl cursor-pointer">
+                      {userData.name}
+                    </button>
+                  ) : (
+                    <Link
+                      href="/account/login"
+                      className="flex items-center gap-1"
+                    >
+                      <LuUser className="te xt-2xl text-black" />
+                      Account
+                    </Link>
+                  )}
                 </li>
               </ul>
             </div>

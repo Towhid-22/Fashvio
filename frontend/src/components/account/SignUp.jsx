@@ -2,8 +2,15 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { setUserInfo } from "@/store/features/auth/authSlice";
 
 const SignUp = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,13 +20,29 @@ const SignUp = () => {
   const routePath = path[path.length - 1];
 
   const handleLoginBtn = () => {
-    console.log(username);
-    console.log(email);
-    console.log(password);
+    axios
+      .post(
+        `${process.env.NEXT_PUBLIC_URL}/api/authentication/signup`,
+        { username, email, password },
+        { withCredentials: true },
+      )
+      .then((res) => {
+        console.log(res.data.data);
+        dispatch(setUserInfo(res.data.data));
+        toast.success("Signup Successfully!");
+        localStorage.setItem("userInfo", JSON.stringify(res.data.data));
+        setTimeout(() => {
+          router.push("/otp-verify");
+        }, 2000);
+      })
+      .catch((error) => {
+        toast.error(error?.response?.data?.message);
+      });
   };
 
   return (
     <div className="flex items-center justify-center mt-20">
+      <Toaster />
       <div className="border p-5 rounded-[5px] shadow">
         <h1 className="font-lato text-2xl font-semibold">Create an Account</h1>
         <div className="mt-6 flex flex-col gap-1 w-[280px] sm:w-[350px] lg:w-[500px]">
