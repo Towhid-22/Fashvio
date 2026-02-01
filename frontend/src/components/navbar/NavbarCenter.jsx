@@ -23,10 +23,12 @@ const NavbarCenter = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.authentication.userInfo);
   const [sideBarOpen, setSideBarOpen] = useState(false);
+  const [productSearch, setProductSearch] = useState([]);
   const [search, setSearch] = useState(false);
   const sidebarRef = useRef(null);
   const searchRef = useRef(null);
   const profileRef = useRef(null);
+  const searchProductRef = useRef(null);
   const [profilePopup, setProfilePopup] = useState(false);
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -34,10 +36,12 @@ const NavbarCenter = () => {
       const sidebar = sidebarRef.current?.contains(targetedEvent);
       const search = searchRef.current?.contains(targetedEvent);
       const profile = profileRef.current?.contains(targetedEvent);
-      if (!sidebar && !search && !profile) {
+      const search_product = searchProductRef.current?.contains(targetedEvent);
+      if (!sidebar && !search && !profile && !search_product) {
         setSideBarOpen(false);
         setSearch(false);
         setProfilePopup(false);
+        setProductSearch(false);
       }
     };
     document.addEventListener("click", handleClickOutside);
@@ -45,27 +49,42 @@ const NavbarCenter = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [sideBarOpen, search]);
- 
-    const handleLogout = () => {
-      axios
-        .post(
-          `${process.env.NEXT_PUBLIC_URL}/api/authentication/logout`,
-          {},
-          {
-            withCredentials: true,
-          },
-        )
-        .then((res) => {
-          Cookies.remove("fashvio");
-          dispatch(setUserInfo(null));
-          toast.success("Logout Successfully!");
-          window.location.reload(true);
-        })
-        .catch((error) => {
-          toast.error(error?.response?.data?.message);
-        });
-    };
- 
+  const handleLogout = () => {
+    axios
+      .post(
+        `${process.env.NEXT_PUBLIC_URL}/api/authentication/logout`,
+        {},
+        {
+          withCredentials: true,
+        },
+      )
+      .then((res) => {
+        Cookies.remove("fashvio");
+        dispatch(setUserInfo(null));
+        toast.success("Logout Successfully!");
+        window.location.reload(true);
+      })
+      .catch((error) => {
+        toast.error(error?.response?.data?.message);
+      });
+  };
+  const handleSearchProducts = (e) => {
+    e.preventDefault();
+    if (e.target.value === "") return setProductSearch([]);
+    const search = e.target.value;
+    axios
+      .get(
+        `${process.env.NEXT_PUBLIC_URL}/api/product/search-product?search=${search}`,
+      )
+      .then((res) => {
+        setProductSearch(res.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        // toast.error(error?.response?.data?.message);
+      });
+  };
+
   return (
     <>
       {/* ======================= for xl device ======================= */}
@@ -82,6 +101,7 @@ const NavbarCenter = () => {
             </div>
             <div className="w-[596px] border-2 border-primaryColor/40 rounded-[5px] relative">
               <input
+                onChange={handleSearchProducts}
                 className="placeholder:text-sm placeholder:italic p-3 w-full outline-none text-textprimaryColor"
                 type="text"
                 placeholder="Search for products..."
@@ -89,6 +109,30 @@ const NavbarCenter = () => {
               <button className="text-sm leading-3.5 font-quicksand font-semibold bg-primaryColor text-white px-[22px] py-[13px] rounded-[3px] absolute right-1 top-1/2 -translate-y-1/2 cursor-pointer">
                 Search
               </button>
+              {productSearch?.length > 0 && (
+                <div
+                  ref={searchProductRef}
+                  className="absolute top-[50px] left-0 right-0 bg-white shadow-xs p-4 z-50"
+                >
+                  {productSearch.map((product) => (
+                    <Link
+                      key={product._id}
+                      href={`/shop/${product.slug}`}
+                      className="flex items-center gap-3 mb-2 border p-2 rounded"
+                    >
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="size-10"
+                      />
+                      <div>
+                        <h1>{product.name}</h1>
+                        <p>৳{product.price}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="flex items-center">
