@@ -33,7 +33,7 @@ const addProductController = async (req, res) => {
       },
       {
         new: true,
-      }
+      },
     );
     const updateSubcategory = await subcategoryModel.findOneAndUpdate(
       {
@@ -44,7 +44,7 @@ const addProductController = async (req, res) => {
       },
       {
         new: true,
-      }
+      },
     );
     await updateCategory.save();
     await updateSubcategory.save();
@@ -185,7 +185,7 @@ const updateProductController = async (req, res) => {
     const updateProduct = await productModel.findOneAndUpdate(
       { _id: id },
       updateData,
-      { new: true }
+      { new: true },
     );
     return res.status(200).json({
       success: true,
@@ -223,7 +223,7 @@ const deleteProductController = async (req, res) => {
       },
       {
         new: true,
-      }
+      },
     );
     await subcategoryModel.findOneAndUpdate(
       { product: id },
@@ -232,7 +232,7 @@ const deleteProductController = async (req, res) => {
       },
       {
         new: true,
-      }
+      },
     );
     return res
       .status(200)
@@ -260,6 +260,31 @@ const getFeaturesProductController = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+const searchProductController = async (req, res) => {
+  try {
+    const { search } = req.query;
+    if (!search) {
+      return res.status(200).json({
+        success: true,
+        message: "Search Product fetched successfully",
+        data: [],
+      });
+    }
+    const searchProduct = await productModel.find({
+      $or: [
+        { name: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ],
+    });
+    return res.status(200).json({
+      success: true,
+      message: "Search Product fetched successfully",
+      data: searchProduct,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 module.exports = {
   addProductController,
@@ -268,4 +293,5 @@ module.exports = {
   updateProductController,
   deleteProductController,
   getFeaturesProductController,
+  searchProductController,
 };
