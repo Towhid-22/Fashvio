@@ -32,12 +32,13 @@ const Login = () => {
       )
       .then((res) => {
         dispatch(setUserInfo(res.data.data));
-        localStorage.setItem("userInfo", JSON.stringify(res.data.data));
         toast.success("Login Successful!");
-
         setTimeout(() => {
           router.push("/");
         }, 2000);
+        setTimeout(() => {
+          window.location.reload(true)
+        }, 3000);
       })
       .catch((error) => {
         toast.error(error?.response?.data?.message || "Something went wrong");

@@ -1,6 +1,7 @@
 import { Quicksand, Lato, Oswald, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "@/store/StoreProvider";
+import AuthCheck from "@/components/common/AuthCheck";
 
 const quicksand = Quicksand({
   variable: "--font-quicksand",
@@ -32,7 +33,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${quicksand.variable} ${lato.variable} ${lato.greatVibes} ${oswald.variable} ${playfair.variable} antialiased`}
       >
-        <StoreProvider>{children}</StoreProvider>
+        <StoreProvider>
+          <AuthCheck>{children}</AuthCheck>
+        </StoreProvider>
       </body>
     </html>
   );

@@ -1,32 +1,43 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import { BiGitCompare } from "react-icons/bi";
 import { RiHeart3Line } from "react-icons/ri";
 import { BsCart3 } from "react-icons/bs";
 import { LuUser } from "react-icons/lu";
-import { LiaLongArrowAltRightSolid } from "react-icons/lia";
+import { FaUserEdit } from "react-icons/fa";
 import Link from "next/link";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { FaBars } from "react-icons/fa6";
 import { categories } from "../../../public";
 import { IoSearch } from "react-icons/io5";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { GrLogout } from "react-icons/gr";
+import { FaRegHeart } from "react-icons/fa";
+import { HiShoppingBag } from "react-icons/hi2";
+import axios from "axios";
+import { setUserInfo } from "@/store/features/auth/authSlice";
+import toast, { Toaster } from "react-hot-toast";
+import Cookies from "js-cookie";
 
 const NavbarCenter = () => {
+  const dispatch = useDispatch();
   const userData = useSelector((state) => state.authentication.userInfo);
-  console.log(userData);
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [search, setSearch] = useState(false);
   const sidebarRef = useRef(null);
   const searchRef = useRef(null);
+  const profileRef = useRef(null);
+  const [profilePopup, setProfilePopup] = useState(false);
   useEffect(() => {
     const handleClickOutside = (e) => {
       const targetedEvent = e.target;
       const sidebar = sidebarRef.current?.contains(targetedEvent);
       const search = searchRef.current?.contains(targetedEvent);
-      if (!sidebar && !search) {
+      const profile = profileRef.current?.contains(targetedEvent);
+      if (!sidebar && !search && !profile) {
         setSideBarOpen(false);
         setSearch(false);
+        setProfilePopup(false);
       }
     };
     document.addEventListener("click", handleClickOutside);
@@ -34,7 +45,27 @@ const NavbarCenter = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [sideBarOpen, search]);
-
+ 
+    const handleLogout = () => {
+      axios
+        .post(
+          `${process.env.NEXT_PUBLIC_URL}/api/authentication/logout`,
+          {},
+          {
+            withCredentials: true,
+          },
+        )
+        .then((res) => {
+          Cookies.remove("fashvio");
+          dispatch(setUserInfo(null));
+          toast.success("Logout Successfully!");
+          window.location.reload(true);
+        })
+        .catch((error) => {
+          toast.error(error?.response?.data?.message);
+        });
+    };
+ 
   return (
     <>
       {/* ======================= for xl device ======================= */}
@@ -42,9 +73,10 @@ const NavbarCenter = () => {
         <div className="mx-auto max-w-[1580px] px-4 md:px-0 ">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-[30px]">
+              <Toaster />
               {/* Logo */}
               <Link href="/">
-                <img src="logo.png" alt="" />
+                <img src="/logo.png" alt="logo" />
               </Link>
               {/* Search Bar */}
             </div>
@@ -58,17 +90,15 @@ const NavbarCenter = () => {
                 Search
               </button>
             </div>
-            {/* Right Section */}
+
             <div className="flex items-center">
-              {/* {userData?.role === "admin" && (
-              )} */}
-              <Link href="/dashboard">
-                <button className="text-primaryColor font-quicksand font-medium leading-6.5 text-sm flex items-center gap-2 shadow py-2 px-4 rounded-[5px] border-2 border-secondaryColorColor/20 cursor-pointer mr-[30px]">
-                  {/* Became Vendor <LiaLongArrowAltRightSolid /> */}
-                  Dashboard
-                </button>
-              </Link>
-              {/* Icons */}
+              {userData?.role == "admin" ? (
+                <Link href="/dashboard">
+                  <button className="text-primaryColor font-quicksand font-medium leading-6.5 text-sm flex items-center gap-2 shadow py-2 px-4 rounded-[5px] border-2 border-secondaryColorColor/20 cursor-pointer mr-[30px]">
+                    Dashboard
+                  </button>
+                </Link>
+              ) : null}
               <ul className="flex items-center gap-3">
                 <li className="font-lato leading-4 text-secondaryColor flex items-center gap-1 cursor-pointer">
                   <Link
@@ -114,9 +144,37 @@ const NavbarCenter = () => {
                 </li>
                 <li className="font-lato leading-4 text-secondaryColor  cursor-pointer">
                   {userData ? (
-                    <button className="flex items-center gap-1 text-textPrimary font-semibold text-xl cursor-pointer">
-                      {userData.name}
-                    </button>
+                    <div className="relative" ref={profileRef}>
+                      <button
+                        onClick={() => setProfilePopup(true)}
+                        className="flex items-center justify-center gap-1 text-white font-semibold text-xl cursor-pointer w-8 h-8 rounded-full bg-primaryColor "
+                      >
+                        {userData?.username?.charAt(0)}
+                      </button>
+                      {profilePopup && (
+                        <div className="shadow-md w-[200px] py-2 rounded absolute right-0 top-13 z-10 bg-primaryColor">
+                          <ul>
+                            <Link href={"/account/manage-account"}>
+                              <li className="text-white text-base flex items-center gap-2  cursor-pointer transition-all duration-300 hover:bg-primaryColor hover:text-white py-1 px-3">
+                                <FaUserEdit /> Manage Profile
+                              </li>
+                            </Link>
+                            <li className="text-white text-base flex items-center gap-2  cursor-pointer transition-all duration-300 hover:bg-primaryColor hover:text-white py-1 px-3">
+                              <HiShoppingBag /> My Orders
+                            </li>
+                            <li className="text-white text-base  flex items-center gap-2   cursor-pointer transition-all duration-300 hover:bg-primaryColor hover:text-white py-1 px-3">
+                              <FaRegHeart /> My Wish List
+                            </li>
+                            <li
+                              onClick={handleLogout}
+                              className="text-white text-base  flex items-center gap-2   cursor-pointer transition-all duration-300 hover:bg-primaryColor hover:text-white py-1 px-3"
+                            >
+                              <GrLogout /> Logout
+                            </li>
+                          </ul>
+                        </div>
+                      )}
+                    </div>
                   ) : (
                     <Link
                       href="/account/login"
@@ -222,6 +280,8 @@ const NavbarCenter = () => {
           </ul>
         </div>
       </div>
+
+      {/* ======================= manage profile ======================= */}
     </>
   );
 };

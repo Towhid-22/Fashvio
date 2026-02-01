@@ -30,7 +30,6 @@ const SignUp = () => {
         console.log(res.data.data);
         dispatch(setUserInfo(res.data.data));
         toast.success("Signup Successfully!");
-        localStorage.setItem("userInfo", JSON.stringify(res.data.data));
         setTimeout(() => {
           router.push("/otp-verify");
         }, 2000);
