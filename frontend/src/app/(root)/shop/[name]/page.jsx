@@ -6,8 +6,10 @@ import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { GrCart } from "react-icons/gr";
 import { LuHeart } from "react-icons/lu";
+import { useSelector } from "react-redux";
 
 const ProductPage = () => {
+  const user = useSelector((state) => state.authentication.userInfo);
   const { name } = useParams();
   const [product, setProduct] = useState({});
   const [selectedSize, setSelectedSize] = useState(null);
@@ -58,6 +60,23 @@ const ProductPage = () => {
   const isInStock =
     !variant || variant.length === 0 ? true : selectedVariant?.stock > 0;
 
+  // const [quantity, setQuantity] = useState(1);
+  const handleAddToCart = () => {
+    axios
+      .post(
+        `${process.env.NEXT_PUBLIC_URL}/api/cart/add-to-cart`,
+        {
+          product: product._id,
+          user: user._id,
+          variant: selectedVariant?._id || null,
+          price: product.price,
+        },
+        { withCredentials: true },
+      )
+      .then((res) => {
+        console.log(res);
+      });
+  };
   return (
     <div className="bg-gray-50 pb-20">
       <Breadcrumb />
@@ -169,7 +188,10 @@ const ProductPage = () => {
             {/* cart */}
             {isInStock ? (
               <div className="flex items-center gap-4 mt-8">
-                <button className="bg-primaryColor text-white text-xl cursor-pointer px-6 h-12 rounded flex items-center gap-2">
+                <button
+                  onClick={handleAddToCart}
+                  className="bg-primaryColor text-white text-xl cursor-pointer px-6 h-12 rounded flex items-center gap-2"
+                >
                   Add to Cart <GrCart />
                 </button>
                 <button className="border h-12 w-12 flex items-center justify-center rounded">
