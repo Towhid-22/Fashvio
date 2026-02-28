@@ -32,7 +32,13 @@ router.patch("/forgot-password", forgotPasswordController);
 router.get("/authuser", authMiddleware, async (req, res) => {
   try {
     const user = await userModel.findOne({ _id: req.session.user.id });
-    return res.status(200).json({ success: true, data: user });
+    const userData = {
+      username: user.username,
+      email: user.email,
+      role: user.role,
+      _id: user._id,
+    }
+    return res.status(200).json({ success: true, data: userData });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

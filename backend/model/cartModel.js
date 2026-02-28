@@ -22,7 +22,7 @@ const cartSchema = new mongoose.Schema(
       type: Number,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Cart", cartSchema);
