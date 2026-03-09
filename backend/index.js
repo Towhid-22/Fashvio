@@ -9,7 +9,7 @@ const MongoStore = require("connect-mongo");
 const PORT = process.env.PORT || 5000;
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:3000", "https://fashvio-v1r7.vercel.app/"],
     credentials: true,
   }),
 );
