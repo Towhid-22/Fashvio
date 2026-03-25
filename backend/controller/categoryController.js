@@ -14,7 +14,7 @@ const addCategoryController = async (req, res) => {
     const category = new categoryModel({
       name,
       slug,
-      image: process.env.BASE_URL + "/" + req.file.filename,
+      image: process.env.BASE_URL + "/uploads/" + req.file.filename,
     });
     await category.save();
     return res.status(200).json({
@@ -151,7 +151,7 @@ const updatecategoryController = async (req, res) => {
     const updateCat = await categoryModel.findOneAndUpdate(
       { _id: id },
       updateData,
-      { new: true }
+      { new: true },
     );
     return res.status(200).json({
       success: true,
