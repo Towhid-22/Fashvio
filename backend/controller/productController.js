@@ -21,7 +21,7 @@ const addProductController = async (req, res) => {
       subcategory,
       quantity,
       slug,
-      image: process.env.BASE_URL + "/" + req.file.filename,
+      image: process.env.BASE_URL + "/uploads/" + req.file.filename,
     });
     await addProduct.save();
     const updateCategory = await categoryModel.findOneAndUpdate(
