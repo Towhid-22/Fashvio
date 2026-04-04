@@ -7,7 +7,7 @@ const addBannerController = async (req, res) => {
     const { href } = req.body;
     const addBanner = new bannerModel({
       href,
-      image: process.env.BASE_URL + "/" + req.file.filename,
+      image: process.env.BASE_URL + "/uploads/" + req.file.filename,
     });
     await addBanner.save();
     return res.status(201).json({
