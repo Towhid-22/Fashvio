@@ -19,7 +19,7 @@ const addVariantController = async (req, res) => {
       stock,
       price,
       sku,
-      image: req.file && process.env.BASE_URL + "/" + req.file.filename,
+      image: req.file && process.env.BASE_URL + "/uploads/" + req.file.filename,
     });
     const updateProduct = await productModel.findOneAndUpdate(
       {
