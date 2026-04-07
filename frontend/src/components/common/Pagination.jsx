@@ -14,14 +14,15 @@ const Pagination = ({ itemsPerPage }) => {
   const productColor = useSelector((state) => state.product.productColor);
   const sort = useSelector((state) => state.product.sortProduct);
   const [items, setItems] = useState([]);
+  console.log(items)
 
   const filterParams = new URLSearchParams({
     category: currentCategory,
     minprice: priceRange[0],
-    maxprice: priceRange[1],
-    productsize: productSize,
-    productcolor: productColor,
     sort: sort,
+    // maxprice: priceRange[1],
+    // productsize: productSize,
+    // productcolor: productColor,
   });
   useEffect(() => {
     function getAllProducts() {

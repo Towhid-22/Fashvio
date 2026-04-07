@@ -8,6 +8,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { setUserInfo } from "@/store/features/auth/authSlice";
 
+
 const SignUp = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const SignUp = () => {
       .then((res) => {
         console.log(res.data.data);
         dispatch(setUserInfo(res.data.data));
+        localStorage.setItem("setUserInfo", JSON.stringify(res.data.data));
         toast.success("Signup Successfully!");
         setTimeout(() => {
           router.push("/otp-verify");

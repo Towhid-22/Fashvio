@@ -15,7 +15,7 @@ const page = () => {
       <Category />
       <FeatureProduct />
       <NewArrival />
-      <FlashSale />
+      {/* <FlashSale /> */}
       <NewsLetter />
     </div>
   );
