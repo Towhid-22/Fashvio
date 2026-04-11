@@ -107,12 +107,12 @@ const loginController = async (req, res) => {
   const { email, password } = req.body;
   try {
     const existingUser = await userModel.findOne({ email });
-    if (existingUser.isVerify == false) {
-      return res.status(400).json({
-        success: false,
-        message: "User is not verified",
-      });
-    }
+    // if (existingUser.isVerify == false) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "User is not verified",
+    //   });
+    // }
     if (!existingUser) {
       return res.status(404).json({
         success: false,

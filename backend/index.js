@@ -24,6 +24,22 @@ app.use(
     name: "fashvio",
   }),
 );
+// app.use(
+//   session({
+//     name: "fashvio",
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//     store: MongoStore.create({
+//       mongoUrl: process.env.MONGO_URI,
+//     }),
+//     cookie: {
+//       secure: process.env.NODE_ENV === "production", // https হলে true
+//       httpOnly: true,
+//       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+//     },
+//   })
+// );
 connectDB();
 app.use(express.json());
 // app.use(express.static("uploads"));
