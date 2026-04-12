@@ -34,11 +34,11 @@ const Login = () => {
         if (res.data.success == true) {
           dispatch(setUserInfo(res.data.data));
           toast.success("Login Successful!");
-          console.log(res.data)
         }
-        // setTimeout(() => {
-        //   router.push("/");
-        // }, 2000);
+        setTimeout(() => {
+          router.push("/");
+          document.location.reload();
+        }, 2000);
       })
       .catch((error) => {
         toast.error(error?.response?.data?.message || "Something went wrong");
