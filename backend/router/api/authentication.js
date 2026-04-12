@@ -29,36 +29,16 @@ router.post("/forgot-password-otp-verify", forgotPasswordOtpVerifyController);
 router.patch("/forgot-password", forgotPasswordController);
 
 // localhost:4000/api/authentication/authuser
-// router.get("/authuser", authMiddleware, async (req, res) => {
-//   try {
-//     const user = await userModel.findOne({ _id: req.session?.user?.id });
-//     const userData = {
-//       username: user.username,
-//       email: user.email,
-//       role: user.role,
-//       _id: user._id,
-//       isVerify: user.isVerify,
-//     };
-//     console.log(user);
-//     return res.status(200).json({ success: true, data: userData });
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({ success: false, message: error.message });
-//   }
-// });
 router.get("/authuser", authMiddleware, async (req, res) => {
   try {
-    const userId = req.user.id;
-
-    const user = await userModel.findById(userId);
-
+    // const userId = req.user.id;
+    const user = await userModel.findById(req.user.id);
     if (!user) {
       return res.status(404).json({
         success: false,
         message: "User not found",
       });
     }
-
     return res.status(200).json({
       success: true,
       data: {
@@ -69,55 +49,11 @@ router.get("/authuser", authMiddleware, async (req, res) => {
         isVerify: user.isVerify,
       },
     });
-
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 });
-// router.get("/authuser", authMiddleware, async (req, res) => {
-//   try {
-//     const userId = req.session?.user?.id;
-
-//     if (!userId) {
-//       return res.status(401).json({
-//         success: false,
-//         message: "Session not found or expired",
-//       });
-//     }
-
-//     const user = await userModel.findById(userId);
-
-//     if (!user) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "User not found",
-//       });
-//     }
-
-//     const userData = {
-//       username: user.username,
-//       email: user.email,
-//       role: user.role,
-//       _id: user._id,
-//       isVerify: user.isVerify,
-//     };
-
-    // console.log(user);
-    // console.log("SESSION IN AUTHUSER:", req.session);
-//     return res.status(200).json({
-//       success: true,
-//       data: userData,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// });
 module.exports = router;

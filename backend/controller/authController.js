@@ -38,9 +38,7 @@ const signupController = async (req, res) => {
           async () => {
             await userModel
               .findOneAndUpdate({ email }, { otp: null })
-              .then(() => {
-                console.log("otp delete");
-              });
+              .then(() => {});
           },
           1000 * 60 * 2,
         );
@@ -107,13 +105,12 @@ const loginController = async (req, res) => {
   const { email, password } = req.body;
   try {
     const existingUser = await userModel.findOne({ email });
-    // if (existingUser.isVerify == false) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "User is not verified",
-    //   });
-    // }
-    // console.log(existingUser);
+    if (existingUser.isVerify == false) {
+      return res.status(400).json({
+        success: false,
+        message: "User is not verified",
+      });
+    }
     if (!existingUser) {
       return res.status(404).json({
         success: false,
@@ -121,55 +118,47 @@ const loginController = async (req, res) => {
       });
     } else {
       bcrypt.compare(password, existingUser.password, function (err, result) {
-  if (err) {
-    return res.status(500).json({
-      success: false,
-      message: err.message,
-    });
-  }
-
-  if (!result) {
-    return res.status(401).json({
-      success: false,
-      message: "Invalid Password",
-    });
-  }
-
-  const userData = {
-    id: existingUser._id,
-    name: existingUser.username,
-    email: existingUser.email,
-    role: existingUser.role,
-    verify: existingUser.isVerify,
-  };
-
-  if (!req.session) {
-    return res.status(500).json({
-      success: false,
-      message: "Session not initialized",
-    });
-  }
-
-  req.session.user = userData;
-
-  req.session.save((err) => {
-    if (err) {
-      console.log("SESSION ERROR:", err);
-      return res.status(500).json({
-        success: false,
-        message: "Session save failed",
+        if (err) {
+          return res.status(500).json({
+            success: false,
+            message: err.message || "Something went wrong",
+          });
+        }
+        if (!result) {
+          return res.status(401).json({
+            success: false,
+            message: "Invalid Password",
+          });
+        }
+        const userData = {
+          id: existingUser._id,
+          name: existingUser.username,
+          email: existingUser.email,
+          role: existingUser.role,
+          verify: existingUser.isVerify,
+        };
+        if (!req.session) {
+          return res.status(500).json({
+            success: false,
+            message: "Session not initialized",
+          });
+        }
+        req.session.user = userData;
+        req.session.save((err) => {
+          if (err) {
+            return res.status(500).json({
+              success: false,
+              message: "Session save failed",
+            });
+          }
+          return res.status(200).json({
+            success: true,
+            message: "Login successful",
+            data: userData,
+          });
+        });
       });
     }
-
-    return res.status(200).json({
-      success: true,
-      message: "Login successful",
-      data: userData,
-    });
-  });
-});
-    }
-    console.log("SESSION AFTER LOGIN:", req.session);
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -253,9 +242,9 @@ const forgotPasswordOtpVerifyController = async (req, res) => {
       await existingUser.save();
       sendEmail(email, otp);
       setTimeout(async () => {
-        await userModel.findOneAndUpdate({ email }, { otp: null }).then(() => {
-          console.log("otp delete");
-        });
+        await userModel
+          .findOneAndUpdate({ email }, { otp: null })
+          .then(() => {});
         existingUser.save();
       }, 1000 * 60);
       return res.status(200).json({
