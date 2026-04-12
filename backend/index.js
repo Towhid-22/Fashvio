@@ -7,39 +7,76 @@ require("dotenv").config();
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const PORT = process.env.PORT || 5000;
+
+// app.set("trust proxy", 1);
 app.use(
   cors({
     origin: ["http://localhost:3000", "https://fashvio-v1r7.vercel.app"],
     credentials: true,
   }),
 );
+// app.use(
+//   session({
+//     store: MongoStore.create({ mongoUrl: process.env.DATABASE_URL }),
+//     secret: process.env.sessionsecret,
+//     resave: false,
+//     saveUninitialized: false,
+//     rolling: true,
+//     cookie: {
+//       secure: false,
+//       // secure: true,
+//       sameSite: "lax",
+//       // sameSite: "none",
+//       httpOnly: true,
+//       maxAge: 24 * 60 * 60 * 1000,
+//     },
+//     name: "fashvio",
+//   }),
+// );
+
+// app.use(
+//   session({
+//     store: MongoStore.create({
+//       mongoUrl: process.env.DATABASE_URL,
+//       ttl: 24 * 60 * 60,
+//     }),
+//     secret: process.env.sessionsecret,
+//     resave: false,
+//     saveUninitialized: false,
+//     rolling: true,
+//     name: "fashvio",
+//     cookie: {
+//       httpOnly: true,
+//       secure: false,
+//       // secure: true,
+//       sameSite: "lax",
+//       // sameSite: "none",
+//       maxAge: 24 * 60 * 60 * 1000,
+//     },
+//   }),
+// );
+
+app.set("trust proxy", 1);
+
 app.use(
   session({
-    store: MongoStore.create({ mongoUrl: process.env.DATABASE_URL }),
+    store: MongoStore.create({
+      mongoUrl: process.env.DATABASE_URL,
+      ttl: 24 * 60 * 60,
+    }),
     secret: process.env.sessionsecret,
     resave: false,
     saveUninitialized: false,
-    rolling: true,
-    cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 },
+    cookie: {
+      httpOnly: true,
+      secure: true, // localhost
+      sameSite: "none", // OK for dev
+      maxAge: 24 * 60 * 60 * 1000,
+    },
+
     name: "fashvio",
   }),
 );
-// app.use(
-//   session({
-//     name: "fashvio",
-//     secret: process.env.SESSION_SECRET,
-//     resave: false,
-//     saveUninitialized: false,
-//     store: MongoStore.create({
-//       mongoUrl: process.env.MONGO_URI,
-//     }),
-//     cookie: {
-//       secure: process.env.NODE_ENV === "production", // https হলে true
-//       httpOnly: true,
-//       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-//     },
-//   })
-// );
 connectDB();
 app.use(express.json());
 // app.use(express.static("uploads"));
