@@ -10,6 +10,16 @@ const signupController = async (req, res) => {
   try {
     const otp = random_otp();
     const { username, email, password } = req.body;
+
+    // Email validation
+    if (!emailValidation(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is not valid",
+      });
+    }
+
+    // Check existing user
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
       return res.status(400).json({
@@ -17,54 +27,62 @@ const signupController = async (req, res) => {
         message: "Email already exists",
       });
     }
-    bcrypt.hash(password, 10, async function (err, hash) {
-      if (err) {
-        return res.status(400).json({
-          success: false,
-          message: err.message || "Something went wrong",
-        });
-      } else {
-        if (!emailValidation(email)) {
-          return res.status(400).json({
-            success: false,
-            message: "Email is not valid",
-          });
-        }
-        const user = userModel({ username, email, password: hash, otp });
-        sendEmail(email, otp);
-        await user.save();
 
-        setTimeout(
-          async () => {
-            await userModel
-              .findOneAndUpdate({ email }, { otp: null })
-              .then(() => {});
-          },
-          1000 * 60 * 2,
-        );
-        if (user.role == "admin") {
-          req.session.cookie.maxAge = 5 * 60 * 1000;
-        } else {
-          req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
-        }
-        req.session.user = user;
-        const userData = {
-          id: user._id,
-          name: user.username,
-          email: user.email,
-          role: user.role,
-        };
-        return res.status(201).json({
-          success: true,
-          message: "User created successfully",
-          data: userData,
+    // Hash password
+    const hash = await bcrypt.hash(password, 10);
+
+    // Create user
+    const user = await userModel.create({
+      username,
+      email,
+      password: hash,
+      otp,
+    });
+
+    // Send OTP email
+    await sendEmail(email, otp);
+
+    // OTP expire after 2 min
+    setTimeout(
+      async () => {
+        await userModel.findOneAndUpdate({ email }, { otp: null });
+      },
+      1000 * 60 * 2,
+    );
+
+    // Session setup
+    req.session.cookie.maxAge =
+      user.role === "admin" ? 5 * 60 * 1000 : 24 * 60 * 60 * 1000;
+
+    const userData = {
+      id: user._id,
+      name: user.username,
+      email: user.email,
+      role: user.role,
+    };
+
+    req.session.user = userData;
+
+    // Save session then respond
+    req.session.save((err) => {
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          message: "Session save failed",
         });
       }
+
+      return res.status(201).json({
+        success: true,
+        message: "User created successfully",
+        data: userData,
+      });
     });
   } catch (err) {
-    return res
-      .status(400)
-      .json({ success: false, message: err.message || "Something went wrong" });
+    return res.status(400).json({
+      success: false,
+      message: err.message || "Something went wrong",
+    });
   }
 };
 //  otp controller
