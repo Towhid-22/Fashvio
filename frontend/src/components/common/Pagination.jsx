@@ -14,7 +14,6 @@ const Pagination = ({ itemsPerPage }) => {
   const productColor = useSelector((state) => state.product.productColor);
   const sort = useSelector((state) => state.product.sortProduct);
   const [items, setItems] = useState([]);
-  console.log(items)
 
   const filterParams = new URLSearchParams({
     category: currentCategory,
@@ -30,7 +29,7 @@ const Pagination = ({ itemsPerPage }) => {
         .get(
           `${
             process.env.NEXT_PUBLIC_URL
-          }/api/product/get-product?${filterParams.toString()}`
+          }/api/product/get-product?${filterParams.toString()}`,
         )
         .then((res) => {
           setItems(res.data.data);

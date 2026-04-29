@@ -7,6 +7,7 @@ import { FaStar } from "react-icons/fa";
 import { GrCart } from "react-icons/gr";
 import { LuHeart } from "react-icons/lu";
 import { useSelector } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
 
 const ProductPage = () => {
   const user = useSelector((state) => state.authentication.userInfo);
@@ -75,12 +76,13 @@ const ProductPage = () => {
       )
       .then((res) => {
         console.log(res);
+        toast.success("Product added to cart!");
       });
   };
   return (
     <div className="bg-gray-50 pb-20">
       <Breadcrumb />
-
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="max-w-[1580px] mx-auto mt-8 px-4">
         <div className="flex flex-col lg:flex-row gap-10">
           <div className="w-full lg:w-[45%]">

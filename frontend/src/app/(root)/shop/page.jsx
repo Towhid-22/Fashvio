@@ -122,7 +122,7 @@ const page = () => {
             <ShopCategory />
             <Color />
             <Size />
-            <PopulrBrand />
+            {/* <PopulrBrand /> */}
           </div>
           <div className="w-full lg:w-[85%]">
             <div className="flex items-center justify-between mb-3">

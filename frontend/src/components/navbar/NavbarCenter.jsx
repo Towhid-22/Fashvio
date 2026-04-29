@@ -165,7 +165,7 @@ const NavbarCenter = () => {
                   </Link>
                 </li>
                 <li className="font-lato leading-4 text-secondaryColor flex items-center gap-1 cursor-pointer">
-                  <Link href="#" className="flex items-center gap-1">
+                  <Link href="/wishlist" className="flex items-center gap-1">
                     <div className="relative">
                       <RiHeart3Line className="text-2xl text-black" />
                       <sup className="w-5 h-5 bg-primaryColor rounded-full flex items-center justify-center text-white text-[12px] absolute -top-2.5 -right-2.5">
