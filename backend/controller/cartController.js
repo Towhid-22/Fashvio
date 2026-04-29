@@ -9,7 +9,7 @@ const addToCartController = async (req, res) => {
       user,
       quantity,
       price,
-    });
+    }).populate("product variant");
     await addCart.save();
     return res.status(201).json({
       success: true,
@@ -20,7 +20,7 @@ const addToCartController = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
-const getCartController = async (req, res) => {
+const getCartControllerByUserId = async (req, res) => {
   try {
     const { id } = req.params;
     const getCart = await cartModel
@@ -57,6 +57,6 @@ const deleteCartController = async (req, res) => {
 };
 module.exports = {
   addToCartController,
-  getCartController,
+  getCartControllerByUserId,
   deleteCartController,
 };
