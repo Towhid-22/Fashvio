@@ -41,6 +41,8 @@ const CartPage = () => {
                     <tr className="bg-gray-50 text-gray-600 uppercase text-xs border-y">
                       <th className="p-3 text-left">Products</th>
                       <th className="p-3 text-left">Price</th>
+                      <th className="p-3 text-left">Size</th>
+                      <th className="p-3 text-left">Color</th>
                       <th className="p-3 text-center">Quantity</th>
                       <th className="p-3 text-right">Sub-Total</th>
                     </tr>
@@ -53,6 +55,7 @@ const CartPage = () => {
                           <button className="text-gray-500 hover:text-red-500 text-lg border rounded-full size-8 cursor-pointer hover:border-red-400 duration-300">
                             ✕
                           </button>
+                          {console.log(item.variant)}
                           <img
                             src={item?.product?.image}
                             alt={item?.product?.name}
@@ -64,14 +67,18 @@ const CartPage = () => {
                         </td>
 
                         <td className="p-3">
-                          {/* {item.oldPrice && (
-                      <span className="line-through text-gray-400 mr-2">
-                        ${item?.product?.price}
-                      </span>
-                    )} */}
                           <span className="text-gray-700">
                             ${item?.product?.price}
-                            {console.log(item?.variant)}
+                          </span>
+                        </td>
+                        <td className="p-3">
+                          <span className="text-gray-700">ssdsd
+                           {item?.variant?.size || "N/A"}
+                          </span>
+                        </td>
+                        <td className="p-3">
+                          <span className="text-gray-700">ssdsd
+                            {/* ${item.variant.size} / {item.variant.color} */}
                           </span>
                         </td>
 
