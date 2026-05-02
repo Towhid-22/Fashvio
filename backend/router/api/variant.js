@@ -10,7 +10,7 @@ const upload = require("../../helpers/uploadimage");
 const adminMiddleware = require("../../middleware/adminMiddleware");
 
 // localhost:4000/api/variant/add-variant
-router.post("/add-variant", adminMiddleware, upload.single("image"), addVariantController);
+router.post("/add-variant", upload.single("image"), addVariantController);
 // localhost:4000/api/variant/update-variant/:id
 router.patch("/update-variant/:id", adminMiddleware, upload.single("image"), updateVariantController);
 // localhost:4000/api/variant/delete-variant/:id
