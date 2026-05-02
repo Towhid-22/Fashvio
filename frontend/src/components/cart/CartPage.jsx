@@ -20,7 +20,6 @@ const CartPage = () => {
         console.log(err);
       });
   }, [user?._id]);
-
   return (
     <>
       <div className="max-w-[1580px] mx-auto px-4 mt-10">
@@ -72,6 +71,7 @@ const CartPage = () => {
                     )} */}
                           <span className="text-gray-700">
                             ${item?.product?.price}
+                            {console.log(item?.variant)}
                           </span>
                         </td>
 

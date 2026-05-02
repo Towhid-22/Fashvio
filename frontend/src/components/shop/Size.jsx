@@ -17,7 +17,7 @@ const Size = () => {
     },
     {
       id: 2,
-      size: "S",
+      size: "SM",
     },
     {
       id: 3,
@@ -33,12 +33,21 @@ const Size = () => {
     },
     {
       id: 6,
-      size: "3XL",
+      size: "XXL",
     },
     {
       id: 7,
+      size: "3XL",
+    },
+    {
+      id: 8,
       size: "4XL",
     },
+    {
+      id: 9,
+      size: "5XL",
+    },
+    
   ];
   const dispatch = useDispatch();
   useEffect(() => {

@@ -19,9 +19,9 @@ const Pagination = ({ itemsPerPage }) => {
     category: currentCategory,
     minprice: priceRange[0],
     sort: sort,
-    // maxprice: priceRange[1],
-    // productsize: productSize,
-    // productcolor: productColor,
+    maxprice: priceRange[1],
+    productsize: productSize,
+    productcolor: productColor,
   });
   useEffect(() => {
     function getAllProducts() {
