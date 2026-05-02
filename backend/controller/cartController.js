@@ -9,7 +9,7 @@ const addToCartController = async (req, res) => {
       user,
       quantity,
       price,
-    }).populate("product variant");
+    })
     await addCart.save();
     return res.status(201).json({
       success: true,
