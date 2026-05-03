@@ -7,6 +7,7 @@ import Link from "next/link";
 const CartPage = () => {
   const [cartList, setCartList] = useState([]);
   const user = useSelector((state) => state.authentication.userInfo);
+  // console.log(user._id)
   useEffect(() => {
     axios
       .get(
@@ -20,6 +21,21 @@ const CartPage = () => {
         console.log(err);
       });
   }, [user?._id]);
+
+  // useEffect(()=>{},[])
+  const handleDeleteCart = (id) => {
+    axios
+      .delete(`${process.env.NEXT_PUBLIC_URL}/api/cart/delete-cartbyid/${id}`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <>
       <div className="max-w-[1580px] mx-auto px-4 mt-10">
@@ -49,13 +65,15 @@ const CartPage = () => {
                   </thead>
 
                   <tbody>
-                    {cartList.map((item) => (
-                      <tr className="border-b hover:bg-gray-50" key={item.id}>
+                    {cartList?.map((item) => (
+                      <tr className="border-b hover:bg-gray-50" key={item._id}>
                         <td className="flex items-center gap-3 p-3">
-                          <button className="text-gray-500 hover:text-red-500 text-lg border rounded-full size-8 cursor-pointer hover:border-red-400 duration-300">
+                          <button
+                            onClick={() => handleDeleteCart(item._id)}
+                            className="text-gray-500 hover:text-red-500 text-lg border rounded-full size-8 cursor-pointer hover:border-red-400 duration-300"
+                          >
                             ✕
                           </button>
-                          {console.log(item.variant)}
                           <img
                             src={item?.product?.image}
                             alt={item?.product?.name}
@@ -72,14 +90,28 @@ const CartPage = () => {
                           </span>
                         </td>
                         <td className="p-3">
-                          <span className="text-gray-700">ssdsd
-                           {item?.variant?.size || "N/A"}
+                          <span className="text-gray-700">
+                            {item?.variant?.size || "N/A"}
                           </span>
                         </td>
                         <td className="p-3">
-                          <span className="text-gray-700">ssdsd
-                            {/* ${item.variant.size} / {item.variant.color} */}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            {item?.variant?.color ? (
+                              <>
+                                <span
+                                  className="w-4 h-4 rounded-full border"
+                                  style={{
+                                    backgroundColor: item.variant.color,
+                                  }}
+                                ></span>
+                                <span className="text-gray-700">
+                                  {item.variant.color}
+                                </span>
+                              </>
+                            ) : (
+                              <span className="text-gray-400">N/A</span>
+                            )}
+                          </div>
                         </td>
 
                         <td className="p-3 text-center">
@@ -134,6 +166,32 @@ const CartPage = () => {
                             ${item?.product?.price}
                           </span>
                         </p>
+                        <div className="p-1">
+                          Size:{" "}
+                          <span className="text-gray-700 font-semibold">
+                            {item?.variant?.size || "N/A"}
+                          </span>
+                        </div>
+                        <div className="p-1">
+                          <div className="flex items-center gap-1">
+                            Color:
+                            {item?.variant?.color ? (
+                              <>
+                                <span
+                                  className="w-4 h-4 rounded-full border"
+                                  style={{
+                                    backgroundColor: item.variant.color,
+                                  }}
+                                ></span>
+                                <span className="text-gray-700 font-semibold">
+                                  {item.variant.color}
+                                </span>
+                              </>
+                            ) : (
+                              <span className="text-gray-400">N/A</span>
+                            )}
+                          </div>
+                        </div>
                         <div className="flex items-center gap-2 mt-2">
                           <button className="px-2 border rounded text-gray-600 hover:text-black">
                             −
