@@ -89,16 +89,17 @@ const Login = () => {
         >
           Login
         </button>
+         <p className="text-primaryColor font-semibold cursor-pointer mt-4">
+          <Link href="/account/forgot-password">Forgotten Password?</Link>
+        </p>
         <p className="mt-4 text-sm text-gray-500 font-lato">
           Don't have an account?
           <span className="text-primaryColor font-semibold cursor-pointer ml-1">
             <Link href="/account/signup">SignUp</Link>
           </span>
         </p>
-        <p className="text-center font-bold my-3 text-xl text-gray-500">OR</p>
-        <button className="w-full bg-white border border-gray-200 py-2 rounded-[5px] font-semibold font-quicksand text-xl cursor-pointer flex items-center justify-center gap-3">
-          <FcGoogle className="text-4xl" /> Continue with Google
-        </button>
+       
+        {/* <p className="text-center font-bold my-3 text-xl text-gray-500">OR</p> */}
       </div>
     </div>
   );
