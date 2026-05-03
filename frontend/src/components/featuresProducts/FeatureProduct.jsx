@@ -46,7 +46,7 @@ const FeatureProduct = () => {
           <Skeleton className="h-[125px] w-[250px] rounded-xl" />
           <div className="grid grid-cols-4 gap-4">
             {Array.from({ length: 4 }).map((_, index) => (
-              <div>
+              <div key={index}>
                 <div className="space-y-2">
                   <Skeleton className="h-4 w-[250px]" />
                   <Skeleton className="h-4 w-[200px]" />

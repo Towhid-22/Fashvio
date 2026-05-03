@@ -3,14 +3,20 @@ import Breadcrumb from "@/components/common/Breadcrumb";
 import React, { useState } from "react";
 import { ImUserPlus } from "react-icons/im";
 import { FaUser, FaEnvelope, FaLock, FaSignOutAlt } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
+import Cookies from "js-cookie";
+import { setUserInfo } from "@/store/features/auth/authSlice";
+import { useRouter } from "next/navigation";
 const page = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.authentication.userInfo);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+
   const handleChangePassword = () => {
-    console.log(oldPassword + "  " + newPassword);
     axios
       .post(
         `${process.env.NEXT_PUBLIC_URL}/api/authentication/reset-password`,
@@ -26,10 +32,30 @@ const page = () => {
         console.log(err);
       });
   };
+  const handleLogout = () => {
+    axios
+      .post(
+        `${process.env.NEXT_PUBLIC_URL}/api/authentication/logout`,
+        {},
+        {
+          withCredentials: true,
+        },
+      )
+      .then((res) => {
+        toast.success("Logout Successfully!");
+        router.push("/account/login");
+        Cookies.remove("fashvio");
+        dispatch(setUserInfo(null));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <>
       <Breadcrumb />
+      <Toaster position="top-center" reverseOrder={false} />
       <div className=" bg-gray-50 flex items-center justify-center p-4">
         <div className="w-full max-w-3xl bg-white rounded-2xl shadow p-6">
           {/* Header */}
@@ -65,7 +91,7 @@ const page = () => {
           {/* Security Section */}
           <div className="mb-8">
             <h2 className="text-lg font-semibold mb-4 text-gray-700">
-              Security
+              Change Password
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -104,7 +130,10 @@ const page = () => {
               Save Changes
             </button>
 
-            <button className="flex items-center justify-center gap-2 border border-red-400 text-red-500 px-6 py-2 rounded-lg hover:bg-red-50">
+            <button
+              onClick={handleLogout}
+              className="flex items-center justify-center gap-2 border border-red-400 text-red-500 px-6 py-2 rounded-lg hover:bg-red-50 cursor-pointer"
+            >
               <FaSignOutAlt />
               Logout
             </button>

@@ -2,11 +2,11 @@
 import axios from "axios";
 import Link from "next/link";
 import React, { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "@/store/features/auth/authSlice";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+
 
 const Login = () => {
   const user = useSelector((state) => state.authentication.userInfo);
@@ -35,12 +35,13 @@ const Login = () => {
           dispatch(setUserInfo(res.data.data));
           toast.success("Login Successful!");
         }
+        router.push("/");
         setTimeout(() => {
-          router.push("/");
+          window.location.reload(true);
         }, 2000);
       })
       .catch((error) => {
-        toast.error(error?.response?.data?.message || "Something went wrong");
+        toast.error(error?.response?.data?.message);
       });
   };
 
@@ -89,7 +90,7 @@ const Login = () => {
         >
           Login
         </button>
-         <p className="text-primaryColor font-semibold cursor-pointer mt-4">
+        <p className="text-primaryColor font-semibold cursor-pointer mt-4">
           <Link href="/account/forgot-password">Forgotten Password?</Link>
         </p>
         <p className="mt-4 text-sm text-gray-500 font-lato">
@@ -98,7 +99,7 @@ const Login = () => {
             <Link href="/account/signup">SignUp</Link>
           </span>
         </p>
-       
+
         {/* <p className="text-center font-bold my-3 text-xl text-gray-500">OR</p> */}
       </div>
     </div>
