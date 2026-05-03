@@ -15,6 +15,7 @@ const router = express.Router();
 // localhost:4000/api/product/add-product
 router.post(
   "/add-product",
+  adminMiddleware,
   upload.single("image"),
   addProductController,
 );

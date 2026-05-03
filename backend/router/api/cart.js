@@ -1,4 +1,5 @@
 const express = require("express");
+const authMiddleware = require("../../middleware/authMiddleware");
 const {
   addToCartController,
   getCartControllerByUserId,
@@ -10,5 +11,9 @@ router.post("/add-to-cart", addToCartController);
 // localhost:4000/api/cart/get-cartbyuserid/:id
 router.get("/get-cartbyuserid/:id", getCartControllerByUserId);
 // localhost:4000/api/cart/delete-cartbyid/:id
-router.delete("/delete-cartbyid/:id", deleteCartController);
+router.delete(
+  "/delete-cartbyid/:id",
+  authMiddleware,
+  deleteCartController,
+);
 module.exports = router;

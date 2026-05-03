@@ -9,7 +9,7 @@ const addToCartController = async (req, res) => {
       user,
       quantity,
       price,
-    })
+    });
     await addCart.save();
     return res.status(201).json({
       success: true,
@@ -41,18 +41,24 @@ const getCartControllerByUserId = async (req, res) => {
 const deleteCartController = async (req, res) => {
   try {
     const { id } = req.params;
-    const deleteCart = await cartModel.findByIdAndDelete(id);
-    if (!deleteCart) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Cart not found" });
+    const cart = await cartModel.findById(id);
+    if (req.user.id == cart.user) {
+      await cartModel.findByIdAndDelete(id);
+      return res.status(200).json({
+        success: true,
+        message: "Cart delete successfull",
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: "you do not have permission to delete other user cart",
+      });
     }
-    return res.status(200).json({
-      success: true,
-      message: "Cart deleted successfully",
-    });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    return res.status(500).json({
+      success: false,
+      message: error.message || "something went wrong",
+    });
   }
 };
 module.exports = {
