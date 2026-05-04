@@ -18,9 +18,11 @@ import axios from "axios";
 import { setUserInfo } from "@/store/features/auth/authSlice";
 import toast, { Toaster } from "react-hot-toast";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const NavbarCenter = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const userData = useSelector((state) => state.authentication.userInfo);
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [productSearch, setProductSearch] = useState([]);
@@ -60,6 +62,7 @@ const NavbarCenter = () => {
       )
       .then((res) => {
         Cookies.remove("fashvio");
+        router.push("/account/login");
         dispatch(setUserInfo(null));
         toast.success("Logout Successfully!");
         window.location.reload(true);

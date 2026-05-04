@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import Link from "next/link";
 
 const CartPage = () => {
+  // const [count, setCount] = useState(0);
   const [cartList, setCartList] = useState([]);
   const user = useSelector((state) => state.authentication.userInfo);
   // console.log(user._id)
@@ -22,7 +23,6 @@ const CartPage = () => {
       });
   }, [user?._id]);
 
-  // useEffect(()=>{},[])
   const handleDeleteCart = (id) => {
     axios
       .delete(`${process.env.NEXT_PUBLIC_URL}/api/cart/delete-cartbyid/${id}`, {
@@ -31,6 +31,48 @@ const CartPage = () => {
       .then((res) => {
         console.log(res);
         window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const handleIncrement = (id, currentQty) => {
+    axios
+      .patch(
+        `${process.env.NEXT_PUBLIC_URL}/api/cart/update-cartbyid/${id}`,
+        {
+          quantity: currentQty + 1,
+        },
+        { withCredentials: true },
+      )
+      .then(() => {
+        setCartList((prev) =>
+          prev.map((item) =>
+            item._id === id ? { ...item, quantity: currentQty + 1 } : item,
+          ),
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const handleDecrement = (id, currentQty) => {
+    if (currentQty <= 1) return;
+
+    axios
+      .patch(
+        `${process.env.NEXT_PUBLIC_URL}/api/cart/update-cartbyid/${id}`,
+        {
+          quantity: currentQty - 1,
+        },
+        { withCredentials: true },
+      )
+      .then(() => {
+        setCartList((prev) =>
+          prev.map((item) =>
+            item._id === id ? { ...item, quantity: currentQty - 1 } : item,
+          ),
+        );
       })
       .catch((error) => {
         console.log(error);
@@ -83,7 +125,6 @@ const CartPage = () => {
                             {item?.product?.name}
                           </p>
                         </td>
-
                         <td className="p-3">
                           <span className="text-gray-700">
                             ${item?.product?.price}
@@ -113,16 +154,25 @@ const CartPage = () => {
                             )}
                           </div>
                         </td>
-
                         <td className="p-3 text-center">
                           <div className="flex items-center justify-center border rounded-md w-24 mx-auto">
-                            <button className="px-2 py-1 text-gray-600 hover:text-black">
+                            <button
+                              onClick={() =>
+                                handleDecrement(item._id, item.quantity)
+                              }
+                              className="px-2 py-1 text-gray-600 hover:text-black cursor-pointer text-2xl"
+                            >
                               −
                             </button>
-                            <span className="w-8 text-center">
-                              0{item.quantity}
+                            <span className="w-8 text-center text-2xl">
+                              {item.quantity}
                             </span>
-                            <button className="px-2 py-1 text-gray-600 hover:text-black">
+                            <button
+                              onClick={() =>
+                                handleIncrement(item._id, item.quantity)
+                              }
+                              className="px-2 py-1 text-gray-600 hover:text-black cursor-pointer text-2xl"
+                            >
                               +
                             </button>
                           </div>
