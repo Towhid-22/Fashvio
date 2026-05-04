@@ -38,6 +38,81 @@ const getCartControllerByUserId = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+const updateCartController = async (req, res) => {
+  try {
+    // return res.send("update cart controller")
+    const { id } = req.params;
+    const { quantity } = req.body;
+    const cart = await cartModel.findById(id);
+    if (req.user.id == cart.user) {
+      await cartModel.findOneAndUpdate(
+        { _id: id },
+        { quantity },
+        { new: true },
+      );
+      return res.status(200).json({
+        success: true,
+        message: "Cart updated successfully",
+      });
+    } else {
+      return res
+        .status(400)
+        .json({ success: false, message: "You can only update your cart" });
+    }
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+// const updateCartController = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { quantity } = req.body;
+
+//     // 🔴 quantity validation
+//     if (!quantity || quantity < 1) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Quantity must be at least 1",
+//       });
+//     }
+
+//     // 🔴 cart find
+//     const cart = await cartModel.findById(id);
+
+//     if (!cart) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Cart not found",
+//       });
+//     }
+
+//     // 🔴 user authorization check
+//     if (req.user.id != cart.user.toString()) {
+//       return res.status(403).json({
+//         success: false,
+//         message: "You can only update your own cart",
+//       });
+//     }
+
+//     // 🔴 update cart
+//     const updatedCart = await cartModel.findByIdAndUpdate(
+//       id,
+//       { quantity },
+//       { new: true },
+//     );
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "Cart updated successfully",
+//       data: updatedCart,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       success: false,
+//       message: error.message,
+//     });
+//   }
+// };
 const deleteCartController = async (req, res) => {
   try {
     const { id } = req.params;
@@ -64,5 +139,6 @@ const deleteCartController = async (req, res) => {
 module.exports = {
   addToCartController,
   getCartControllerByUserId,
+  updateCartController,
   deleteCartController,
 };
