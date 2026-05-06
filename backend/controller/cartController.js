@@ -43,7 +43,12 @@ const updateCartController = async (req, res) => {
     // return res.send("update cart controller")
     const { id } = req.params;
     const { quantity } = req.body;
-    const cart = await cartModel.findById(id);
+    const cart = await cartModel.findById(id).populate("variant product");
+    if (cart.variant.stock <= quantity) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Stock not available" });
+    }
     if (req.user.id == cart.user) {
       await cartModel.findOneAndUpdate(
         { _id: id },
