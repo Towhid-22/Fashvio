@@ -51,6 +51,7 @@ const CartPage = () => {
             item._id === id ? { ...item, quantity: currentQty + 1 } : item,
           ),
         );
+        window.location.reload(true);
       })
       .catch((error) => {
         console.log(error);
@@ -73,6 +74,7 @@ const CartPage = () => {
             item._id === id ? { ...item, quantity: currentQty - 1 } : item,
           ),
         );
+        window.location.reload(true);
       })
       .catch((error) => {
         console.log(error);
@@ -127,7 +129,7 @@ const CartPage = () => {
                         </td>
                         <td className="p-3">
                           <span className="text-gray-700">
-                            ${item?.product?.price}
+                            ৳{item?.product?.price}
                           </span>
                         </td>
                         <td className="p-3">
@@ -164,7 +166,7 @@ const CartPage = () => {
                             >
                               −
                             </button>
-                            <span className="w-8 text-center text-2xl">
+                            <span className="w-8 text-center text-base">
                               {item.quantity}
                             </span>
                             <button
@@ -179,7 +181,7 @@ const CartPage = () => {
                         </td>
 
                         <td className="p-3 text-right font-medium text-gray-700">
-                          ${item.price * item.quantity}
+                          ৳{item.price * item.quantity}
                         </td>
                       </tr>
                     ))}
