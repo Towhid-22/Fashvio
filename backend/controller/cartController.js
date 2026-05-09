@@ -44,7 +44,6 @@ const updateCartController = async (req, res) => {
     const { id } = req.params;
     const { quantity } = req.body;
     const cart = await cartModel.findById(id).populate("variant product");
-    return console.log(cart.product.quantity);
     if (cart.variant) {
       if (cart.variant.stock < quantity) {
         return res

@@ -25,7 +25,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: true, // false for localhost and true for deploy
+      secure: false, // false for localhost and true for deploy
       sameSite: "none", // for vercel+render "none" and localhost for lax
       maxAge: 24 * 60 * 60 * 1000,
     },
