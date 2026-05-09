@@ -44,25 +44,43 @@ const updateCartController = async (req, res) => {
     const { id } = req.params;
     const { quantity } = req.body;
     const cart = await cartModel.findById(id).populate("variant product");
-    if (cart.variant.stock <= quantity) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Stock not available" });
-    }
-    if (req.user.id == cart.user) {
-      await cartModel.findOneAndUpdate(
-        { _id: id },
-        { quantity },
-        { new: true },
-      );
-      return res.status(200).json({
-        success: true,
-        message: "Cart updated successfully",
-      });
+    if (cart.variant) {
+      if (cart.variant.stock < quantity) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Stock not available" });
+      }
+      if (req.user.id == cart.user) {
+        await cartModel.findOneAndUpdate(
+          { _id: id },
+          { quantity },
+          { new: true },
+        );
+        return res.status(200).json({
+          success: true,
+          message: "Cart updated successfully",
+        });
+      } else {
+        return res
+          .status(400)
+          .json({ success: false, message: "You can only update your cart" });
+      }
     } else {
-      return res
-        .status(400)
-        .json({ success: false, message: "You can only update your cart" });
+      if (req.user.id == cart.user) {
+        await cartModel.findOneAndUpdate(
+          { _id: id },
+          { quantity },
+          { new: true },
+        );
+        return res.status(200).json({
+          success: true,
+          message: "Cart updated successfully",
+        });
+      } else {
+        return res
+          .status(400)
+          .json({ success: false, message: "You can only update your cart" });
+      }
     }
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
