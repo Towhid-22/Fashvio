@@ -67,25 +67,24 @@ const updateCartController = async (req, res) => {
       }
     } else {
       if (cart.product.quantity > quantity) {
-        if (req.user.id == cart.user) {
-          await cartModel.findOneAndUpdate(
-            { _id: id },
-            { quantity },
-            { new: true },
-          );
-          return res.status(200).json({
-            success: true,
-            message: "Cart updated successfully",
-          });
-        } else {
-          return res
-            .status(400)
-            .json({ success: false, message: "You can only update your cart" });
-        }
-      } else {
         return res
           .status(400)
           .json({ success: false, message: "Stock not available" });
+      }
+      if (req.user.id == cart.user) {
+        await cartModel.findOneAndUpdate(
+          { _id: id },
+          { quantity },
+          { new: true },
+        );
+        return res.status(200).json({
+          success: true,
+          message: "Cart updated successfully",
+        });
+      } else {
+        return res
+          .status(400)
+          .json({ success: false, message: "You can only update your cart" });
       }
     }
   } catch (error) {
