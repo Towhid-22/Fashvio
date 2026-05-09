@@ -66,11 +66,10 @@ const updateCartController = async (req, res) => {
           .json({ success: false, message: "You can only update your cart" });
       }
     } else {
-      if (cart.product.quantity > quantity) {
-        alert("Quantity not available");
+      if (cart.product.quantity < quantity) {
         return res
           .status(400)
-          .json({ success: false, message: "Stock not available" });
+          .json({ success: false, message: "Quantity not available" });
       }
       if (req.user.id == cart.user) {
         await cartModel.findOneAndUpdate(
