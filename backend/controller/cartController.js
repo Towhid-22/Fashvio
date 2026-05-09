@@ -67,6 +67,7 @@ const updateCartController = async (req, res) => {
       }
     } else {
       if (cart.product.quantity > quantity) {
+        alert("Quantity not available");
         return res
           .status(400)
           .json({ success: false, message: "Stock not available" });
