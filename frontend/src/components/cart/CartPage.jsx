@@ -5,10 +5,8 @@ import { useSelector } from "react-redux";
 import Link from "next/link";
 
 const CartPage = () => {
-  // const [count, setCount] = useState(0);
   const [cartList, setCartList] = useState([]);
   const user = useSelector((state) => state.authentication.userInfo);
-  // console.log(user._id)
   useEffect(() => {
     axios
       .get(
@@ -80,6 +78,15 @@ const CartPage = () => {
         console.log(error);
       });
   };
+  const subtotal = cartList.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0,
+  );
+  const tax = subtotal * 0.005;
+
+  const shippingFee = 0;
+
+  const total = subtotal + tax + shippingFee;
   return (
     <>
       <div className="max-w-[1580px] mx-auto px-4 mt-10">
@@ -93,7 +100,7 @@ const CartPage = () => {
           </p>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white shadow-sm rounded-md p-4 sm:p-6 col-span-3">
+            <div className="bg-white shadow-sm rounded-md p-4 sm:p-6 col-span-3 border">
               {/* Desktop Table View */}
               <div className="hidden md:block overflow-x-auto">
                 <table className="w-full border-collapse text-sm">
@@ -267,21 +274,21 @@ const CartPage = () => {
                 </button>
               </Link>
             </div>
-            <div className=" font-lato text-textPrimary border rounded-[10px] p-3">
+            <div className=" font-lato text-textPrimary border shadow-sm rounded-[10px] p-3">
               <h3 className="text-2xl text-textPrimary font-lato  font-bold ">
                 Cart Total
               </h3>
               <p className="py-3 border-b border-textPrimary flex justify-between items-center">
-                Subtotal <span>$1000</span>
+                Subtotal <span>${subtotal}</span>
               </p>
               <p className="py-3 border-b border-textPrimary flex justify-between items-center ">
-                Tax <span>$10</span>
+                Tax <span>${tax}</span>
               </p>
               <p className="py-3 border-b border-textPrimary flex justify-between items-center">
-                Shipping Fee <span>Free</span>
+                Shipping Fee <span>{shippingFee}</span>
               </p>
               <p className="py-3 border-b border-textPrimary flex justify-between items-center">
-                Total <span>$1750</span>
+                Total <span>${total}</span>
               </p>
               <Link href="/checkout">
                 <button className="bg-primaryColor font-lato px-5 py-3 mt-3 rounded w-full cursor-pointer text-white">
@@ -291,7 +298,6 @@ const CartPage = () => {
             </div>
           </div>
         )}
-        {/* Cart Items */}
       </div>
     </>
   );

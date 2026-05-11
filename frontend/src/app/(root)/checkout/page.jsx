@@ -1,46 +1,354 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import Link from "next/link";
 import { Checkbox } from "@/components/ui/checkbox";
+import axios from "axios";
+import Container from "@/components/common/Container";
 const page = () => {
+  const [cartList, setCartList] = useState([]);
+  const [billingData, setBillingData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    city: "",
+    address: "",
+  });
+  const user = useSelector((state) => state.authentication.userInfo);
+  console.log(user?._id);
+  useEffect(() => {
+    axios
+      .get(
+        `${process.env.NEXT_PUBLIC_URL}/api/cart/get-cartbyuserid/${user?._id}`,
+        { withCredentials: true },
+      )
+      .then((res) => {
+        setCartList(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [user?._id]);
+
+  const handleDeleteCart = (id) => {
+    axios
+      .delete(`${process.env.NEXT_PUBLIC_URL}/api/cart/delete-cartbyid/${id}`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const handleIncrement = (id, currentQty) => {
+    axios
+      .patch(
+        `${process.env.NEXT_PUBLIC_URL}/api/cart/update-cartbyid/${id}`,
+        {
+          quantity: currentQty + 1,
+        },
+        { withCredentials: true },
+      )
+      .then(() => {
+        setCartList((prev) =>
+          prev.map((item) =>
+            item._id === id ? { ...item, quantity: currentQty + 1 } : item,
+          ),
+        );
+        window.location.reload(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const handleDecrement = (id, currentQty) => {
+    if (currentQty <= 1) return;
+
+    axios
+      .patch(
+        `${process.env.NEXT_PUBLIC_URL}/api/cart/update-cartbyid/${id}`,
+        {
+          quantity: currentQty - 1,
+        },
+        { withCredentials: true },
+      )
+      .then(() => {
+        setCartList((prev) =>
+          prev.map((item) =>
+            item._id === id ? { ...item, quantity: currentQty - 1 } : item,
+          ),
+        );
+        window.location.reload(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const subtotal = cartList.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0,
+  );
+  const tax = subtotal * 0.005;
+  const shippingFee = 0;
+  const total = subtotal + tax + shippingFee;
+  const handleChange = (e) => {
+    setBillingData({ ...billingData, [e.target.name]: e.target.value });
+  };
+
+  const handlePlaceOrder = () => {
+    if (
+      !billingData.name ||
+      !billingData.email ||
+      !billingData.phone ||
+      !billingData.city ||
+      !billingData.address
+    ) {
+      return alert("All field is required");
+    }
+    const order = {
+      user: user?._id,
+      cartItems: [
+        cartList.map((item) => ({
+          product: item.product._id,
+          quantity: item.quantity,
+        })),
+      ],
+      name: billingData.name,
+      email: billingData.email,
+      phone: billingData.phone,
+      city: billingData.city,
+      address: billingData.address,
+      totalPrice: total,
+    };
+    try {
+      axios
+        .post(`${process.env.NEXT_PUBLIC_URL}/api/order/place-order`, order)
+        .then((res) => {
+          console.log(res);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
       <Breadcrumb />
       <div className="min-h-screen py-6 px-3 md:px-10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10">
+          {/* Mobile Card View */}
+          <div className="md:hidden space-y-4">
+            {cartList.map((item) => (
+              <div
+                key={item.id}
+                className="border rounded-md p-3 flex items-start gap-3"
+              >
+                <img
+                  src={item?.product?.image}
+                  alt={item?.product?.name}
+                  className="w-20 h-20 rounded object-cover"
+                />
+                <div className="flex-1">
+                  <div className="flex justify-between items-start">
+                    <p className="font-medium text-gray-800 text-sm">
+                      {item?.product?.name}
+                    </p>
+                    <button className="text-gray-500 hover:text-red-500 text-lg">
+                      ✕
+                    </button>
+                  </div>
+
+                  <div className="mt-2 text-sm text-gray-600">
+                    <p>
+                      Price:
+                      <span className="font-semibold text-gray-800">
+                        ${item?.product?.price}
+                      </span>
+                    </p>
+                    <div className="p-1">
+                      Size:{" "}
+                      <span className="text-gray-700 font-semibold">
+                        {item?.variant?.size || "N/A"}
+                      </span>
+                    </div>
+                    <div className="p-1">
+                      <div className="flex items-center gap-1">
+                        Color:
+                        {item?.variant?.color ? (
+                          <>
+                            <span
+                              className="w-4 h-4 rounded-full border"
+                              style={{
+                                backgroundColor: item.variant.color,
+                              }}
+                            ></span>
+                            <span className="text-gray-700 font-semibold">
+                              {item.variant.color}
+                            </span>
+                          </>
+                        ) : (
+                          <span className="text-gray-400">N/A</span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 mt-2">
+                      <button className="px-2 border rounded text-gray-600 hover:text-black">
+                        −
+                      </button>
+                      <span>{item.quantity}</span>
+                      <button className="px-2 border rounded text-gray-600 hover:text-black">
+                        +
+                      </button>
+                    </div>
+                    <p className="mt-2 font-semibold text-gray-800">
+                      Subtotal: ${item.price * item.quantity}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* TOP Section */}
+          <div className="hidden md:block overflow-x-auto mt-3 lg:col-span-3">
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="bg-gray-50 text-gray-600 uppercase text-xs border-y">
+                  <th className="p-3 text-left">Products</th>
+                  <th className="p-3 text-left">Price</th>
+                  <th className="p-3 text-left">Size</th>
+                  <th className="p-3 text-left">Color</th>
+                  <th className="p-3 text-center">Quantity</th>
+                  <th className="p-3 text-right">Sub-Total</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {cartList?.map((item) => (
+                  <tr className="border-b hover:bg-gray-50" key={item._id}>
+                    <td className="flex items-center gap-3 p-3">
+                      <button
+                        onClick={() => handleDeleteCart(item._id)}
+                        className="text-gray-500 hover:text-red-500 text-lg border rounded-full size-8 cursor-pointer hover:border-red-400 duration-300"
+                      >
+                        ✕
+                      </button>
+                      <img
+                        src={item?.product?.image}
+                        alt={item?.product?.name}
+                        className="w-16 h-16 rounded object-cover"
+                      />
+                      <p className="text-gray-700 font-medium text-sm w-[280px]">
+                        {item?.product?.name}
+                      </p>
+                    </td>
+                    <td className="p-3">
+                      <span className="text-gray-700">
+                        ৳{item?.product?.price}
+                      </span>
+                    </td>
+                    <td className="p-3">
+                      <span className="text-gray-700">
+                        {item?.variant?.size || "N/A"}
+                      </span>
+                    </td>
+                    <td className="p-3">
+                      <div className="flex items-center gap-2">
+                        {item?.variant?.color ? (
+                          <>
+                            <span
+                              className="w-4 h-4 rounded-full border"
+                              style={{
+                                backgroundColor: item.variant.color,
+                              }}
+                            ></span>
+                            <span className="text-gray-700">
+                              {item.variant.color}
+                            </span>
+                          </>
+                        ) : (
+                          <span className="text-gray-400">N/A</span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="p-3 text-center">
+                      <div className="flex items-center justify-center border rounded-md w-24 mx-auto">
+                        <button
+                          onClick={() =>
+                            handleDecrement(item._id, item.quantity)
+                          }
+                          className="px-2 py-1 text-gray-600 hover:text-black cursor-pointer text-2xl"
+                        >
+                          −
+                        </button>
+                        <span className="w-8 text-center text-base">
+                          {item.quantity}
+                        </span>
+                        <button
+                          onClick={() =>
+                            handleIncrement(item._id, item.quantity)
+                          }
+                          className="px-2 py-1 text-gray-600 hover:text-black cursor-pointer text-2xl"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </td>
+
+                    <td className="p-3 text-right font-medium text-gray-700">
+                      ৳{item.price * item.quantity}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           {/* LEFT SIDE */}
-          <div className="lg:col-span-2 shadow rounded-md p-5">
+          <div className="lg:col-span-2 border shadow rounded-md p-5">
             <h2 className="text-3xl font-semibold mb-6">Billing Details</h2>
 
             <div className="space-y-4">
               <input
+                onChange={handleChange}
+                name="name"
+                type="text"
+                value={billingData.name}
                 className="w-full border border-gray-200 rounded px-4 py-3 text-sm bg-gray-50  outline-none"
-                placeholder="First Name*"
+                placeholder="Full Name*"
               />
               <input
+                onChange={handleChange}
+                name="address"
+                type="text"
+                value={billingData.address}
                 className="w-full border border-gray-200 rounded px-4 py-3 text-sm bg-gray-50  outline-none"
-                placeholder="Company Name"
+                placeholder="Address*"
               />
               <input
+                onChange={handleChange}
+                name="city"
+                type="text"
+                value={billingData.city}
                 className="w-full border border-gray-200 rounded px-4 py-3 text-sm bg-gray-50  outline-none"
-                placeholder="Street Address*"
+                placeholder="City"
               />
               <input
-                className="w-full border border-gray-200 rounded px-4 py-3 text-sm bg-gray-50  outline-none"
-                placeholder="Apartment, floor, etc. (optional)"
-              />
-              <input
-                className="w-full border border-gray-200 rounded px-4 py-3 text-sm bg-gray-50  outline-none"
-                placeholder="Town/City*"
-              />
-              <input
+                onChange={handleChange}
+                name="phone"
+                type="text"
+                value={billingData.phone}
                 className="w-full border border-gray-200 rounded px-4 py-3 text-sm bg-gray-50  outline-none"
                 placeholder="Phone Number*"
               />
               <input
+                onChange={handleChange}
+                name="email"
+                type="email"
+                value={billingData.email}
                 className="w-full border border-gray-200 rounded px-4 py-3 text-sm bg-gray-50  outline-none"
                 placeholder="Email Address*"
               />
@@ -57,97 +365,48 @@ const page = () => {
               </Label>
             </div>
           </div>
-
           {/* RIGHT SIDE */}
-          <div className="bg-white p-6 rounded-md shadow-sm h-fit">
-            {/* PRODUCTS */}
-            <div className="space-y-5">
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-3">
-                  <img
-                    src="https://i.ibb.co/0jqHpnp/gamepad.png"
-                    className="w-12 h-12 object-contain"
-                  />
-                  <p className="text-sm">LCD Monitor</p>
+          <div className="bg-white p-6 border rounded-md shadow-sm h-full flex justify-between flex-col">
+            <div>
+              <div className="pt- text-sm space-y-3">
+                <h2 className="text-3xl font-semibold mb-6">Billing Details</h2>
+                <div className="flex justify-between">
+                  <span>Subtotal:</span>
+                  <span>${subtotal}</span>
                 </div>
-                <p className="text-sm">$650</p>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-3">
-                  <img
-                    src="https://i.ibb.co/XzW5X8B/monitor.png"
-                    className="w-12 h-12 object-contain"
-                  />
-                  <p className="text-sm">H1 Gamepad</p>
+                <div className="flex justify-between">
+                  <span>Tax:</span>
+                  <span>${tax}</span>
                 </div>
-                <p className="text-sm">$1100</p>
+                <div className="flex justify-between">
+                  <span>Shipping:</span>
+                  <span>{shippingFee}</span>
+                </div>
+                <div className="flex justify-between border-t pt-3 font-medium mb-3">
+                  <span>Total:</span>
+                  <span>${total}</span>
+                </div>
               </div>
+              <RadioGroup defaultValue="option-one">
+                <div className="flex items-center gap-3 cursor-pointer">
+                  <RadioGroupItem value="option-one" id="option-one" />
+                  <Label htmlFor="option-one" className="cursor-pointer">
+                    COD
+                  </Label>
+                </div>
+                <div className="flex items-center gap-3 cursor-pointer">
+                  <RadioGroupItem value="option-two" id="option-two" />
+                  <Label htmlFor="option-two" className="cursor-pointer">
+                    Online Payment
+                  </Label>
+                </div>
+              </RadioGroup>
             </div>
-
-            {/* PRICE */}
-            <div className="mt-6 border-t pt-4 text-sm space-y-3">
-              <div className="flex justify-between">
-                <span>Subtotal:</span>
-                <span>$1750</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Shipping:</span>
-                <span>Free</span>
-              </div>
-              <div className="flex justify-between border-t pt-3 font-medium mb-3">
-                <span>Total:</span>
-                <span>$1750</span>
-              </div>
-            </div>
-
-            {/* PAYMENT */}
-            {/* <div className="mt-5 space-y-3 text-sm">
-            <label className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <input type="radio" name="payment" className="accent-primaryColor" />
-                Bank
-              </div>
-              <div className="flex gap-2 text-xs">
-                <span className="px-2 py-1 bg-primaryColor text-white rounded">bKash</span>
-                <span className="px-2 py-1 bg-primaryColor text-white rounded">Visa</span>
-                <span className="px-2 py-1 bg-primaryColor text-white rounded">Master</span>
-              </div>
-            </label>
-
-            <label className="flex items-center gap-2">
-              <input type="radio" name="payment" defaultChecked className="accent-primaryColor" />
-              Cash on delivery
-            </label>
-          </div> */}
-            <RadioGroup defaultValue="option-one">
-              <div className="flex items-center gap-3 cursor-pointer">
-                <RadioGroupItem value="option-one" id="option-one" />
-                <Label htmlFor="option-one" className="cursor-pointer">
-                  Online Payment
-                </Label>
-              </div>
-              <div className="flex items-center gap-3 cursor-pointer">
-                <RadioGroupItem value="option-two" id="option-two" />
-                <Label htmlFor="option-two" className="cursor-pointer">
-                  Cash on Delivery
-                </Label>
-              </div>
-            </RadioGroup>
-
-            {/* COUPON */}
-            {/* <div className="flex mt-6 gap-3">
-            <input
-              className="w-full border border-gray-200 rounded-md px-4 py-3 text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primaryColor"
-              placeholder="Coupon Code"
-            />
-            <button className="bg-primaryColor text-white px-5 rounded-md">
-              Apply Coupon
-            </button>
-          </div> */}
-
             {/* BUTTON */}
-            <button className="w-full mt-6 cursor-pointer bg-primaryColor text-white py-3 rounded font-medium">
+            <button
+              onClick={handlePlaceOrder}
+              className="w-full mt-6 cursor-pointer bg-primaryColor text-white py-3 rounded font-medium"
+            >
               Place Order
             </button>
           </div>
