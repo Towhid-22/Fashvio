@@ -38,7 +38,7 @@ const orderController = async (req, res) => {
           paymentMethod,
           paymentStatus: "notpaid",
         });
-        newOrder.save();
+        await newOrder.save();
         res.status(201).json({
           success: true,
           message: "Order Place Successfull",
