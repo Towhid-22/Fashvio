@@ -10,6 +10,7 @@ import axios from "axios";
 import Container from "@/components/common/Container";
 const page = () => {
   const [cartList, setCartList] = useState([]);
+  const [paymentMethod, setPaymentMethod] = useState("COD");
   const [billingData, setBillingData] = useState({
     name: "",
     email: "",
@@ -18,7 +19,6 @@ const page = () => {
     address: "",
   });
   const user = useSelector((state) => state.authentication.userInfo);
-  console.log(user?._id);
   useEffect(() => {
     axios
       .get(
@@ -101,6 +101,14 @@ const page = () => {
     setBillingData({ ...billingData, [e.target.name]: e.target.value });
   };
 
+  //  !user ||
+  //   !cartItems ||
+  //   !totalPrice ||
+  //   !address ||
+  //   !phone ||
+  //   !city ||
+  //   !paymentMethod ||
+  //   !paymentStatus
   const handlePlaceOrder = () => {
     if (
       !billingData.name ||
@@ -113,22 +121,24 @@ const page = () => {
     }
     const order = {
       user: user?._id,
-      cartItems: [
-        cartList.map((item) => ({
-          product: item.product._id,
-          quantity: item.quantity,
-        })),
-      ],
+      cartItems: cartList.map((item) => ({
+        product: item.product._id,
+        quantity: item.quantity,
+      })),
       name: billingData.name,
       email: billingData.email,
       phone: billingData.phone,
       city: billingData.city,
       address: billingData.address,
       totalPrice: total,
+      paymentMethod: paymentMethod,
+      paymentStatus: paymentMethod === "online" ? "notpaid" : "paid",
     };
     try {
       axios
-        .post(`${process.env.NEXT_PUBLIC_URL}/api/order/place-order`, order)
+        .post(`${process.env.NEXT_PUBLIC_URL}/api/order/place-order`, order, {
+          withCredentials: true,
+        })
         .then((res) => {
           console.log(res);
         });
@@ -387,15 +397,27 @@ const page = () => {
                   <span>${total}</span>
                 </div>
               </div>
-              <RadioGroup defaultValue="option-one">
+              <RadioGroup defaultValue="COD">
                 <div className="flex items-center gap-3 cursor-pointer">
-                  <RadioGroupItem value="option-one" id="option-one" />
+                  <RadioGroupItem
+                    name="paymentMethod"
+                    checked={paymentMethod === "COD"}
+                    onChange={() => setPaymentMethod("COD")}
+                    value="COD"
+                    id="option-one"
+                  />
                   <Label htmlFor="option-one" className="cursor-pointer">
                     COD
                   </Label>
                 </div>
                 <div className="flex items-center gap-3 cursor-pointer">
-                  <RadioGroupItem value="option-two" id="option-two" />
+                  <RadioGroupItem
+                    name="paymentMethod"
+                    checked={paymentMethod === "online"}
+                    onChange={() => setPaymentMethod("online")}
+                    value="Online Payment"
+                    id="option-two"
+                  />
                   <Label htmlFor="option-two" className="cursor-pointer">
                     Online Payment
                   </Label>
