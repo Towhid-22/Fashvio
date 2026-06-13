@@ -38,6 +38,7 @@ const orderController = async (req, res) => {
           paymentMethod,
           paymentStatus: "notpaid",
         });
+        return console.log(newOrder);
         await newOrder.save();
         res.status(201).json({
           success: true,
@@ -52,7 +53,13 @@ const orderController = async (req, res) => {
       }
     }
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.log(error);
+
+    res.status(400).json({
+      success: false,
+      message: error.message,
+      error,
+    });
   }
 };
 module.exports = orderController;
