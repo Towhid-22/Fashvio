@@ -100,15 +100,6 @@ const page = () => {
   const handleChange = (e) => {
     setBillingData({ ...billingData, [e.target.name]: e.target.value });
   };
-
-  //  !user ||
-  //   !cartItems ||
-  //   !totalPrice ||
-  //   !address ||
-  //   !phone ||
-  //   !city ||
-  //   !paymentMethod ||
-  //   !paymentStatus
   const handlePlaceOrder = () => {
     if (
       !billingData.name ||
@@ -134,6 +125,7 @@ const page = () => {
       paymentMethod: paymentMethod,
       paymentStatus: paymentMethod === "online" ? "notpaid" : "paid",
     };
+    console.log(order);
     try {
       axios
         .post(`${process.env.NEXT_PUBLIC_URL}/api/order/place-order`, order, {
@@ -143,7 +135,7 @@ const page = () => {
           console.log(res);
         });
     } catch (err) {
-      console.log(err);
+      console.log(err.response?.data);
     }
   };
   return (
