@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Checkbox } from "@/components/ui/checkbox";
 import axios from "axios";
 import Container from "@/components/common/Container";
+import toast, { Toaster } from "react-hot-toast";
 const page = () => {
   const [cartList, setCartList] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState("COD");
@@ -19,10 +20,13 @@ const page = () => {
     address: "",
   });
   const user = useSelector((state) => state.authentication.userInfo);
+
+  // cart items fetch
   useEffect(() => {
+    if (!user?._id) return;
     axios
       .get(
-        `${process.env.NEXT_PUBLIC_URL}/api/cart/get-cartbyuserid/${user?._id}`,
+        `${process.env.NEXT_PUBLIC_URL}/api/cart/get-cartbyuserid/${user._id}`,
         { withCredentials: true },
       )
       .then((res) => {
@@ -31,8 +35,7 @@ const page = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [user?._id]);
-
+  }, [user]);
   const handleDeleteCart = (id) => {
     axios
       .delete(`${process.env.NEXT_PUBLIC_URL}/api/cart/delete-cartbyid/${id}`, {
@@ -69,7 +72,6 @@ const page = () => {
   };
   const handleDecrement = (id, currentQty) => {
     if (currentQty <= 1) return;
-
     axios
       .patch(
         `${process.env.NEXT_PUBLIC_URL}/api/cart/update-cartbyid/${id}`,
@@ -100,7 +102,7 @@ const page = () => {
   const handleChange = (e) => {
     setBillingData({ ...billingData, [e.target.name]: e.target.value });
   };
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     if (
       !billingData.name ||
       !billingData.email ||
@@ -122,32 +124,33 @@ const page = () => {
       city: billingData.city,
       address: billingData.address,
       totalPrice: total,
-      paymentMethod: paymentMethod,
-      paymentStatus: paymentMethod === "online" ? "notpaid" : "paid",
+      paymentMethod: paymentMethod.toUpperCase(),
+      paymentStatus: paymentMethod === "online" ? "paid" : "notpaid",
     };
-    console.log(order);
     try {
-      axios
-        .post(`${process.env.NEXT_PUBLIC_URL}/api/order/place-order`, order, {
-          withCredentials: true,
-        })
+      const res = await axios
+        .post(`${process.env.NEXT_PUBLIC_URL}/api/order/place-order`, order)
         .then((res) => {
-          console.log(res);
+          if (res.data.success) {
+            toast.success("Order Placed Successfull!");
+          }
+          // console.log(res.data.data);
         });
     } catch (err) {
-      console.log(err.response?.data);
+      console.log(err);
     }
   };
   return (
     <>
       <Breadcrumb />
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="min-h-screen py-6 px-3 md:px-10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Mobile Card View */}
           <div className="md:hidden space-y-4">
             {cartList.map((item) => (
               <div
-                key={item.id}
+                key={item._id}
                 className="border rounded-md p-3 flex items-start gap-3"
               >
                 <img
@@ -312,7 +315,6 @@ const page = () => {
           {/* LEFT SIDE */}
           <div className="lg:col-span-2 border shadow rounded-md p-5">
             <h2 className="text-3xl font-semibold mb-6">Billing Details</h2>
-
             <div className="space-y-4">
               <input
                 onChange={handleChange}
@@ -355,7 +357,6 @@ const page = () => {
                 placeholder="Email Address*"
               />
             </div>
-
             <div className="flex items-center gap-2 mt-4">
               <Label className=" flex items-center gap-3 cursor-pointer">
                 <Checkbox
