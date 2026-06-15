@@ -3,6 +3,8 @@ const orderModel = require("../model/orderModel");
 
 const orderController = async (req, res) => {
   try {
+    console.log("Request received");
+    console.log(req.body);
     const {
       user,
       cartItems,
@@ -38,7 +40,7 @@ const orderController = async (req, res) => {
           paymentMethod,
           paymentStatus: "notpaid",
         });
-        return console.log(newOrder);
+        // return console.log(newOrder);
         await newOrder.save();
         res.status(201).json({
           success: true,
