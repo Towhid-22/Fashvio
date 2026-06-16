@@ -390,27 +390,19 @@ const page = () => {
                   <span>${total}</span>
                 </div>
               </div>
-              <RadioGroup defaultValue="COD">
+              <RadioGroup
+                value={paymentMethod}
+                onValueChange={(value) => setPaymentMethod(value)}
+              >
                 <div className="flex items-center gap-3 cursor-pointer">
-                  <RadioGroupItem
-                    name="paymentMethod"
-                    checked={paymentMethod === "COD"}
-                    onChange={() => setPaymentMethod("COD")}
-                    value="COD"
-                    id="option-one"
-                  />
+                  <RadioGroupItem value="COD" id="option-one" />
                   <Label htmlFor="option-one" className="cursor-pointer">
                     COD
                   </Label>
                 </div>
+
                 <div className="flex items-center gap-3 cursor-pointer">
-                  <RadioGroupItem
-                    name="paymentMethod"
-                    checked={paymentMethod === "online"}
-                    onChange={() => setPaymentMethod("online")}
-                    value="Online Payment"
-                    id="option-two"
-                  />
+                  <RadioGroupItem value="online" id="option-two" />
                   <Label htmlFor="option-two" className="cursor-pointer">
                     Online Payment
                   </Label>
