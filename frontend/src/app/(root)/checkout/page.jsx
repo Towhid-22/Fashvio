@@ -117,6 +117,7 @@ const page = () => {
       cartItems: cartList.map((item) => ({
         product: item.product._id,
         quantity: item.quantity,
+        variant: item.variant?._id,
       })),
       name: billingData.name,
       email: billingData.email,
@@ -134,7 +135,6 @@ const page = () => {
           if (res.data.success) {
             toast.success("Order Placed Successfull!");
           }
-          // console.log(res.data.data);
         });
     } catch (err) {
       console.log(err);
