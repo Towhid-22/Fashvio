@@ -133,7 +133,7 @@ const page = () => {
         .post(`${process.env.NEXT_PUBLIC_URL}/api/order/place-order`, order)
         .then((res) => {
           if (res.data.success) {
-            toast.success("Order Placed Successfull!");
+            toast.success("Order Placed Successfull! online payment");
           }
         });
     } catch (err) {
