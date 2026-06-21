@@ -11,7 +11,7 @@ import Container from "@/components/common/Container";
 import toast, { Toaster } from "react-hot-toast";
 const page = () => {
   const [cartList, setCartList] = useState([]);
-  const [paymentMethod, setPaymentMethod] = useState("COD");
+  const [paymentMethod, setPaymentMethod] = useState("cod");
   const [billingData, setBillingData] = useState({
     name: "",
     email: "",
@@ -125,7 +125,7 @@ const page = () => {
       city: billingData.city,
       address: billingData.address,
       totalPrice: total,
-      paymentMethod: paymentMethod.toUpperCase(),
+      paymentMethod: paymentMethod,
       paymentStatus: paymentMethod === "online" ? "paid" : "notpaid",
     };
     try {
@@ -395,9 +395,9 @@ const page = () => {
                 onValueChange={(value) => setPaymentMethod(value)}
               >
                 <div className="flex items-center gap-3 cursor-pointer">
-                  <RadioGroupItem value="COD" id="option-one" />
+                  <RadioGroupItem value="cod" id="option-one" />
                   <Label htmlFor="option-one" className="cursor-pointer">
-                    COD
+                    Cash on Delivery
                   </Label>
                 </div>
 
