@@ -33,7 +33,7 @@ const orderController = async (req, res) => {
         .status(400)
         .json({ success: false, message: "All field are required" });
     } else {
-      if (paymentMethod === "cod") {
+      if (paymentMethod === "COD") {
         const newOrder = orderModel({
           user,
           cartItems,
@@ -44,7 +44,6 @@ const orderController = async (req, res) => {
           paymentMethod,
           paymentStatus: "notpaid",
         });
-        // return console.log(newOrder);
         await newOrder.save();
         res.status(201).json({
           success: true,
