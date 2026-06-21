@@ -9,7 +9,11 @@ const MongoStore = require("connect-mongo");
 const PORT = process.env.PORT || 5000;
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://fashvio-v1r7.vercel.app"],
+    origin: [
+      "http://localhost:3000",
+      "https://fashvio-v1r7.vercel.app",
+      "https://sandbox.sslcommerz.com",
+    ],
     credentials: true,
   }),
 );
@@ -25,8 +29,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: true, // false for localhost and true for deploy
-      sameSite: "none", // for vercel+render "none" and localhost for lax
+      secure: false, // false for localhost and true for deploy
+      sameSite: "lax", // for vercel+render "none" and localhost for lax
       maxAge: 24 * 60 * 60 * 1000,
     },
 

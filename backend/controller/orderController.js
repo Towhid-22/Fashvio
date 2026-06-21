@@ -33,7 +33,7 @@ const orderController = async (req, res) => {
         .status(400)
         .json({ success: false, message: "All field are required" });
     } else {
-      if (paymentMethod === "COD") {
+      if (paymentMethod === "cod") {
         const newOrder = orderModel({
           user,
           cartItems,
@@ -51,11 +51,10 @@ const orderController = async (req, res) => {
           message: "Order Place Successfull",
           data: newOrder,
         });
-      } else {
+      } else if (paymentMethod === "online") {
         // handle online payment logic here
         let userInfo = await userModel.findById(user);
-        console.log("line no 57", userInfo);
-        return;
+
         const data = {
           total_amount: totalPrice,
           currency: "BDT",
@@ -90,13 +89,17 @@ const orderController = async (req, res) => {
         sslcz.init(data).then((apiResponse) => {
           // Redirect the user to payment gateway
           let GatewayPageURL = apiResponse.GatewayPageURL;
-          res.redirect(GatewayPageURL);
-          console.log("Redirecting to: ", GatewayPageURL);
+          return res.status(200).json({
+            success: true,
+            message: "Order Place Successfull, Please proceed to payment",
+            paymentURL: GatewayPageURL,
+          });
         });
-        // return res.status(200).json({
-        //   success: true,
-        //   message: "Order Place Successfull, Please proceed to payment",
-        // });
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid payment method",
+        });
       }
     }
   } catch (error) {
