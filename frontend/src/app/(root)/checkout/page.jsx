@@ -11,7 +11,7 @@ import Container from "@/components/common/Container";
 import toast, { Toaster } from "react-hot-toast";
 const page = () => {
   const [cartList, setCartList] = useState([]);
-  const [paymentMethod, setPaymentMethod] = useState("cod");
+  const [paymentMethod, setPaymentMethod] = useState("COD");
   const [billingData, setBillingData] = useState({
     name: "",
     email: "",
@@ -395,7 +395,7 @@ const page = () => {
                 onValueChange={(value) => setPaymentMethod(value)}
               >
                 <div className="flex items-center gap-3 cursor-pointer">
-                  <RadioGroupItem value="cod" id="option-one" />
+                  <RadioGroupItem value="COD" id="option-one" />
                   <Label htmlFor="option-one" className="cursor-pointer">
                     Cash on Delivery
                   </Label>
