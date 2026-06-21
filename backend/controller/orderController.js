@@ -3,8 +3,6 @@ const orderModel = require("../model/orderModel");
 
 const orderController = async (req, res) => {
   try {
-    console.log("Request received");
-    console.log(req.body);
     const {
       user,
       cartItems,
@@ -48,9 +46,9 @@ const orderController = async (req, res) => {
           data: newOrder,
         });
       } else {
-        return res.status(400).json({
-          success: false,
-          message: "Online payment is not supported yet",
+        return res.status(200).json({
+          success: true,
+          message: "Order Place Successfull, Please proceed to payment",
         });
       }
     }
@@ -64,4 +62,18 @@ const orderController = async (req, res) => {
     });
   }
 };
-module.exports = orderController;
+const getAllOrders = async (req, res) => {
+  try {
+    const allOrders = await orderModel
+      .find()
+      .populate("cartItems.product", "_id name price variant");
+    return res.status(200).json({
+      success: true,
+      message: "Order fetched succeffully",
+      data: allOrders,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+module.exports = { orderController, getAllOrders };

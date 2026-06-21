@@ -18,6 +18,10 @@ const orderSchema = new mongoose.Schema(
           type: Number,
           required: true,
         },
+        variant: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Variant",
+        },
       },
     ],
     totalPrice: {
