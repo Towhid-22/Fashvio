@@ -13,5 +13,9 @@ router.get("/get-all-orders", getAllOrders);
 router.post("/success", (req, res) => {
   res.redirect("https://fashvio-v1r7.vercel.app/success");
 });
+// localhost:4000/api/order/fail
+router.post("/fail", (req, res) => {
+  res.redirect("https://fashvio-v1r7.vercel.app/fail");
+});
 
 module.exports = router;
