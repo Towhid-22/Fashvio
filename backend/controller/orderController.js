@@ -57,8 +57,8 @@ const orderController = async (req, res) => {
           total_amount: totalPrice,
           currency: "BDT",
           tran_id: `REF${Date.now()}`, // use unique tran_id for each api call
-          success_url: "https://fashvio-v1r7.vercel.app/success",
-          fail_url: "http://localhost:3030/fail",
+          success_url: `${process.env.FRONTEND_BASE_URL}/success`,
+          fail_url: `${process.env.FRONTEND_BASE_URL}/fail`,
           cancel_url: "http://localhost:3030/cancel",
           ipn_url: "http://localhost:3030/ipn",
           shipping_method: "Courier",
