@@ -52,12 +52,14 @@ const orderController = async (req, res) => {
       } else if (paymentMethod === "online") {
         // handle online payment logic here
         let userInfo = await userModel.findById(user);
+        const tran_id =
+          Date.now() + Math.random().toString(36).substring(2, 15);
 
         const data = {
           total_amount: totalPrice,
           currency: "BDT",
           tran_id: `REF${Date.now()}`, // use unique tran_id for each api call
-          success_url: `${process.env.BASE_URL}/api/order/success`,
+          success_url: `${process.env.BASE_URL}/api/order/success/${tran_id}`,
           fail_url: `${process.env.BASE_URL}/api/order/fail`,
           cancel_url: "http://localhost:3030/cancel",
           ipn_url: "http://localhost:3030/ipn",
@@ -94,6 +96,7 @@ const orderController = async (req, res) => {
             city,
             paymentMethod,
             paymentStatus: "notpaid",
+            transactionId: tran_id,
           });
           let saveOrder = await newOrder.save();
           let GatewayPageURL = apiResponse.GatewayPageURL;
