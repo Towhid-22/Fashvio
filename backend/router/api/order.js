@@ -3,6 +3,7 @@ const {
   orderController,
   getAllOrders,
 } = require("../../controller/orderController");
+const orderModel = require("../../model/orderModel");
 const router = express.Router();
 
 // localhost:4000/api/order/place-order
