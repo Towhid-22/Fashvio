@@ -88,10 +88,11 @@ const orderController = async (req, res) => {
         sslcz.init(data).then((apiResponse) => {
           // Redirect the user to payment gateway
           let GatewayPageURL = apiResponse.GatewayPageURL;
+          console.log("Redirecting to: ", GatewayPageURL);
           return res.status(200).json({
             success: true,
             message: "Order Place Successfull, Please proceed to payment",
-            paymentURL: GatewayPageURL,
+            paymenturl: GatewayPageURL,
           });
         });
       } else {
