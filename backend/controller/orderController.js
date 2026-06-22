@@ -84,8 +84,18 @@ const orderController = async (req, res) => {
           ship_country: "Bangladesh",
         };
         const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);
-        sslcz.init(data).then((apiResponse) => {
-          // Redirect the user to payment gateway
+        sslcz.init(data).then(async (apiResponse) => {
+          const newOrder = orderModel({
+            user,
+            cartItems,
+            totalPrice,
+            address,
+            phone,
+            city,
+            paymentMethod,
+            paymentStatus: "notpaid",
+          });
+          let saveOrder = await newOrder.save();
           let GatewayPageURL = apiResponse.GatewayPageURL;
           console.log("Redirecting to: ", GatewayPageURL);
           return res.status(200).json({
