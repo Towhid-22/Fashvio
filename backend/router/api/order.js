@@ -19,11 +19,11 @@ router.post("/success/:id", async (req, res) => {
     { new: true },
   );
   await order.save();
-  res.redirect("https://fashvio-v1r7.vercel.app/success");
+  res.redirect(`${process.env.FRONTEND_BASE_URL}/success`);
 });
 // localhost:4000/api/order/fail
 router.post("/fail", (req, res) => {
-  res.redirect("https://fashvio-v1r7.vercel.app/fail");
+  res.redirect(`${process.env.FRONTEND_BASE_URL}/fail`);
 });
 
 module.exports = router;
