@@ -58,7 +58,7 @@ const orderController = async (req, res) => {
         const data = {
           total_amount: totalPrice,
           currency: "BDT",
-          tran_id: `REF${Date.now()}`, // use unique tran_id for each api call
+          tran_id: tran_id, // use unique tran_id for each api call
           success_url: `${process.env.BASE_URL}/api/order/success/${tran_id}`,
           fail_url: `${process.env.BASE_URL}/api/order/fail`,
           cancel_url: "http://localhost:3030/cancel",
