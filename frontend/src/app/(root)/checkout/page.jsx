@@ -129,13 +129,24 @@ const page = () => {
       paymentStatus: paymentMethod === "online" ? "paid" : "notpaid",
     };
     try {
-      const res = await axios
-        .post(`${process.env.NEXT_PUBLIC_URL}/api/order/place-order`, order)
-        .then((res) => {
-          if (res.data.success) {
-            toast.success("Order Placed Successfull! online payment");
-          }
-        });
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_URL}/api/order/place-order`,
+        order,
+      );
+      if (res.data.success) {
+        console.log(res.data);
+        if (res.data.paymenturl) {
+          window.location.href = res.data.paymenturl;
+        }
+        // toast.success("Order Placed Successfull!");
+      } else {
+        toast.error("Order Placed Failed!");
+      }
+      // .then((res) => {
+      //   if (res.data.success) {
+      //     toast.success("Order Placed Successfull! online payment");
+      //   }
+      // });
     } catch (err) {
       console.log(err);
     }
@@ -397,7 +408,7 @@ const page = () => {
                 <div className="flex items-center gap-3 cursor-pointer">
                   <RadioGroupItem value="COD" id="option-one" />
                   <Label htmlFor="option-one" className="cursor-pointer">
-                    Cash on Delivery
+                    COD
                   </Label>
                 </div>
 
