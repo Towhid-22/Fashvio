@@ -1,2 +1,1 @@
-Frontend Link: https://fashvio.vercel.app/
-Backend Link: https://fashvio.onrender.com/
+Project Link: https://fashvio-v1r7.vercel.app/
