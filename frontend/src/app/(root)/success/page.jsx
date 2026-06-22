@@ -29,8 +29,8 @@ const page = () => {
           Thank you for your order!
         </h1>
         <p className="text-gray-500 text-sm mb-8">
-          আপনার অর্ডার সফলভাবে সম্পন্ন হয়েছে। শীঘ্রই আপনার কাছে পৌঁছে দেওয়া
-          হবে।
+          Successfully completed your payment. We are processing your order and
+          will update you
         </p>
 
         {/* Buttons */}
@@ -39,13 +39,13 @@ const page = () => {
             href="/"
             className="bg-green-50 text-green-700 border border-green-200 rounded-lg py-2.5 text-sm font-medium hover:bg-green-100 transition"
           >
-            হোম পেজে যান
+            Go to Homepage
           </a>
           <a
             href="/orders"
             className="border border-gray-200 text-gray-500 rounded-lg py-2.5 text-sm font-medium hover:bg-gray-50 transition"
           >
-            আমার অর্ডার দেখুন
+            See My Orders
           </a>
         </div>
       </div>

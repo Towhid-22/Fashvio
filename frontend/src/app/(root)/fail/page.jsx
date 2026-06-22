@@ -26,19 +26,18 @@ const page = () => {
           Payment Failed
         </p>
         <h1 className="text-2xl font-semibold text-gray-800 mb-3">
-          পেমেন্ট সম্পন্ন হয়নি!
+          Your payment could not be processed
         </h1>
         <p className="text-gray-500 text-sm mb-6">
-          দুঃখিত, আপনার পেমেন্ট প্রক্রিয়া করা সম্ভব হয়নি। অনুগ্রহ করে আবার
-          চেষ্টা করুন।
+          We were unable to process your payment. Please try again.
         </p>
 
         {/* Warning box */}
         <div className="bg-red-50 border border-red-100 rounded-lg p-3 mb-8 text-left flex gap-2">
           <span className="text-red-400 mt-0.5">⚠</span>
           <p className="text-red-600 text-sm">
-            সম্ভাব্য কারণ: অপর্যাপ্ত ব্যালেন্স, ভুল কার্ড তথ্য, অথবা নেটওয়ার্ক
-            সমস্যা।
+            Possible reasons: Insufficient balance, incorrect card information,
+            or network issues.
           </p>
         </div>
 
@@ -48,13 +47,13 @@ const page = () => {
             href="/checkout"
             className="bg-red-50 text-red-600 border border-red-200 rounded-lg py-2.5 text-sm font-medium hover:bg-red-100 transition"
           >
-            আবার চেষ্টা করুন
+            Try Again
           </a>
           <a
             href="/"
             className="border border-gray-200 text-gray-500 rounded-lg py-2.5 text-sm font-medium hover:bg-gray-50 transition"
           >
-            হোম পেজে যান
+            Go to Homepage
           </a>
         </div>
       </div>

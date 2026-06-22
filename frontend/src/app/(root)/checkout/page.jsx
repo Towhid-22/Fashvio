@@ -134,19 +134,14 @@ const page = () => {
         order,
       );
       if (res.data.success) {
-        console.log(res.data);
+        toast.success("COD Order Placed Successfull!");
         if (res.data.paymenturl) {
+          toast.success("Online Order Placed Successfull!");
           window.location.href = res.data.paymenturl;
         }
-        // toast.success("Order Placed Successfull!");
       } else {
         toast.error("Order Placed Failed!");
       }
-      // .then((res) => {
-      //   if (res.data.success) {
-      //     toast.success("Order Placed Successfull! online payment");
-      //   }
-      // });
     } catch (err) {
       console.log(err);
     }
