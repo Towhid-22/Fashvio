@@ -1,7 +1,7 @@
 "use client";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import axios from "axios";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { GrCart } from "react-icons/gr";
@@ -17,6 +17,7 @@ const ProductPage = () => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [colorsBySize, setColorsBySize] = useState([]);
   const [variant, setVariant] = useState([]);
+  const router = useRouter();
   // ================= fetch product =================
   useEffect(() => {
     async function getSingleProduct() {
@@ -63,6 +64,10 @@ const ProductPage = () => {
 
   // const [quantity, setQuantity] = useState(1);
   const handleAddToCart = () => {
+    if (!user) {
+      return router.push(`/account/login`);
+    }
+
     axios
       .post(
         `${process.env.NEXT_PUBLIC_URL}/api/cart/add-to-cart`,
