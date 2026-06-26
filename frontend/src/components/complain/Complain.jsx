@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import axios from "axios";
 
 const Complain = () => {
   const [name, setName] = useState("");
@@ -10,6 +11,26 @@ const Complain = () => {
 
   const submitComplainBtn = (e) => {
     console.log(name, phone, email, subject, details);
+    e.preventDefault();
+    try {
+      axios
+        .post(
+          `${process.env.NEXT_PUBLIC_URL}/api/complain`,
+          {
+            name,
+            phone,
+            email,
+            subject,
+            details,
+          },
+          { withCredentials: true },
+        )
+        .then((res) => {
+          alert("Complain submitted successfully");
+        });
+    } catch (error) {
+      console.error("Error submitting complain:", error);
+    }
   };
   return (
     <div className="max-w-[1580px] mx-auto px-4 my-20">

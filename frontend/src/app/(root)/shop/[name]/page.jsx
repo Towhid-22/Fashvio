@@ -1,7 +1,7 @@
 "use client";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import axios from "axios";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { GrCart } from "react-icons/gr";
@@ -17,7 +17,21 @@ const ProductPage = () => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [colorsBySize, setColorsBySize] = useState([]);
   const [variant, setVariant] = useState([]);
-  const router = useRouter();
+  const [cartList, setCartList] = useState([]);
+  // ================= fetch cart =================
+  useEffect(() => {
+    axios
+      .get(
+        `${process.env.NEXT_PUBLIC_URL}/api/cart/get-cartbyuserid/${user?._id}`,
+        { withCredentials: true },
+      )
+      .then((res) => {
+        setCartList(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [user?._id]);
   // ================= fetch product =================
   useEffect(() => {
     async function getSingleProduct() {
@@ -64,10 +78,7 @@ const ProductPage = () => {
 
   // const [quantity, setQuantity] = useState(1);
   const handleAddToCart = () => {
-    if (!user) {
-      return router.push(`/account/login`);
-    }
-
+ 
     axios
       .post(
         `${process.env.NEXT_PUBLIC_URL}/api/cart/add-to-cart`,
@@ -82,6 +93,7 @@ const ProductPage = () => {
       .then((res) => {
         console.log(res);
         toast.success("Product added to cart!");
+        console.log(product.variant);
       });
   };
   return (
