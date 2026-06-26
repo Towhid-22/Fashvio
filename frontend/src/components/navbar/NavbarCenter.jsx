@@ -19,6 +19,7 @@ import { setUserInfo } from "@/store/features/auth/authSlice";
 import toast, { Toaster } from "react-hot-toast";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { FaRegUserCircle } from "react-icons/fa";
 
 const NavbarCenter = () => {
   const dispatch = useDispatch();
@@ -295,9 +296,8 @@ const NavbarCenter = () => {
                 )}
               </div>
             ) : (
-              <Link href="/account/login" className="flex items-center gap-1">
-                <LuUser className="te xt-2xl text-black" />
-                Account
+              <Link href="/account/login" className="flex items-center gap-1 border border-primaryColor rounded-full p-0.5">
+                <LuUser className="text-xl text-black" />
               </Link>
             )}
           </div>
