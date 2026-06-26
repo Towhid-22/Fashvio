@@ -262,6 +262,44 @@ const NavbarCenter = () => {
                 0
               </sup>
             </Link>
+            {userData ? (
+              <div className="relative" ref={profileRef}>
+                <button
+                  onClick={() => setProfilePopup(true)}
+                  className="flex items-center justify-center gap-1 text-white font-semibold text-xl cursor-pointer w-8 h-8 rounded-full bg-primaryColor "
+                >
+                  {userData?.username?.charAt(0)}
+                </button>
+                {profilePopup && (
+                  <div className="shadow-md w-[200px] py-2 rounded absolute right-0 top-13 z-10 bg-primaryColor">
+                    <ul>
+                      <Link href={"/account/manage-account"}>
+                        <li className="text-white text-base flex items-center gap-2  cursor-pointer transition-all duration-300 hover:bg-primaryColor hover:text-white py-1 px-3">
+                          <FaUserEdit /> Manage Profile
+                        </li>
+                      </Link>
+                      <li className="text-white text-base flex items-center gap-2  cursor-pointer transition-all duration-300 hover:bg-primaryColor hover:text-white py-1 px-3">
+                        <HiShoppingBag /> My Orders
+                      </li>
+                      <li className="text-white text-base  flex items-center gap-2   cursor-pointer transition-all duration-300 hover:bg-primaryColor hover:text-white py-1 px-3">
+                        <FaRegHeart /> My Wish List
+                      </li>
+                      <li
+                        onClick={handleLogout}
+                        className="text-white text-base  flex items-center gap-2   cursor-pointer transition-all duration-300 hover:bg-primaryColor hover:text-white py-1 px-3"
+                      >
+                        <GrLogout /> Logout
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link href="/account/login" className="flex items-center gap-1">
+                <LuUser className="te xt-2xl text-black" />
+                Account
+              </Link>
+            )}
           </div>
         </div>
       </div>
