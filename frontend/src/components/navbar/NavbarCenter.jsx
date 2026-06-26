@@ -267,7 +267,7 @@ const NavbarCenter = () => {
               <div className="relative" ref={profileRef}>
                 <button
                   onClick={() => setProfilePopup(true)}
-                  className="flex items-center justify-center gap-1 text-white font-semibold text-xl cursor-pointer w-8 h-8 rounded-full bg-primaryColor "
+                  className="flex items-center justify-center gap-1 text-white font-semibold text-xl cursor-pointer w-6 h-6 rounded-full bg-primaryColor "
                 >
                   {userData?.username?.charAt(0)}
                 </button>
@@ -296,7 +296,10 @@ const NavbarCenter = () => {
                 )}
               </div>
             ) : (
-              <Link href="/account/login" className="flex items-center gap-1 border border-primaryColor rounded-full p-0.5">
+              <Link
+                href="/account/login"
+                className="flex items-center gap-1 border border-primaryColor rounded-full p-0.5"
+              >
                 <LuUser className="text-xl text-black" />
               </Link>
             )}
@@ -312,6 +315,7 @@ const NavbarCenter = () => {
           }`}
         >
           <input
+            onChange={handleSearchProducts}
             className="placeholder:text-sm placeholder:italic p-1 w-full outline-none text-textprimaryColor"
             type="text"
             placeholder="Search for products..."
@@ -319,6 +323,31 @@ const NavbarCenter = () => {
           <button className="absolute right-2  top-1/2 -translate-y-1/2 cursor-pointer">
             <IoSearch className="text-xl" />
           </button>
+
+          {productSearch?.length > 0 && (
+            <div
+              ref={searchProductRef}
+              className="absolute top-10 left-0 right-0 bg-white shadow-xs p- z-50 w-full"
+            >
+              {productSearch.map((product) => (
+                <Link
+                  key={product._id}
+                  href={`/shop/${product.slug}`}
+                  className="flex items-center gap-3 mb-2 border p-2 rounded"
+                >
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="size-10"
+                  />
+                  <div>
+                    <h1>{product.name}</h1>
+                    <p>৳{product.price}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
