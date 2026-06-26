@@ -8,6 +8,7 @@ const variantRouter = require("./variant");
 const cartRouter = require("./cart");
 const bannerRouter = require("./banner");
 const orderRouter = require("./order");
+const complainRouter = require("./complain");
 // localhost:4000/api/authentication
 router.use("/authentication", authRouter);
 // localhost:4000/api/category
@@ -24,4 +25,6 @@ router.use("/cart", cartRouter);
 router.use("/banner", bannerRouter);
 // localhost:4000/api/order
 router.use("/order", orderRouter);
+// localhost:4000/api/complain
+router.use("/complain", complainRouter);
 module.exports = router;
