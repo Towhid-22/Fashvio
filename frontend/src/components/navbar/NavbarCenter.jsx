@@ -31,6 +31,7 @@ const NavbarCenter = () => {
   const sidebarRef = useRef(null);
   const searchRef = useRef(null);
   const profileRef = useRef(null);
+  const profileRefXl = useRef(null);
   const searchProductRef = useRef(null);
   const [profilePopup, setProfilePopup] = useState(false);
   useEffect(() => {
@@ -39,8 +40,10 @@ const NavbarCenter = () => {
       const sidebar = sidebarRef.current?.contains(targetedEvent);
       const search = searchRef.current?.contains(targetedEvent);
       const profile = profileRef.current?.contains(targetedEvent);
+      const profileXl = profileRefXl.current?.contains(targetedEvent);
+
       const search_product = searchProductRef.current?.contains(targetedEvent);
-      if (!sidebar && !search && !profile && !search_product) {
+      if (!sidebar && !search && !profile && !profileXl && !search_product) {
         setSideBarOpen(false);
         setSearch(false);
         setProfilePopup(false);
@@ -192,15 +195,15 @@ const NavbarCenter = () => {
                 </li>
                 <li className="font-lato leading-4 text-secondaryColor  cursor-pointer">
                   {userData ? (
-                    <div className="relative" ref={profileRef}>
+                    <div className="relative" ref={profileRefXl}>
                       <button
                         onClick={() => setProfilePopup(true)}
-                        className="flex items-center justify-center gap-1 text-white font-semibold text-xl cursor-pointer w-8 h-8 rounded-full bg-primaryColor "
+                        className="flex items-center justify-center gap-1 text-white font-semibold text-xl cursor-pointer w-8 h-8 rounded-full bg-primaryColor z-50"
                       >
                         {userData?.username?.charAt(0)}
                       </button>
                       {profilePopup && (
-                        <div className="shadow-md w-[200px] py-2 rounded absolute right-0 top-13 z-10 bg-primaryColor">
+                        <div className="absolute right-0 top-full mt-2 w-[200px] bg-primaryColor rounded shadow-lg z-9999">
                           <ul>
                             <Link href={"/account/manage-account"}>
                               <li className="text-white text-base flex items-center gap-2  cursor-pointer transition-all duration-300 hover:bg-primaryColor hover:text-white py-1 px-3">
