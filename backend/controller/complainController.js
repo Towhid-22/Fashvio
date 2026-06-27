@@ -14,6 +14,7 @@ const addComplainController = async (req, res) => {
       details,
     });
     await newComplain.save();
+    console.log(newComplain);
     res.status(201).json({ message: "Complain added successfully" });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });

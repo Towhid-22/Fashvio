@@ -22,6 +22,10 @@ const complainSchema = new mongoose.Schema(
       type: String,
       required: [true, "Details are required"],
     },
+    isSolved: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
