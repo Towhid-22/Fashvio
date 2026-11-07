@@ -18,7 +18,7 @@ const Product = ({ product, onClick }) => {
       <div
         key={product._id}
         onClick={onClick}
-        className="border w-[280px] md:w-[241px] h-[400px] rounded p-3 flex flex-col justify-between gap-3 group relative"
+        className="border w-[280px] md:w-[241px] h-[300px] rounded p-3 flex flex-col justify-between gap-3 group relative"
       >
         <div className="">
           <div className="w-full flex items-center justify-center">
@@ -32,10 +32,10 @@ const Product = ({ product, onClick }) => {
             {product.name}
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        {/* <div className="flex items-center gap-3">
           <RiStarFill className="text-yellow-400" />
           <span>({product.rating})</span>
-        </div>
+        </div> */}
         <div className="font-quicksand font-bold leading-5 text-textPrimary flex items-center gap-2">
           <p>${product.price}</p>
           <del className="font-normal text-textPrimary/50">$16.00</del>
