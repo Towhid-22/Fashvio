@@ -160,7 +160,7 @@ const NavbarCenter = () => {
                     Shop
                   </Link>
                 </li>
-                <li className="font-lato leading-4 text-secondaryColor flex items-center gap-1 cursor-pointer">
+                {/* <li className="font-lato leading-4 text-secondaryColor flex items-center gap-1 cursor-pointer">
                   <Link href="/compare" className="flex items-center">
                     <div className="relative">
                       <BiGitCompare className="text-2xl text-black" />
@@ -170,8 +170,8 @@ const NavbarCenter = () => {
                     </div>
                     Compare
                   </Link>
-                </li>
-                <li className="font-lato leading-4 text-secondaryColor flex items-center gap-1 cursor-pointer">
+                </li> */}
+                {/* <li className="font-lato leading-4 text-secondaryColor flex items-center gap-1 cursor-pointer">
                   <Link href="/wishlist" className="flex items-center gap-1">
                     <div className="relative">
                       <RiHeart3Line className="text-2xl text-black" />
@@ -181,14 +181,14 @@ const NavbarCenter = () => {
                     </div>
                     Wishlist
                   </Link>
-                </li>
+                </li> */}
                 <li className="font-lato leading-4 text-secondaryColor flex items-center gap-1 cursor-pointer">
                   <Link href="/cart" className="flex items-center gap-1">
                     <div className="relative">
                       <BsCart3 className="text-2xl text-black" />
-                      <sup className="w-5 h-5 bg-primaryColor rounded-full flex items-center justify-center text-white text-[12px] absolute -top-2.5 -right-2.5">
+                      {/* <sup className="w-5 h-5 bg-primaryColor rounded-full flex items-center justify-center text-white text-[12px] absolute -top-2.5 -right-2.5">
                         0
-                      </sup>
+                      </sup> */}
                     </div>
                     Cart
                   </Link>
